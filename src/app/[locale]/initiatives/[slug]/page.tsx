@@ -1,5 +1,22 @@
 import {notFound} from 'next/navigation';
-import {mockInitiatives} from '@/features/initiatives/mockData';
+
+interface Initiative {
+  slug: string;
+  titleAr: string;
+  titleEn: string;
+  descriptionAr: string;
+  descriptionEn: string;
+  status: string;
+  location: string;
+}
+
+async function getInitiative(slug: string): Promise<Initiative | null> {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/public/initiatives/${slug}`, {
+    cache: 'no-store'
+  });
+  if (!res.ok) return null;
+  return res.json();
+}
 
 export default async function InitiativeDetailPage({
   params
@@ -9,7 +26,7 @@ export default async function InitiativeDetailPage({
   const {locale, slug} = await params;
   const isArabic = locale === 'ar';
 
-  const initiative = mockInitiatives.find((i) => i.slug === slug);
+  const initiative = await getInitiative(slug);
   if (!initiative) notFound();
 
   return (
