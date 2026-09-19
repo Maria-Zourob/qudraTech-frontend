@@ -2,6 +2,7 @@ import type {Metadata} from 'next';
 import {NextIntlClientProvider} from 'next-intl';
 import {getMessages, setRequestLocale} from 'next-intl/server';
 import {locales} from '@/i18n';
+
 import "../globals.css";
 
 export function generateStaticParams() {
