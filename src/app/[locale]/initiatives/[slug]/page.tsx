@@ -25,7 +25,16 @@ interface BudgetSummary {
   totalPlanned: number;
   totalActual: number;
 }
-
+interface Risk {
+  id: string;
+  descriptionAr: string;
+  descriptionEn: string;
+  probability: string;
+  impact: string;
+  mitigation: string;
+  contingencyPlan: string | null;
+  status: string;
+}
 async function getInitiative(slug: string): Promise<Initiative | null> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/public/initiatives/${slug}`, {
     cache: 'no-store'
@@ -41,12 +50,18 @@ async function getKpis(slug: string): Promise<Kpi[]> {
   if (!res.ok) return [];
   return res.json();
 }
-
 async function getBudgetSummary(slug: string): Promise<BudgetSummary | null> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/public/initiatives/${slug}/budget-summary`, {
     cache: 'no-store'
   });
   if (!res.ok) return null;
+  return res.json();
+}
+async function getRisks(slug: string): Promise<Risk[]> {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/public/initiatives/${slug}/risks`, {
+    cache: 'no-store'
+  });
+  if (!res.ok) return [];
   return res.json();
 }
 
@@ -63,7 +78,7 @@ export default async function InitiativeDetailPage({
 
   const kpis = await getKpis(slug);
   const budget = await getBudgetSummary(slug);
-
+  const risks = await getRisks(slug);
   return (
     <main className="max-w-3xl mx-auto p-8">
       <div className="flex justify-between items-start mb-4">
@@ -142,6 +157,42 @@ export default async function InitiativeDetailPage({
                 {isArabic ? 'فعلي' : 'Actual'}
               </p>
             </div>
+          </div>
+        </section>
+        
+      )}
+            {risks.length > 0 && (
+        <section className="mt-10">
+          <h2 className="font-heading text-xl font-bold mb-4" style={{color: 'var(--color-navy)'}}>
+            {isArabic ? 'المخاطر وخطط التخفيف' : 'Risks & Mitigation'}
+          </h2>
+          <div className="space-y-4">
+            {risks.map((risk) => (
+              <div key={risk.id} className="border rounded-lg p-4" style={{borderColor: 'var(--color-line)'}}>
+                <div className="flex justify-between items-start mb-2">
+                  <p className="font-medium" style={{color: 'var(--color-ink)'}}>
+                    {isArabic ? risk.descriptionAr : risk.descriptionEn}
+                  </p>
+                  <span
+                    className="initiative-code text-xs px-2 py-1 whitespace-nowrap"
+                    style={{
+                      background: risk.status === 'Open' ? '#C0392B' : 'var(--color-growth)',
+                      color: 'white'
+                    }}
+                  >
+                    {risk.status}
+                  </span>
+                </div>
+                <div className="flex gap-4 text-xs mb-3" style={{color: 'var(--color-ink)', opacity: 0.6}}>
+                  <span>{isArabic ? 'احتمالية' : 'Probability'}: {risk.probability}</span>
+                  <span>{isArabic ? 'تأثير' : 'Impact'}: {risk.impact}</span>
+                </div>
+                <p className="text-sm" style={{color: 'var(--color-ink)', opacity: 0.8}}>
+                  <strong>{isArabic ? 'التخفيف: ' : 'Mitigation: '}</strong>
+                  {risk.mitigation}
+                </p>
+              </div>
+            ))}
           </div>
         </section>
       )}
