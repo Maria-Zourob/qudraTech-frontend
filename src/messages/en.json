@@ -83,6 +83,51 @@
   "label": "Partners & local communities",
   "description": "The platform is in its early stage, gradually building partnerships with local community committees and centers. Every partner will appear here transparently once their collaboration is documented."
 },
+"faq": {
+  "label": "06 — FAQ",
+  "title": "Frequently Asked Questions",
+  "items": [
+    {
+      "question": "Does the child need a private device?",
+      "answer": "No, available devices are shared in small groups under the supervision of a local teacher inside the camp."
+    },
+    {
+      "question": "What is the age group?",
+      "answer": "The track is designed for children aged 10 to 14 in displacement camps."
+    },
+    {
+      "question": "How is financial support spent?",
+      "answer": "Support is dedicated to providing basic tools, training supplies, and incentives for local teachers."
+    },
+    {
+      "question": "Can I volunteer remotely?",
+      "answer": "Yes, through curriculum review, translation, and teacher training via recorded sessions. Direct teaching remains local."
+    }
+  ]
+},
+"impact": {
+  "label": "04 — IMPACT",
+  "title": "What we have achieved so far",
+  "note": "Figures for the first and second cohorts — updated March 2026.",
+  "stats": [
+    {
+      "number": "340",
+      "label": "Children completed the full track"
+    },
+    {
+      "number": "4",
+      "label": "Camps: Nuseirat, Khan Yunis, Deir al-Balah, Al-Mawasi"
+    },
+    {
+      "number": "19",
+      "label": "Male and female teachers graduated from the cohorts"
+    },
+    {
+      "number": "287",
+      "label": "Final projects showcased in the camps"
+    }
+  ]
+},
 "promptTerminal": {
   "promptLabel": "Prompt",
   "illustrative": "Illustrative",

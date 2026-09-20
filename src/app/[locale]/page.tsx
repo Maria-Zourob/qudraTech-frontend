@@ -5,6 +5,9 @@ import {InitiativesSection} from '@/components/home/InitiativesSection';
 import {ValuesSection} from '@/components/home/ValuesSection';
 import {CTASection} from '@/components/home/CTASection';
 import ChildLearning from '@/components/home/ChildLearning';
+import { JourneySection } from '@/components/home/JourneySection';
+import { FAQSection } from '@/components/home/FAQSection';
+import { ImpactSection } from '@/components/home/ImpactSection';
 
 interface Impact {
   initiatives: number;
@@ -221,7 +224,9 @@ export default async function HomePage({
 
       {/* 3. ABOUT */}
       <AboutSection />
-
+      <JourneySection />
+      <FAQSection />
+      <ImpactSection />
       {/* 4. LIFECYCLE */}
       <LifecycleSection
         lifecycle={lifecycle}
@@ -237,10 +242,10 @@ export default async function HomePage({
         />
       )}
 
-      {/* 6. VALUES */}
+      {/* 6. VALUES
       <ValuesSection
         values={values}
-      />
+      /> */}
 
       {/* 7. CTA */}
       <CTASection

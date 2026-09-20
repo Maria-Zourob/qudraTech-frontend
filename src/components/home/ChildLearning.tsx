@@ -43,14 +43,14 @@ export default async function ChildLearning({
             <div className="flex flex-wrap items-center gap-4">
               <a
                 href={`/${locale}/journey`}
-                className="rounded-xl bg-[#0c3860] px-6 py-3 font-medium text-white shadow-md transition-all hover:bg-[#082744]"
+                className="bg-[#0c3860] px-6 py-3 font-medium text-white shadow-md transition-all hover:bg-[#082744]"
               >
                 {t('buttons.journey')}
               </a>
 
               <a
                 href={`/${locale}/support`}
-                className="fs-underline rounded-xl border border-[#0c3860]/30 px-6 py-3 font-medium text-[#0c3860] transition-all hover:border-[#0c3860]"
+                className="fs-underline border border-[#0c3860]/30 px-6 py-3 font-medium text-[#0c3860] transition-all hover:border-[#0c3860]"
               >
                 {t('buttons.support')}
               </a>
@@ -58,7 +58,7 @@ export default async function ChildLearning({
           </div>
 
           {/* Prompt / Model Card */}
-          <div className="relative overflow-hidden rounded-2xl bg-[#082744] p-6 text-white shadow-2xl fs-grid-navy sm:p-8 lg:col-span-6">
+          <div className="relative overflow-hidden bg-[#082744] p-6 text-white shadow-2xl fs-grid-navy sm:p-8 lg:col-span-6">
             <div
               className="fs-grid-bg pointer-events-none absolute inset-0 opacity-40"
               aria-hidden
@@ -71,7 +71,7 @@ export default async function ChildLearning({
               </div>
 
               {/* Prompt */}
-              <div className="mb-4 rounded-xl border border-[#d8d3c8]/20 bg-[#0c3860]/80 p-4">
+              <div className="mb-4 border border-[#d8d3c8]/20 bg-[#0c3860]/80 p-4">
                 <div className="mb-1 text-[10px] tracking-wider text-[#e8912f] font-mono">
                   {t('prompt.label')}
                 </div>
@@ -82,16 +82,16 @@ export default async function ChildLearning({
               </div>
 
               {/* Reasoning */}
-              <div className="mb-4 flex items-center justify-between rounded-xl border border-dashed border-[#d8d3c8]/30 p-3">
+              <div className="mb-4 flex items-center justify-between border border-dashed border-[#d8d3c8]/30 p-3">
                 <span className="text-xs text-[#d8d3c8] font-mono">
                   {t('reasoning')}
                 </span>
 
-                <span className="fs-pulse h-2 w-2 rounded-full bg-[#e8912f]" />
+                <span className="fs-pulse h-2 w-2 bg-[#e8912f]" />
               </div>
 
               {/* Output */}
-              <div className="mb-6 rounded-xl border border-[#e8912f]/50 bg-[#0c3860] p-4 shadow-inner">
+              <div className="mb-6 border border-[#e8912f]/50 bg-[#0c3860] p-4 shadow-inner">
                 <div className="mb-1 text-[10px] tracking-wider text-[#e8912f] font-mono">
                   {t('output.label')}
                 </div>
@@ -112,14 +112,14 @@ export default async function ChildLearning({
         {/* Stats Cards */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {/* Status */}
-          <div className="flex flex-col justify-between rounded-2xl border border-[#d8d3c8] bg-[#fbfaf6] p-6 shadow-sm">
+          <div className="flex flex-col justify-between border border-[#d8d3c8] bg-[#fbfaf6] p-6 shadow-sm">
             <span className="mb-2 text-[11px] uppercase tracking-widest text-[#1c2b36]/60 font-mono">
               {t('stats.status.label')}
             </span>
 
             <div>
               <div className="mb-1 flex items-center gap-2 text-lg font-bold text-[#6b8f47]">
-                <span className="inline-block h-2.5 w-2.5 animate-pulse rounded-full bg-[#6b8f47]" />
+                <span className="inline-block h-2.5 w-2.5 animate-pulse bg-[#6b8f47]" />
                 {t('stats.status.value')}
               </div>
 
@@ -130,7 +130,7 @@ export default async function ChildLearning({
           </div>
 
           {/* Session */}
-          <div className="flex flex-col justify-between rounded-2xl border border-[#d8d3c8] bg-[#fbfaf6] p-6 shadow-sm">
+          <div className="flex flex-col justify-between border border-[#d8d3c8] bg-[#fbfaf6] p-6 shadow-sm">
             <span className="mb-2 text-[11px] uppercase tracking-widest text-[#1c2b36]/60 font-mono">
               {t('stats.session.label')}
             </span>
@@ -150,7 +150,7 @@ export default async function ChildLearning({
           </div>
 
           {/* Enrolled */}
-          <div className="relative flex flex-col justify-between overflow-hidden rounded-2xl bg-[#e8912f] p-6 text-white shadow-md">
+          <div className="relative flex flex-col justify-between overflow-hidden bg-[#e8912f] p-6 text-white shadow-md">
             <span className="mb-2 text-[11px] uppercase tracking-widest text-white/80 font-mono">
               {t('stats.enrolled.label')}
             </span>
