@@ -128,6 +128,56 @@
     }
   ]
 },
+"journey": {
+  "intro": {
+    "label": "01 — WHAT IT IS",
+    "title": "Not a coding course. A way of thinking.",
+    "description": "In displacement camps, electricity is unreliable, internet access is limited, and devices are scarce. We built the curriculum around this reality, not against it: short sessions, offline-friendly content, and shared devices. We are not teaching one particular tool — we are teaching children how to frame a question, read an answer, and judge it."
+  },
+  "cards": [
+    {
+      "eyebrow": "TOOLS",
+      "title": "Available Tools",
+      "description": "One phone or laptop is enough for a whole group."
+    },
+    {
+      "eyebrow": "MENTORS",
+      "title": "Local Mentors",
+      "description": "A young person from the camp trained on the curriculum."
+    },
+    {
+      "eyebrow": "OUTPUT",
+      "title": "Tangible Output",
+      "description": "Every child finishes the track with a small project to showcase."
+    }
+  ],
+  "journey": {
+    "label": "02 — LEARNING JOURNEY",
+    "title": "Four phases. Six weeks."
+  },
+  "phases": [
+    {
+      "week": "WEEK 1",
+      "title": "Curiosity",
+      "description": "How does a computer think? Screenless logic games before the first device."
+    },
+    {
+      "week": "WEEK 2–3",
+      "title": "The Question",
+      "description": "Prompt engineering: formulation, refinement, and clarity. The difference between a vague question and a precise one."
+    },
+    {
+      "week": "WEEK 4",
+      "title": "Judgment",
+      "description": "When does the machine get things wrong? Exercises in verifying information before believing it."
+    },
+    {
+      "week": "WEEK 5–6",
+      "title": "The Project",
+      "description": "A story, simple game, or illustrated guide — created by the child and showcased to the camp."
+    }
+  ]
+},
 "promptTerminal": {
   "promptLabel": "Prompt",
   "illustrative": "Illustrative",

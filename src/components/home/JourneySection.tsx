@@ -1,177 +1,151 @@
-import { getTranslations } from 'next-intl/server';
-import { Reveal } from '@/components/Reveal';
+import {getTranslations} from 'next-intl/server';
 
-interface JourneySectionProps {
-  locale?: string;
+import {Reveal} from '@/components/Reveal';
+
+interface JourneyCard {
+  eyebrow: string;
+  title: string;
+  description: string;
+}
+
+interface JourneyPhase {
+  week: string;
+  title: string;
+  description: string;
 }
 
 const CONTAINER = 'mx-auto w-full max-w-6xl px-5 sm:px-8';
 
-export async function JourneySection({ locale = 'ar' }: JourneySectionProps) {
-  const isArabic = locale === 'ar';
+export async function JourneySection() {
+  const t = await getTranslations('HomePage.journey');
+
+  const cards = t.raw('cards') as JourneyCard[];
+  const phases = t.raw('phases') as JourneyPhase[];
 
   return (
-    <div className="bg-[var(--color-bg)] text-[var(--color-navy)] py-20 md:py-28 space-y-32">
-      
-      {/* ---------------- سكشن 1: ليست دورة برمجة ---------------- */}
-      <section className="relative">
-        <div className={CONTAINER}>
-          <Reveal>
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-              
-              {/* الجانب الأيمن (في العربي): البطاقات الثلاث */}
-              <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-3 border border-[var(--color-line)] rounded-2xl overflow-hidden bg-white/50 backdrop-blur-sm">
-                
-                {/* البطاقة 1 */}
-                <div className="p-6 border-b sm:border-b-0 sm:border-s border-[var(--color-line)] flex flex-col justify-between">
-                  <span className="text-xs font-mono text-[var(--color-accent)] uppercase tracking-wider mb-3">
-                    {isArabic ? 'أدوات متاحَة' : 'Tools'}
-                  </span>
-                  <div>
-                    <h3 className="font-heading font-bold text-base text-[var(--color-navy)] mb-2">
-                      {isArabic ? 'أدوات متاحة' : 'Available Tools'}
-                    </h3>
-                    <p className="text-xs text-[var(--color-ink)] leading-relaxed">
-                      {isArabic ? 'هاتف أو لابتوب واحد يكفي مجموعة كاملة.' : 'One phone or laptop is enough for a whole group.'}
-                    </p>
+    <div className="bg-[var(--color-bg)] py-20 text-[var(--color-navy)] md:py-28">
+      <div className="space-y-28 md:space-y-40">
+
+        {/* =====================================================
+            SECTION 01 — WHAT IT IS
+        ====================================================== */}
+        <section>
+          <div className={CONTAINER}>
+            <Reveal>
+              <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-20">
+
+                {/* Content */}
+                <div className="lg:col-span-6">
+                  <div className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-accent)]">
+                    {t('intro.label')}
                   </div>
+
+                  <h2 className="font-heading max-w-2xl text-4xl font-extrabold leading-[1.08] text-[var(--color-navy)] sm:text-5xl md:text-6xl rtl:leading-[1.25]">
+                    {t('intro.title')}
+                  </h2>
+
+                  <p className="mt-7 max-w-2xl text-base leading-8 text-[var(--color-ink)]/80 sm:text-lg">
+                    {t('intro.description')}
+                  </p>
                 </div>
 
-                {/* البطاقة 2 */}
-                <div className="p-6 border-b sm:border-b-0 sm:border-s border-[var(--color-line)] flex flex-col justify-between">
-                  <span className="text-xs font-mono text-[var(--color-accent)] uppercase tracking-wider mb-3">
-                    {isArabic ? 'معلّمون محليّون' : 'Mentors'}
-                  </span>
-                  <div>
-                    <h3 className="font-heading font-bold text-base text-[var(--color-navy)] mb-2">
-                      {isArabic ? 'معلّمون محليّون' : 'Local Mentors'}
-                    </h3>
-                    <p className="text-xs text-[var(--color-ink)] leading-relaxed">
-                      {isArabic ? 'شابّ من المخيم نفسه مدرّب على المنهج.' : 'A youth from the camp trained on the curriculum.'}
-                    </p>
-                  </div>
-                </div>
+                {/* Three cards */}
+                <div className="lg:col-span-6">
+                  <div className="grid overflow-hidden rounded-2xl border border-[var(--color-line)] bg-white/60 backdrop-blur-sm sm:grid-cols-3">
+                    {cards.map((card, index) => (
+                      <div
+                        key={card.title}
+                        className={`flex min-h-[220px] flex-col justify-between p-6 sm:p-7 ${
+                          index > 0
+                            ? 'border-t border-[var(--color-line)] sm:border-s sm:border-t-0'
+                            : ''
+                        }`}
+                      >
+                        <div>
+                          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-accent)]">
+                            {card.eyebrow}
+                          </span>
 
-                {/* البطاقة 3 */}
-                <div className="p-6 flex flex-col justify-between">
-                  <span className="text-xs font-mono text-[var(--color-accent)] uppercase tracking-wider mb-3">
-                    {isArabic ? 'مخرج ملموس' : 'Output'}
-                  </span>
-                  <div>
-                    <h3 className="font-heading font-bold text-base text-[var(--color-navy)] mb-2">
-                      {isArabic ? 'مخرج ملموس' : 'Tangible Output'}
-                    </h3>
-                    <p className="text-xs text-[var(--color-ink)] leading-relaxed">
-                      {isArabic ? 'كل طفل يُنهي المسار بمشروع صغير يعرضه.' : 'Every child finishes with a small project to showcase.'}
-                    </p>
+                          <div className="mt-8 h-2 w-2 bg-[var(--color-accent)]" />
+
+                          <h3 className="mt-5 font-heading text-lg font-bold text-[var(--color-navy)]">
+                            {card.title}
+                          </h3>
+                        </div>
+
+                        <p className="mt-6 text-sm leading-6 text-[var(--color-ink)]/75">
+                          {card.description}
+                        </p>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
               </div>
+            </Reveal>
+          </div>
+        </section>
 
-              {/* الجانب الأيسر (في العربي): العنوان والوصف التعريفي */}
-              <div className={`lg:col-span-6 flex flex-col ${isArabic ? 'items-start text-right' : 'items-start text-left'}`}>
-                <div className="text-xs font-mono text-[var(--color-accent)] tracking-widest uppercase mb-3">
-                  01 — WHAT IT IS
+        {/* =====================================================
+            SECTION 02 — LEARNING JOURNEY
+        ====================================================== */}
+        <section>
+          <div className={CONTAINER}>
+            <Reveal>
+              {/* Heading */}
+              <div className="mb-12 max-w-2xl">
+                <div className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-accent)]">
+                  {t('journey.label')}
                 </div>
 
-                <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-extrabold leading-[1.2] text-[var(--color-navy)] text-balance">
-                  {isArabic ? 'ليست دورة برمجة.. هي طريقة تفكير.' : 'Not a coding course.. it is a way of thinking.'}
+                <h2 className="font-heading text-4xl font-extrabold leading-[1.08] text-[var(--color-navy)] sm:text-5xl md:text-6xl rtl:leading-[1.25]">
+                  {t('journey.title')}
                 </h2>
-
-                <p className="mt-6 text-base sm:text-lg leading-relaxed text-[var(--color-ink)] font-normal">
-                  {isArabic 
-                    ? 'في مخيمات النزوح، الكهرباء متقطعة والإنترنت ضعيف والأجهزة قليلة. بنينا المنهج حول هذا الواقع لا ضده: جلسات قصيرة، محتوى يعمل دون اتصال، وأدوات تُشارك بين الأطفال. ما تُعلمه ليس أداة بعينها — بل كيف يُصغ السؤال، وكيف يُقرأ الجواب، وكيف يُحكم عليه.'
-                    : 'In displacement camps, electricity flickers, internet is scarce, and devices are few. We built the curriculum around this reality, not against it...'}
-                </p>
               </div>
 
-            </div>
-          </Reveal>
-        </div>
-      </section>
+              {/* Timeline / phases */}
+              <div className="border-y border-[var(--color-navy)]">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+                  {phases.map((phase, index) => (
+                    <div
+                      key={phase.week}
+                      className={`group relative flex min-h-[270px] flex-col justify-between p-6 sm:p-8 ${
+                        index > 0
+                          ? 'border-t border-[var(--color-line)] sm:border-s sm:border-t-0'
+                          : ''
+                      }`}
+                    >
+                      <div>
+                        <div className="flex items-center justify-between gap-4">
+                          <span className="font-mono text-xs font-bold uppercase tracking-[0.15em] text-[var(--color-accent)]">
+                            {phase.week}
+                          </span>
 
-      {/* ---------------- سكشن 2: أربع مراحل، ستة أسابيع ---------------- */}
-      <section className="relative">
-        <div className={CONTAINER}>
-          <Reveal>
-            <div className={`flex flex-col mb-12 ${isArabic ? 'items-start text-right' : 'items-start text-left'}`}>
-              <div className="text-xs font-mono text-[var(--color-accent)] tracking-widest uppercase mb-3">
-                02 — LEARNING JOURNEY
-              </div>
-              <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-extrabold text-[var(--color-navy)]">
-                {isArabic ? 'أربع مراحل، ستة أسابيع' : 'Four phases, six weeks'}
-              </h2>
-            </div>
+                          <span className="font-mono text-xs text-[var(--color-ink)]/30">
+                            0{index + 1}
+                          </span>
+                        </div>
 
-            {/* شبكة المراحل الأربع */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-t border-b border-[var(--color-accent)]/60">
-              
-              {/* المرحلة 4: المشروع */}
-              <div className="p-6 sm:p-8 border-b sm:border-b-0 sm:border-s border-[var(--color-line)] flex flex-col justify-between">
-                <div>
-                  <span className="text-xs font-mono text-[var(--color-accent)] font-bold uppercase tracking-wider block mb-4">
-                    {isArabic ? 'WEEK 5-6' : 'WEEK 5-6'}
-                  </span>
-                  <h3 className="font-heading font-bold text-xl text-[var(--color-navy)] mb-3">
-                    {isArabic ? 'المشروع' : 'The Project'}
-                  </h3>
-                  <p className="text-sm text-[var(--color-ink)] leading-relaxed">
-                    {isArabic ? 'قصة، أو لعبة بسيطة، أو دليل مصوّر — يصنعه الطفل ويعرضه على المخيم.' : 'A story, a simple game, or an illustrated guide made by the child.'}
-                  </p>
+                        <h3 className="mt-10 font-heading text-2xl font-bold text-[var(--color-navy)]">
+                          {phase.title}
+                        </h3>
+                      </div>
+
+                      <p className="mt-8 text-sm leading-7 text-[var(--color-ink)]/75">
+                        {phase.description}
+                      </p>
+
+                      {/* Bottom accent */}
+                      <div className="absolute bottom-0 start-0 h-1 w-0 bg-[var(--color-accent)] transition-all duration-300 group-hover:w-full" />
+                    </div>
+                  ))}
                 </div>
               </div>
+            </Reveal>
+          </div>
+        </section>
 
-              {/* المرحلة 3: الحكم */}
-              <div className="p-6 sm:p-8 border-b sm:border-b-0 sm:border-s border-[var(--color-line)] flex flex-col justify-between">
-                <div>
-                  <span className="text-xs font-mono text-[var(--color-accent)] font-bold uppercase tracking-wider block mb-4">
-                    {isArabic ? 'WEEK 4' : 'WEEK 4'}
-                  </span>
-                  <h3 className="font-heading font-bold text-xl text-[var(--color-navy)] mb-3">
-                    {isArabic ? 'الحُكم' : 'Judgment'}
-                  </h3>
-                  <p className="text-sm text-[var(--color-ink)] leading-relaxed">
-                    {isArabic ? 'متى تُخطئ الآلة؟ تمارين على التحقّق من المعلومة قبل تصديقها.' : 'When does the machine err? Exercises on verifying information.'}
-                  </p>
-                </div>
-              </div>
-
-              {/* المرحلة 2: السؤال */}
-              <div className="p-6 sm:p-8 border-b sm:border-b-0 sm:border-s border-[var(--color-line)] flex flex-col justify-between">
-                <div>
-                  <span className="text-xs font-mono text-[var(--color-accent)] font-bold uppercase tracking-wider block mb-4">
-                    {isArabic ? 'WEEK 2-3' : 'WEEK 2-3'}
-                  </span>
-                  <h3 className="font-heading font-bold text-xl text-[var(--color-navy)] mb-3">
-                    {isArabic ? 'السؤال' : 'The Question'}
-                  </h3>
-                  <p className="text-sm text-[var(--color-ink)] leading-relaxed">
-                    {isArabic ? 'هندسة الأوامر: صياغة، تحديد، إعادة صياغة. الفرق بين سؤال غامض وسؤال دقيق.' : 'Prompt engineering: formulation, refinement, and clarity.'}
-                  </p>
-                </div>
-              </div>
-
-              {/* المرحلة 1: الفضول */}
-              <div className="p-6 sm:p-8 flex flex-col justify-between">
-                <div>
-                  <span className="text-xs font-mono text-[var(--color-accent)] font-bold uppercase tracking-wider block mb-4">
-                    {isArabic ? 'WEEK 1' : 'WEEK 1'}
-                  </span>
-                  <h3 className="font-heading font-bold text-xl text-[var(--color-navy)] mb-3">
-                    {isArabic ? 'الفضول' : 'Curiosity'}
-                  </h3>
-                  <p className="text-sm text-[var(--color-ink)] leading-relaxed">
-                    {isArabic ? 'كيف يفكّر الحاسوب؟ ألعاب منطق بلا شاشة قبل أول جهاز.' : 'How does a computer think? Screenless logic games before the first device.'}
-                  </p>
-                </div>
-              </div>
-
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
+      </div>
     </div>
   );
 }
