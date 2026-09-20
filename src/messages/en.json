@@ -1,8 +1,130 @@
 {
   "HomePage": {
     "title": "Future Steps",
-    "subtitle": "Towards a community more capable of initiative, learning, and change.",
+    "subtitle": "A community platform designing, executing, and documenting youth-led development initiatives — turning ideas into measurable impact.",
     "exploreInitiatives": "Explore Initiatives",
-    "aboutUs": "About Us"
+    "aboutUs": "About Us",
+      "about": {
+  "label": "About",
+  "title": "Not built for one initiative",
+  "description": "Future Steps is a digital platform bringing together multiple community initiatives, documenting each one's full lifecycle — from idea to impact — under one transparent standard. Every initiative gets an official documentation ID, measurable KPIs, and a full audit trail.",
+  "auditChips": [
+    "Official documentation ID",
+    "Measurable KPIs",
+    "Full audit trail"
+  ]
+},
+"ChildLearning": {
+  "eyebrow": {
+    "gaza": "GAZA",
+    "qudratech": "QUDRATECH",
+    "year": "2026"
+  },
+  "title": "Teaching Camp Children How to Prompt the Machine",
+  "description": "An educational initiative in Gaza displacement camps training children in tech basics, AI, and prompt engineering — with simple tools, short curricula, and instructors from within the camp.",
+  "buttons": {
+    "journey": "Explore Learning Journey",
+    "support": "Support Initiative"
+  },
+  "promptFlow": "PROMPT → MODEL → OUTPUT",
+  "prompt": {
+    "label": "01 - PROMPT",
+    "text": "\"Explain how a solar cell works in words a ten-year-old child can understand\""
+  },
+  "reasoning": "reasoning_",
+  "output": {
+    "label": "02 - OUTPUT",
+    "text": "An answer the child understands – learning how to frame the question to get it."
+  },
+  "promptNote": "The first lesson is not coding. The first lesson is asking the right question.",
+  "stats": {
+    "status": {
+      "label": "Status",
+      "value": "Batch Three is Open",
+      "description": "Registration via camp committees – Free"
+    },
+    "session": {
+      "label": "Session",
+      "value": "45",
+      "unit": "mins",
+      "description": "One session, one device per three children"
+    },
+    "enrolled": {
+      "label": "Enrolled",
+      "value": "340",
+      "description": "children across four camps"
+    }
   }
+},
+"cta": {
+  "title": "Have an initiative worth documenting?",
+  "description": "Future Steps is open to any serious community initiative — from registration to documented impact.",
+  "button": "Get in Touch"
+},
+"hero": {
+  "eyebrow": "FS — Community Initiative Platform",
+  "title": "Future Steps",
+  "subtitle": "A digital platform bringing community initiatives together and documenting their journey from idea to impact through a clear and transparent standard.",
+  "exploreInitiatives": "Explore Initiatives",
+  "aboutUs": "About Us",
+  "visualLabel": "Four steps rising from documentation to impact"
+},
+"initiatives": {
+  "label": "Initiatives",
+  "title": "Our Initiatives",
+  "viewAll": "View all",
+  "openInitiative": "Open initiative"
+},
+"lifecycle": {
+  "label": "Lifecycle",
+  "title": "How an initiative is documented"
+},
+"partners": {
+  "label": "Partners & local communities",
+  "description": "The platform is in its early stage, gradually building partnerships with local community committees and centers. Every partner will appear here transparently once their collaboration is documented."
+},
+"promptTerminal": {
+  "promptLabel": "Prompt",
+  "illustrative": "Illustrative",
+  "promptSymbol": ">",
+  "prompt": "Describe a garden that grows on the roof of our school.",
+  "resultLabel": "Result",
+  "result": "Tomato vines climb the water tanks. Solar panels open like leaves. Every child waters one row."
+},
+"values": {
+  "label": "Our values",
+  "title": "What guides our work"
+}
+  },
+  "Header": {
+  "brand": "Future Steps",
+  "language": "العربية",
+  "mainNavigation": "Main navigation",
+  "navigation": {
+    "home": "Home",
+    "initiatives": "Initiatives",
+    "about": "About",
+    "contact": "Contact"
+  }
+},
+  "footer": {
+  "description": "A digital platform bringing together community initiatives and documenting their journey, results, and impact.",
+  "links_title": "Links",
+  "links": {
+    "home": "Home",
+    "about": "About",
+    "initiatives": "Initiatives",
+    "contact": "Contact"
+  },
+  "platform_title": "Platform",
+  "platform": {
+    "howItWorks": "How It Works",
+    "impact": "Impact",
+    "programs": "Programs",
+    "faq": "FAQ"
+  },
+  "contact_title": "Contact",
+  "copyright": "© {year} Future Steps. All rights reserved.",
+  "tagline": "Future · Impact · Growth"
+}
 }

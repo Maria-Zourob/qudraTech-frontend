@@ -1,9 +1,12 @@
 import type {Metadata} from 'next';
 import {NextIntlClientProvider} from 'next-intl';
 import {getMessages, setRequestLocale} from 'next-intl/server';
-import {locales} from '@/i18n';
 
-import "../globals.css";
+import {locales} from '@/i18n';
+import {Header} from '@/components/Header';
+import Footer from '@/components/Footer';
+
+import '../globals.css';
 
 export function generateStaticParams() {
   return locales.map((locale) => ({locale}));
@@ -11,19 +14,18 @@ export function generateStaticParams() {
 
 export const metadata: Metadata = {
   title: 'Future Steps',
-  description: 'منصة إدارة وتوثيق المبادرات المجتمعية'
+  description: 'منصة إدارة وتوثيق المبادرات المجتمعية',
 };
 
 export default async function LocaleLayout({
   children,
-  params
+  params,
 }: {
   children: React.ReactNode;
   params: Promise<{locale: string}>;
 }) {
   const {locale} = await params;
 
-  // هذا السطر الجديد — يحدد اللغة صراحة قبل جلب الرسائل
   setRequestLocale(locale);
 
   const messages = await getMessages();
@@ -31,9 +33,11 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} dir={dir}>
-      <body>
+      <body className="font-sans antialiased">
         <NextIntlClientProvider messages={messages}>
+          <Header locale={locale} />
           {children}
+          <Footer locale={locale} />
         </NextIntlClientProvider>
       </body>
     </html>
