@@ -178,6 +178,23 @@
     }
   ]
 },
+     "cta": {
+      "title": "Have an initiative worth documenting?",
+      "description": "Future Steps is open to any serious community initiative — from registration to documented impact.",
+      "tagline": "— The future steps for any serious initiative.",
+      "formLabel": "Initiative Form",
+      "nameLabel": "Name",
+      "namePlaceholder": "Enter your name...",
+      "emailLabel": "Email",
+      "subjectLabel": "Subject",
+      "subjectPlaceholder": "Initiative or project subject...",
+      "messageLabel": "Message",
+      "messagePlaceholder": "Additional details about the initiative...",
+      "sending": "Sending...",
+      "button": "Send",
+      "successTitle": "Thank you! Your message has been received.",
+      "errorMessage": "Something went wrong, please try again."
+    },
 "promptTerminal": {
   "promptLabel": "Prompt",
   "illustrative": "Illustrative",
@@ -193,15 +210,27 @@
   },
   "Header": {
   "brand": "Future Steps",
+      "login": "Login",
+    "logout": "Logout",
+    "dashboard": "Dashboard",
   "language": "العربية",
   "mainNavigation": "Main navigation",
   "navigation": {
     "home": "Home",
     "initiatives": "Initiatives",
     "about": "About",
-    "contact": "Contact"
+    "contact": "Contact",
+        "login": "Login",
+    "logout": "Logout",
+    "dashboard": "Dashboard"
   }
 },
+  "Navigation": {
+    "home": "Home",
+    "initiatives": "Initiatives",
+    "about": "About",
+    "contact": "Contact"
+  },
   "footer": {
   "description": "A digital platform bringing together community initiatives and documenting their journey, results, and impact.",
   "links_title": "Links",
@@ -221,5 +250,11 @@
   "contact_title": "Contact",
   "copyright": "© {year} Future Steps. All rights reserved.",
   "tagline": "Future · Impact · Growth"
-}
+},
+  "Toast": {
+    "contactSuccess": "Thank you! Your message has been received.",
+    "contactError": "Something went wrong, please try again.",
+    "statusUpdated": "Status updated successfully.",
+    "markedAsRead": "Message marked as read."
+  }
 }

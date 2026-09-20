@@ -5,6 +5,7 @@ import {getMessages, setRequestLocale} from 'next-intl/server';
 import {locales} from '@/i18n';
 import {Header} from '@/components/Header';
 import Footer from '@/components/Footer';
+import {ToastProvider} from '@/components/Toast';
 
 import '../globals.css';
 
@@ -34,10 +35,12 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} dir={dir}>
       <body className="font-sans antialiased">
-        <NextIntlClientProvider messages={messages}>
-          <Header locale={locale} />
-          {children}
-          <Footer locale={locale} />
+                <NextIntlClientProvider messages={messages}>
+          <ToastProvider>
+            <Header locale={locale} />
+            {children}
+            <Footer locale={locale} />
+          </ToastProvider>
         </NextIntlClientProvider>
       </body>
     </html>
