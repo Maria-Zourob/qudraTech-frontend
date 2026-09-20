@@ -11,7 +11,8 @@ export function AdminSidebar({locale}: {locale: string}) {
     {href: `/${locale}/admin`, label: isArabic ? 'لوحة التحكم' : 'Dashboard'},
     {href: `/${locale}/admin/volunteers`, label: isArabic ? 'المتطوعون' : 'Volunteers'},
     {href: `/${locale}/admin/messages`, label: isArabic ? 'رسائل التواصل' : 'Messages'},
-    {href: `/${locale}/admin/categories`, label: isArabic ? 'التصنيفات' : 'Categories'}
+    {href: `/${locale}/admin/categories`, label: isArabic ? 'التصنيفات' : 'Categories'},
+    {href: `/${locale}/admin/initiatives/new`, label: isArabic ? 'مبادرة جديدة' : 'New Initiative'}
   ];
 
   return (
