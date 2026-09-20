@@ -4,7 +4,7 @@ import {useEffect, useState} from 'react';
 import {AuthGuard} from '@/lib/authGuard';
 import {apiClient} from '@/lib/apiClient';
 import {getToken} from '@/lib/auth';
-
+import Link from 'next/link';
 interface AdminInitiative {
   id: string;
   slug: string;
@@ -55,7 +55,13 @@ function AdminDashboard() {
             key={initiative.id}
             className="flex justify-between items-center p-4 border rounded-lg"
           >
-            <span className="font-medium">{initiative.titleAr}</span>
+                        <Link
+              href={`/ar/admin/initiatives/${initiative.id}`}
+              className="font-medium hover:underline"
+              style={{color: 'var(--color-navy)'}}
+            >
+              {initiative.titleAr}
+            </Link>
             <select
               value={initiative.status}
               disabled={updatingId === initiative.id}
