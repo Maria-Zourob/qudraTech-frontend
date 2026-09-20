@@ -1,5 +1,4 @@
 import {HeroSection} from '@/components/home/HeroSection';
-import {AboutSection} from '@/components/home/AboutSection';
 import {LifecycleSection} from '@/components/home/LifecycleSection';
 import {InitiativesSection} from '@/components/home/InitiativesSection';
 import {ValuesSection} from '@/components/home/ValuesSection';
@@ -8,6 +7,7 @@ import ChildLearning from '@/components/home/ChildLearning';
 import { JourneySection } from '@/components/home/JourneySection';
 import { FAQSection } from '@/components/home/FAQSection';
 import { ImpactSection } from '@/components/home/ImpactSection';
+import { PartnersSection } from '@/components/home/PartnersSection';
 
 interface Impact {
   initiatives: number;
@@ -218,15 +218,15 @@ export default async function HomePage({
         locale={locale}
         stats={stats}
       />
-
+      <JourneySection />
       {/* 2. CHILD LEARNING */}
       <ChildLearning locale={locale} />
 
-      {/* 3. ABOUT */}
-      <AboutSection />
-      <JourneySection />
-      <FAQSection />
+      
+      
+      
       <ImpactSection />
+      <FAQSection />
       {/* 4. LIFECYCLE */}
       <LifecycleSection
         lifecycle={lifecycle}
@@ -246,6 +246,8 @@ export default async function HomePage({
       <ValuesSection
         values={values}
       /> */}
+            <PartnersSection locale={locale} />
+
 
       {/* 7. CTA */}
       <CTASection

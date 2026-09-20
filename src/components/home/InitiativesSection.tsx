@@ -70,14 +70,13 @@ export async function InitiativesSection({
         </Reveal>
 
         <Reveal delay={100}>
-          <div className="mt-12 grid gap-8 md:mt-16 lg:grid-cols-12 lg:gap-0">
+          {/* الحاوية الرئيسية بنظام Relative لتمكين التداخل الدقيق */}
+          <div className="mt-12 md:mt-16 relative pb-12 lg:pb-0">
+            
+            {/* البطاقة الزرقاء الرئيسية */}
             <Link
               href={`/${locale}/initiatives/${featured.slug}`}
-              className={`group relative flex flex-col justify-between bg-[var(--color-navy)] p-7 text-white sm:p-10 ${
-                featuredIsQudra
-                  ? 'lg:col-span-7 lg:min-h-[26rem] lg:pe-24'
-                  : 'lg:col-span-12'
-              }`}
+              className="group relative z-10 flex flex-col justify-between bg-[var(--color-navy)] p-7 text-white sm:p-10 w-full lg:w-[68%] lg:min-h-[32rem] lg:py-16 lg:pe-16"
             >
               <div className="flex items-center justify-between gap-4">
                 <span className="fs-label inline-flex items-center gap-2 text-[var(--color-growth)]">
@@ -95,7 +94,7 @@ export async function InitiativesSection({
                 </span>
               </div>
 
-              <div className="mt-16">
+              <div className="mt-16 lg:mt-24">
                 <h3 className="font-heading text-balance text-3xl font-bold leading-tight sm:text-5xl rtl:leading-[1.3]">
                   {getTitle(featured)}
                 </h3>
@@ -112,8 +111,9 @@ export async function InitiativesSection({
               </div>
             </Link>
 
+            {/* نافذة البرومبت المتداخلة تماماً مثل الصورة */}
             {featuredIsQudra && (
-              <div className="lg:col-span-5 lg:-ms-16 lg:mt-24">
+              <div className="mt-6 lg:mt-0 w-full lg:w-[48%] lg:absolute lg:top-1/2 lg:-translate-y-1/2 lg:end-4 z-20">
                 <PromptTerminal />
               </div>
             )}

@@ -41,7 +41,19 @@ export async function FAQSection({
       <div className={CONTAINER}>
         <Reveal>
           <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-12">
-            {/* FAQ List */}
+            
+            {/* Section Heading (تم وضعها أولاً لتظهر على اليمين في اللغة العربية مع خاصية الـ Sticky) */}
+            <div className="flex flex-col lg:col-span-4 lg:sticky lg:top-24 lg:items-start lg:text-right">
+              <div className="mb-3 font-mono text-xs uppercase tracking-widest text-[var(--color-accent)]">
+                {t('label')}
+              </div>
+
+              <h2 className="font-heading text-3xl font-extrabold text-[var(--color-navy)] sm:text-4xl md:text-5xl">
+                {t('title')}
+              </h2>
+            </div>
+
+            {/* FAQ List (تم وضعها ثانياً لتظهر على اليسار) */}
             <div className="space-y-4 lg:col-span-8">
               {faqs.map((faq, idx) => (
                 <div
@@ -71,22 +83,6 @@ export async function FAQSection({
               ))}
             </div>
 
-            {/* Section Heading */}
-            <div
-              className={`flex flex-col lg:col-span-4 ${
-                locale === 'ar'
-                  ? 'lg:items-end lg:text-right'
-                  : 'lg:items-start lg:text-left'
-              }`}
-            >
-              <div className="mb-3 font-mono text-xs uppercase tracking-widest text-[var(--color-accent)]">
-                {t('label')}
-              </div>
-
-              <h2 className="font-heading text-3xl font-extrabold text-[var(--color-navy)] sm:text-4xl md:text-5xl">
-                {t('title')}
-              </h2>
-            </div>
           </div>
         </Reveal>
       </div>
