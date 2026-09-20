@@ -12,6 +12,24 @@ interface InitiativeDetail {
   titleEn: string;
   status: string;
 }
+interface InitiativeDetail {
+  id: string;
+  slug: string;
+  titleAr: string;
+  titleEn: string;
+  descriptionAr: string;
+  descriptionEn: string;
+  status: string;
+  location: string;
+  targetGroupAr: string;
+  targetGroupEn: string;
+}
+
+interface Category {
+  id: string;
+  nameAr: string;
+  nameEn: string;
+}
 
 interface Kpi {
   id?: string;
@@ -23,7 +41,7 @@ interface Kpi {
   unit: string;
 }
 
-const TABS = ['kpis', 'budget', 'risks'] as const;
+const TABS = ['details', 'kpis', 'budget', 'risks'] as const;
 type Tab = (typeof TABS)[number];
 
 export default function InitiativeManagePage() {
@@ -50,7 +68,9 @@ export default function InitiativeManagePage() {
 
   if (loading || !initiative) return <p className="p-8">جاري التحميل...</p>;
 
-  const TAB_LABELS: Record<Tab, string> = {
+  
+    const TAB_LABELS: Record<Tab, string> = {
+    details: 'البيانات الأساسية',
     kpis: 'مؤشرات الأداء',
     budget: 'الميزانية',
     risks: 'المخاطر'
@@ -76,7 +96,7 @@ export default function InitiativeManagePage() {
           </button>
         ))}
       </div>
-
+      {tab === 'details' && <DetailsTab initiative={initiative} onUpdated={loadInitiative} showToast={showToast} />}
       {tab === 'kpis' && <KpiTab initiativeId={id} showToast={showToast} />}
       {tab === 'budget' && <BudgetTab initiativeId={id} showToast={showToast} />}
       {tab === 'risks' && <RisksTab initiativeId={id} showToast={showToast} />}
@@ -210,6 +230,118 @@ function KpiTab({initiativeId, showToast}: {initiativeId: string; showToast: (m:
       </div>
       <button type="submit" disabled={submitting} className="px-5 py-2 rounded-lg text-white text-sm disabled:opacity-50" style={{background: 'var(--color-navy)'}}>
         {submitting ? 'جاري الحفظ...' : 'إضافة مؤشر'}
+      </button>
+    </form>
+  );
+}
+function DetailsTab({
+  initiative,
+  onUpdated,
+  showToast
+}: {
+  initiative: InitiativeDetail;
+  onUpdated: () => void;
+  showToast: (m: string, t?: 'success' | 'error') => void;
+}) {
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [submitting, setSubmitting] = useState(false);
+  const [form, setForm] = useState({
+    titleAr: initiative.titleAr,
+    titleEn: initiative.titleEn,
+    descriptionAr: initiative.descriptionAr,
+    descriptionEn: initiative.descriptionEn,
+    targetGroupAr: initiative.targetGroupAr,
+    targetGroupEn: initiative.targetGroupEn,
+    location: initiative.location,
+    categoryId: ''
+  });
+
+  useEffect(() => {
+    async function loadCategories() {
+      const token = getToken() ?? undefined;
+      const data = await apiClient.get<Category[]>('/categories', token);
+      setCategories(data);
+    }
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadCategories();
+  }, []);
+
+  function updateField(field: string, value: string) {
+    setForm((prev) => ({...prev, [field]: value}));
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setSubmitting(true);
+    const token = getToken() ?? undefined;
+    try {
+      await apiClient.put(`/initiatives/${initiative.id}`, form, token);
+      showToast('تم تحديث بيانات المبادرة بنجاح.', 'success');
+      onUpdated();
+    } catch {
+      showToast('صار خطأ، حاولي كمان مرة.', 'error');
+    }
+    setSubmitting(false);
+  }
+
+  const inputClass = 'w-full border rounded-lg p-2.5';
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm mb-1">العنوان بالعربي</label>
+          <input required value={form.titleAr} onChange={(e) => updateField('titleAr', e.target.value)} className={inputClass} />
+        </div>
+        <div>
+          <label className="block text-sm mb-1">Title in English</label>
+          <input required value={form.titleEn} onChange={(e) => updateField('titleEn', e.target.value)} className={inputClass} />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm mb-1">الوصف بالعربي</label>
+          <textarea required rows={3} value={form.descriptionAr} onChange={(e) => updateField('descriptionAr', e.target.value)} className={inputClass} />
+        </div>
+        <div>
+          <label className="block text-sm mb-1">Description in English</label>
+          <textarea required rows={3} value={form.descriptionEn} onChange={(e) => updateField('descriptionEn', e.target.value)} className={inputClass} />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm mb-1">الفئة المستهدفة (عربي)</label>
+          <input value={form.targetGroupAr} onChange={(e) => updateField('targetGroupAr', e.target.value)} className={inputClass} />
+        </div>
+        <div>
+          <label className="block text-sm mb-1">Target Group (English)</label>
+          <input value={form.targetGroupEn} onChange={(e) => updateField('targetGroupEn', e.target.value)} className={inputClass} />
+        </div>
+      </div>
+
+      <div>
+        <label className="block text-sm mb-1">الموقع</label>
+        <input required value={form.location} onChange={(e) => updateField('location', e.target.value)} className={inputClass} />
+      </div>
+
+      <div>
+        <label className="block text-sm mb-1">التصنيف</label>
+        <select required value={form.categoryId} onChange={(e) => updateField('categoryId', e.target.value)} className={inputClass}>          <option value="">اختاري تصنيف</option>
+          {categories.map((c) => (
+            <option key={c.id} value={c.id}>{c.nameAr}</option>
+          ))}
+        </select>
+      </div>
+
+      <button
+        type="submit"
+        disabled={submitting}
+        className="px-5 py-2 rounded-lg text-white text-sm disabled:opacity-50"
+        style={{background: 'var(--color-navy)'}}
+      >
+        {submitting ? 'جاري الحفظ...' : 'حفظ التعديلات'}
       </button>
     </form>
   );
