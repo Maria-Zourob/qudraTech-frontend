@@ -74,9 +74,5 @@ function AdminDashboard() {
 }
 
 export default function AdminDashboardPage() {
-  return (
-    <AuthGuard>
-      <AdminDashboard />
-    </AuthGuard>
-  );
+  return <AdminDashboard />;
 }
