@@ -17,7 +17,8 @@ export default async function ChildLearning({
       <div className="mx-auto max-w-7xl">
         {/* Main Content */}
         <div className="mb-8 grid grid-cols-1 items-center gap-8 lg:grid-cols-12">
-          {/* Text Side */}
+          
+          {/* Text Side (النصوص على اليمين) */}
           <div className="flex flex-col items-start text-right lg:col-span-6">
             {/* Eyebrow */}
             <div className="mb-3 flex items-center gap-2 text-xs font-mono text-[#0c3860]">
@@ -57,56 +58,61 @@ export default async function ChildLearning({
             </div>
           </div>
 
-          {/* Prompt / Model Card */}
-          <div className="relative overflow-hidden bg-[#082744] p-6 text-white shadow-2xl fs-grid-navy sm:p-8 lg:col-span-6">
+          {/* Prompt / Model Card (البطاقة الزرقاء على اليسار ومحتواها موسط بالداخل) */}
+          <div className="relative overflow-hidden bg-[#082744] p-6 text-white shadow-2xl fs-grid-navy sm:p-8 lg:col-span-6 flex flex-col justify-center min-h-[580px]">
             <div
               className="fs-grid-bg pointer-events-none absolute inset-0 opacity-40"
               aria-hidden
             />
 
-            <div className="relative z-10">
+            <div className="relative z-10 flex flex-col justify-center h-full my-auto">
+              
+              {/* Top Flow Header */}
               <div className="mb-6 flex items-center justify-between text-xs text-[#d8d3c8] fs-label">
                 <span>{t('promptFlow')}</span>
                 <span>{t('eyebrow.gaza')}</span>
               </div>
 
-              {/* Prompt */}
-              <div className="mb-4 border border-[#d8d3c8]/20 bg-[#0c3860]/80 p-4">
-                <div className="mb-1 text-[10px] tracking-wider text-[#e8912f] font-mono">
-                  {t('prompt.label')}
+              {/* Inner Centered Wrapper */}
+              <div className="flex flex-col justify-center space-y-4 my-auto">
+                {/* Prompt */}
+                <div className="border border-[#d8d3c8]/20 bg-[#0c3860]/80 p-4 text-right">
+                  <div className="mb-1 text-[10px] tracking-wider text-[#e8912f] font-mono">
+                    {t('prompt.label')}
+                  </div>
+                  <p className="text-sm font-medium sm:text-base">
+                    {t('prompt.text')}
+                  </p>
                 </div>
 
-                <p className="text-sm font-medium sm:text-base">
-                  {t('prompt.text')}
-                </p>
-              </div>
-
-              {/* Reasoning */}
-              <div className="mb-4 flex items-center justify-between border border-dashed border-[#d8d3c8]/30 p-3">
-                <span className="text-xs text-[#d8d3c8] font-mono">
-                  {t('reasoning')}
-                </span>
-
-                <span className="fs-pulse h-2 w-2 bg-[#e8912f]" />
-              </div>
-
-              {/* Output */}
-              <div className="mb-6 border border-[#e8912f]/50 bg-[#0c3860] p-4 shadow-inner">
-                <div className="mb-1 text-[10px] tracking-wider text-[#e8912f] font-mono">
-                  {t('output.label')}
+                {/* Reasoning */}
+                <div className="relative border border-dashed border-[#d8d3c8]/30 p-3 flex items-center justify-between">
+                  <span className="text-xs text-[#d8d3c8] font-mono">
+                    {t('reasoning')}
+                  </span>
+                  <span className="fs-pulse h-2 w-2 bg-[#e8912f]" />
+                  <div className="absolute -bottom-3 right-6 w-[1px] h-3 bg-[#e8912f]" />
                 </div>
 
-                <p className="text-sm text-[#f7f6f1] sm:text-base">
-                  {t('output.text')}
-                </p>
+                {/* Output */}
+                <div className="border border-[#e8912f]/50 bg-[#0c3860] p-4 shadow-inner text-right">
+                  <div className="mb-1 text-[10px] tracking-wider text-[#e8912f] font-mono">
+                    {t('output.label')}
+                  </div>
+                  <p className="text-sm text-[#f7f6f1] sm:text-base">
+                    {t('output.text')}
+                  </p>
+                </div>
               </div>
 
               {/* Bottom Note */}
-              <div className="border-t border-white/10 pt-3 text-xs text-[#d8d3c8]/80">
+              <div className="border-t border-white/10 pt-4 mt-6 text-xs text-[#d8d3c8]/80 font-mono">
                 {t('promptNote')}
               </div>
+
             </div>
           </div>
+
         </div>
 
         {/* Stats Cards */}
