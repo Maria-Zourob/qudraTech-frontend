@@ -8,12 +8,6 @@ import {useToast} from '@/components/Toast';
 
 interface InitiativeDetail {
   id: string;
-  titleAr: string;
-  titleEn: string;
-  status: string;
-}
-interface InitiativeDetail {
-  id: string;
   slug: string;
   titleAr: string;
   titleEn: string;
@@ -41,7 +35,7 @@ interface Kpi {
   unit: string;
 }
 
-const TABS = ['details', 'kpis', 'budget', 'risks'] as const;
+const TABS = ['details', 'kpis', 'budget', 'risks', 'partners'] as const;
 type Tab = (typeof TABS)[number];
 
 export default function InitiativeManagePage() {
@@ -69,13 +63,13 @@ export default function InitiativeManagePage() {
   if (loading || !initiative) return <p className="p-8">جاري التحميل...</p>;
 
   
-    const TAB_LABELS: Record<Tab, string> = {
+      const TAB_LABELS: Record<Tab, string> = {
     details: 'البيانات الأساسية',
     kpis: 'مؤشرات الأداء',
     budget: 'الميزانية',
-    risks: 'المخاطر'
+    risks: 'المخاطر',
+    partners: 'الشركاء'
   };
-
   return (
     <main className="max-w-3xl mx-auto p-8">
       <h1 className="text-2xl font-bold mb-1">{initiative.titleAr}</h1>
@@ -98,9 +92,10 @@ export default function InitiativeManagePage() {
       </div>
       {tab === 'details' && <DetailsTab initiative={initiative} onUpdated={loadInitiative} showToast={showToast} />}
       {tab === 'kpis' && <KpiTab initiativeId={id} showToast={showToast} />}
-      {tab === 'budget' && <BudgetTab initiativeId={id} showToast={showToast} />}
+     {tab === 'budget' && <BudgetTab initiativeId={id} showToast={showToast} />}
       {tab === 'risks' && <RisksTab initiativeId={id} showToast={showToast} />}
-    </main>
+      {tab === 'partners' && <PartnersTab initiativeId={id} showToast={showToast} />}
+      </main>
   );
 }
 function BudgetTab({initiativeId, showToast}: {initiativeId: string; showToast: (m: string, t?: 'success' | 'error') => void}) {
@@ -344,5 +339,91 @@ function DetailsTab({
         {submitting ? 'جاري الحفظ...' : 'حفظ التعديلات'}
       </button>
     </form>
+  );
+}
+interface Partner {
+  id: string;
+  nameAr: string;
+  nameEn: string;
+  type: string;
+}
+
+function PartnersTab({initiativeId, showToast}: {initiativeId: string; showToast: (m: string, t?: 'success' | 'error') => void}) {
+  const [allPartners, setAllPartners] = useState<Partner[]>([]);
+  const [linkedPartners, setLinkedPartners] = useState<Partner[]>([]);
+  const [selectedId, setSelectedId] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [linking, setLinking] = useState(false);
+
+  async function loadData() {
+    setLoading(true);
+    const partners = await apiClient.get<Partner[]>('/public/partners');
+    setAllPartners(partners);
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadData();
+  }, []);
+
+  async function handleLink(e: React.FormEvent) {
+    e.preventDefault();
+    if (!selectedId) return;
+    setLinking(true);
+    const token = getToken() ?? undefined;
+    try {
+      await apiClient.post(`/initiatives/${initiativeId}/partners/${selectedId}`, {}, token);
+      const partner = allPartners.find((p) => p.id === selectedId);
+      if (partner) setLinkedPartners((prev) => [...prev, partner]);
+      showToast('تم ربط الشريك بالمبادرة بنجاح.', 'success');
+      setSelectedId('');
+    } catch {
+      showToast('صار خطأ، حاولي كمان مرة.', 'error');
+    }
+    setLinking(false);
+  }
+
+  if (loading) return <p>جاري التحميل...</p>;
+
+  return (
+    <div>
+      {allPartners.length === 0 ? (
+        <p className="text-gray-500 mb-4">
+          لا يوجد شركاء بالنظام بعد — أضيفي شريك أولًا (حاليًا عبر API، لسا ما بنينا فورم عام للشركاء).
+        </p>
+      ) : (
+        <form onSubmit={handleLink} className="flex gap-3 mb-6">
+          <select
+            required
+            value={selectedId}
+            onChange={(e) => setSelectedId(e.target.value)}
+            className="flex-1 border rounded-lg p-2"
+          >
+            <option value="">اختاري شريكًا لربطه بهاي المبادرة</option>
+            {allPartners.map((p) => (
+              <option key={p.id} value={p.id}>{p.nameAr} ({p.type})</option>
+            ))}
+          </select>
+          <button
+            type="submit"
+            disabled={linking}
+            className="px-5 py-2 rounded-lg text-white text-sm disabled:opacity-50"
+            style={{background: 'var(--color-navy)'}}
+          >
+            {linking ? 'جاري الربط...' : 'ربط'}
+          </button>
+        </form>
+      )}
+
+      {linkedPartners.length > 0 && (
+        <div className="space-y-2">
+          <p className="text-sm font-medium mb-2">شركاء تم ربطهم بهاي الجلسة:</p>
+          {linkedPartners.map((p) => (
+            <div key={p.id} className="border rounded-lg p-3 text-sm">{p.nameAr}</div>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
