@@ -1,305 +1,216 @@
 import Link from 'next/link';
 import {getTranslations} from 'next-intl/server';
 
+import {Reveal} from '@/components/Reveal';
+import {PhotoSlot} from '@/components/home/PhotoSlot';
+
 interface ChildLearningProps {
   locale: string;
 }
 
-export default async function ChildLearning({
-  locale
-}: ChildLearningProps) {
+const CONTAINER = 'mx-auto w-full max-w-6xl px-5 sm:px-8';
+
+export default async function ChildLearning({locale}: ChildLearningProps) {
   const t = await getTranslations('HomePage.ChildLearning');
+  const tp = await getTranslations('HomePage.photos');
 
   return (
-    <section
-      className="relative overflow-hidden px-4 py-12 sm:px-6 lg:px-8"
-      style={{
-        background: 'var(--fs-paper)',
-        color: 'var(--color-ink)'
-      }}
-      dir="rtl"
-    >
-      <div className="mx-auto max-w-7xl">
-        {/* Hero Content */}
-        <div className="mb-8 grid grid-cols-1 items-center gap-8 lg:grid-cols-12">
-          {/* Text Content */}
-          <div className="flex flex-col items-start text-right lg:col-span-6">
-            <div
-              className="mb-3 flex items-center gap-2 text-xs font-mono"
-              style={{color: 'var(--color-navy)'}}
-            >
-              <span>{t('eyebrow.gaza')}</span>
-              <span>&bull;</span>
-              <span>{t('eyebrow.qudratech')}</span>
-              <span>&bull;</span>
-              <span>{t('eyebrow.year')}</span>
+    <section className="relative" aria-labelledby="child-learning-title">
+      {/* ============ Cinematic full-bleed moment ============ */}
+      <div className="relative isolate flex min-h-[36rem] flex-col md:min-h-[42rem] lg:min-h-[47.5rem]">
+        <PhotoSlot
+          id="learningClass"
+          tone="night"
+          alt={tp('learningClass.alt')}
+          brief={tp('learningClass.brief')}
+          briefPlacement="top-end"
+          sizes="100vw"
+          className="absolute inset-0 -z-10"
+        />
 
-              <div
-                className="h-[1px] w-12"
-                style={{background: 'var(--color-growth)'}}
-              />
-            </div>
+        {/* legibility scrim: bottom on small screens, start side on desktop */}
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-10 bg-linear-to-t from-[#0c1a28]/95 via-[#0c1a28]/55 to-transparent lg:bg-linear-to-r lg:via-[#0c1a28]/45 rtl:lg:bg-linear-to-l"
+        />
 
-            <h1
-              className="font-heading mb-6 text-4xl font-extrabold leading-tight sm:text-5xl lg:text-6xl rtl:leading-[1.2]"
-              style={{color: 'var(--color-navy)'}}
-            >
-              {t('title')}
-            </h1>
+        <div
+          className={`${CONTAINER} flex flex-1 flex-col justify-end pb-36 pt-28 sm:pb-40 lg:justify-center lg:pb-28`}
+        >
+          <div className="max-w-xl text-white lg:max-w-2xl">
+            <Reveal>
+  <p className="fs-label flex flex-wrap items-center gap-2 text-[var(--color-accent)]">
+    <span
+      aria-hidden
+      className="h-1.5 w-1.5 shrink-0 bg-current"
+    />
 
-            <p
-              className="mb-8 max-w-xl text-base leading-relaxed sm:text-lg"
-              style={{
-                color: 'var(--color-ink)',
-                opacity: 0.8
-              }}
-            >
-              {t('description')}
-            </p>
+    <span>{t('eyebrow.gaza')}</span>
+    <span aria-hidden>·</span>
+    <span>{t('eyebrow.qudratech')}</span>
+    <span aria-hidden>·</span>
+    <span>{t('eyebrow.year')}</span>
+  </p>
+</Reveal>
 
-            {/* Buttons */}
-            <div className="flex flex-wrap items-center gap-4">
-              <Link
-                href={`/${locale}/journey`}
-                className="px-6 py-3 font-medium text-white shadow-md transition-all hover:opacity-90"
-                style={{background: 'var(--color-navy)'}}
+            <Reveal delay={100}>
+              <h2
+                id="child-learning-title"
+                className="font-heading mt-5 text-balance text-4xl font-bold leading-[1.15] text-[var(--fs-paper)] sm:text-5xl lg:text-[4.3rem] rtl:leading-[1.25]"
               >
-                {t('buttons.journey')}
-              </Link>
+                {t('title')}
+              </h2>
+            </Reveal>
 
-              <Link
-                href={`/${locale}/support`}
-                className="fs-underline border px-6 py-3 font-medium transition-all"
-                style={{
-                  borderColor:
-                    'color-mix(in srgb, var(--color-navy) 30%, transparent)',
-                  color: 'var(--color-navy)'
-                }}
-              >
-                {t('buttons.support')}
-              </Link>
-            </div>
-          </div>
+            <Reveal delay={200}>
+              <p className="mt-6 max-w-xl text-base leading-relaxed text-[var(--fs-paper)]/85 sm:text-lg">
+                {t('description')}
+              </p>
+            </Reveal>
 
-          {/* Prompt Flow Card */}
-          <div
-            className="fs-grid-navy relative flex min-h-[580px] flex-col justify-center overflow-hidden p-6 text-white shadow-2xl sm:p-8 lg:col-span-6"
-            style={{background: 'var(--color-navy)'}}
-          >
-            <div
-              className="fs-grid-bg pointer-events-none absolute inset-0 opacity-40"
-              aria-hidden
-            />
-
-            <div className="relative z-10 my-auto flex h-full flex-col justify-center">
-              <div
-                className="fs-label mb-6 flex items-center justify-between text-xs"
-                style={{color: 'var(--color-line)'}}
-              >
-                <span>{t('promptFlow')}</span>
-                <span>{t('eyebrow.gaza')}</span>
-              </div>
-
-              <div className="my-auto flex flex-col justify-center space-y-4">
-                {/* Prompt */}
-                <div
-                  className="border p-4 text-right"
-                  style={{
-                    borderColor:
-                      'color-mix(in srgb, var(--color-line) 20%, transparent)',
-                    background:
-                      'color-mix(in srgb, var(--color-navy) 80%, white)'
-                  }}
+            <Reveal delay={300}>
+              <div className="mt-8 flex flex-wrap items-center gap-4">
+                <Link
+                  href={`/${locale}/journey`}
+                  className="bg-[var(--color-accent)] px-6 py-3.5 font-bold text-[var(--color-navy)] transition-colors hover:bg-[var(--fs-paper)]"
                 >
-                  <div
-                    className="mb-1 font-mono text-[10px] tracking-wider"
-                    style={{color: 'var(--color-accent)'}}
-                  >
-                    {t('prompt.label')}
-                  </div>
+                  {t('buttons.journey')}
+                </Link>
 
-                  <p className="text-sm font-medium sm:text-base">
-                    {t('prompt.text')}
-                  </p>
-                </div>
-
-                {/* Reasoning */}
-                <div
-                  className="relative flex items-center justify-between border border-dashed p-3"
-                  style={{
-                    borderColor:
-                      'color-mix(in srgb, var(--color-line) 30%, transparent)'
-                  }}
+                <Link
+                  href={`/${locale}/support`}
+                  className="border border-[var(--fs-paper)]/50 px-6 py-3.5 font-semibold text-[var(--fs-paper)] transition-colors hover:border-[var(--fs-paper)] hover:bg-[var(--fs-paper)]/10"
                 >
-                  <span
-                    className="font-mono text-xs"
-                    style={{color: 'var(--color-line)'}}
-                  >
-                    {t('reasoning')}
-                  </span>
-
-                  <span
-                    className="fs-pulse h-2 w-2"
-                    style={{background: 'var(--color-accent)'}}
-                  />
-
-                  <div
-                    className="absolute -bottom-3 right-6 h-3 w-[1px]"
-                    style={{background: 'var(--color-accent)'}}
-                  />
-                </div>
-
-                {/* Output */}
-                <div
-                  className="border p-4 text-right shadow-inner"
-                  style={{
-                    borderColor:
-                      'color-mix(in srgb, var(--color-accent) 50%, transparent)',
-                    background: 'var(--color-navy)'
-                  }}
-                >
-                  <div
-                    className="mb-1 font-mono text-[10px] tracking-wider"
-                    style={{color: 'var(--color-accent)'}}
-                  >
-                    {t('output.label')}
-                  </div>
-
-                  <p
-                    className="text-sm sm:text-base"
-                    style={{color: 'var(--fs-paper)'}}
-                  >
-                    {t('output.text')}
-                  </p>
-                </div>
+                  {t('buttons.support')}
+                </Link>
               </div>
-
-              {/* Note */}
-              <div
-                className="mt-6 border-t pt-4 font-mono text-xs"
-                style={{
-                  borderColor: 'color-mix(in srgb, white 10%, transparent)',
-                  color: 'var(--color-line)',
-                  opacity: 0.8
-                }}
-              >
-                {t('promptNote')}
-              </div>
-            </div>
+            </Reveal>
           </div>
         </div>
+      </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-          {/* Status */}
-          <div
-            className="flex flex-col justify-between border p-6 shadow-sm"
-            style={{
-              borderColor: 'var(--color-line)',
-              background: 'var(--fs-paper-2)'
-            }}
-          >
-            <span
-              className="mb-2 font-mono text-[11px] uppercase tracking-widest"
-              style={{
-                color: 'var(--color-ink)',
-                opacity: 0.6
-              }}
-            >
-              {t('stats.status.label')}
-            </span>
+      {/* ============ Prompt panel breaking out of the photo + live stats ============ */}
+      <div
+        className={`${CONTAINER} relative z-10 flex flex-col gap-12 pb-20 md:pb-28 lg:flex-row lg:items-start lg:justify-between lg:gap-16`}
+      >
+        {/* Stats (start side, below the photo) */}
+        <dl className="order-2 grid grid-cols-1 gap-8 sm:grid-cols-3 sm:gap-0 lg:order-1 lg:mt-12 lg:w-[52%]">
+          <div className="sm:pe-6">
+            <Reveal delay={100}>
+              <dt className="fs-label text-[var(--fs-muted)]">
+                {t('stats.status.label')}
+              </dt>
 
-            <div>
-              <div
-                className="mb-1 flex items-center gap-2 text-lg font-bold"
-                style={{color: 'var(--color-growth)'}}
-              >
+              <dd className="mt-3 flex items-center gap-2.5 text-lg font-bold text-[var(--fs-sage-ink)]">
                 <span
-                  className="inline-block h-2.5 w-2.5 animate-pulse"
-                  style={{background: 'var(--color-growth)'}}
+                  aria-hidden
+                  className="h-2.5 w-2.5 animate-pulse bg-[var(--color-growth)] motion-reduce:animate-none"
                 />
-
                 {t('stats.status.value')}
-              </div>
+              </dd>
 
-              <p
-                className="text-xs"
-                style={{
-                  color: 'var(--color-ink)',
-                  opacity: 0.7
-                }}
-              >
+              <dd className="mt-2 text-sm text-[var(--fs-muted)]">
                 {t('stats.status.description')}
-              </p>
-            </div>
+              </dd>
+            </Reveal>
           </div>
 
-          {/* Session */}
-          <div
-            className="flex flex-col justify-between border p-6 shadow-sm"
-            style={{
-              borderColor: 'var(--color-line)',
-              background: 'var(--fs-paper-2)'
-            }}
-          >
-            <span
-              className="mb-2 font-mono text-[11px] uppercase tracking-widest"
-              style={{
-                color: 'var(--color-ink)',
-                opacity: 0.6
-              }}
-            >
-              {t('stats.session.label')}
-            </span>
+          <div className="sm:border-s sm:border-[var(--color-line)] sm:px-6">
+            <Reveal delay={220}>
+              <dt className="fs-label text-[var(--fs-muted)]">
+                {t('stats.session.label')}
+              </dt>
 
-            <div className="flex items-baseline justify-between">
-              <div
-                className="font-mono text-3xl font-extrabold sm:text-4xl"
-                style={{color: 'var(--color-navy)'}}
-              >
+              <dd className="font-heading mt-2 text-4xl font-bold leading-none text-[var(--color-navy)] sm:text-[2.75rem]">
                 {t('stats.session.value')}{' '}
-
-                <span
-                  className="text-sm font-normal"
-                  style={{color: 'var(--color-growth)'}}
-                >
+                <span className="[font-family:var(--font-body)] text-base font-medium text-[var(--fs-sage-ink)]">
                   {t('stats.session.unit')}
                 </span>
+              </dd>
+
+              <dd className="mt-2 text-sm text-[var(--fs-muted)]">
+                {t('stats.session.description')}
+              </dd>
+            </Reveal>
+          </div>
+
+          <div className="sm:border-s sm:border-[var(--color-line)] sm:ps-6">
+            <Reveal delay={340}>
+              <dt className="fs-label text-[var(--fs-muted)]">
+                {t('stats.enrolled.label')}
+              </dt>
+
+              <dd className="font-heading mt-2 text-4xl font-bold leading-none text-[var(--color-navy)] sm:text-[2.75rem]">
+                {t('stats.enrolled.value')}
+              </dd>
+
+              <dd className="mt-2 text-sm text-[var(--fs-muted)]">
+                {t('stats.enrolled.description')}
+              </dd>
+            </Reveal>
+          </div>
+        </dl>
+
+        {/* Prompt flow — lifts into the photo */}
+        <figure className="order-1 -mt-24 border border-[var(--color-navy)] bg-white shadow-[10px_10px_0_var(--color-accent)] sm:-mt-28 lg:order-2 lg:-mt-60 lg:w-[40%] rtl:shadow-[-10px_10px_0_var(--color-accent)]">
+          <Reveal delay={180}>
+            <div className="flex items-center justify-between gap-4 border-b border-[var(--color-line)] px-5 py-3 sm:px-6">
+              <span className="fs-label text-[var(--color-navy)]">
+                {t('promptFlow')}
+              </span>
+
+              <span className="fs-label text-[var(--fs-muted)]">
+                {t('eyebrow.gaza')}
+              </span>
+            </div>
+          </Reveal>
+
+          <div className="space-y-5 px-5 py-6 sm:px-6">
+            <Reveal delay={300}>
+              <div>
+                <p className="fs-label text-[var(--fs-sage-ink)]">
+                  {t('prompt.label')}
+                </p>
+
+                <p className="font-heading mt-2 text-lg leading-snug text-[var(--color-navy)] sm:text-xl">
+                  {t('prompt.text')}
+                  <span aria-hidden className="fs-caret ms-1" />
+                </p>
               </div>
-            </div>
+            </Reveal>
 
-            <p
-              className="mt-2 text-xs"
-              style={{
-                color: 'var(--color-ink)',
-                opacity: 0.7
-              }}
-            >
-              {t('stats.session.description')}
-            </p>
+            <Reveal delay={420}>
+              <div className="flex items-center justify-between border border-dashed border-[var(--color-navy)]/25 px-3 py-2.5">
+                <span className="font-mono text-xs text-[var(--fs-muted)]">
+                  {t('reasoning')}
+                </span>
+
+                <span aria-hidden className="relative flex h-2 w-2">
+                  <span className="absolute inset-0 animate-ping bg-[var(--color-accent)] opacity-70 motion-reduce:hidden" />
+                  <span className="relative h-2 w-2 bg-[var(--color-growth)]" />
+                </span>
+              </div>
+            </Reveal>
+
+            <Reveal delay={540}>
+              <div className="border-s-2 border-[var(--color-growth)] ps-4">
+                <p className="fs-label text-[var(--fs-sage-ink)]">
+                  {t('output.label')}
+                </p>
+
+                <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink)]/85 sm:text-base">
+                  {t('output.text')}
+                </p>
+              </div>
+            </Reveal>
           </div>
 
-          {/* Enrolled */}
-          <div
-            className="relative flex flex-col justify-between overflow-hidden p-6 shadow-md"
-            style={{
-              background: 'var(--color-growth)',
-              color: 'white'
-            }}
-          >
-            <span className="mb-2 font-mono text-[11px] uppercase tracking-widest text-white/80">
-              {t('stats.enrolled.label')}
-            </span>
-
-            <div className="font-mono text-4xl font-black tracking-tight sm:text-5xl">
-              {t('stats.enrolled.value')}
-            </div>
-
-            <p className="mt-2 text-xs font-medium text-white/90">
-              {t('stats.enrolled.description')}
-            </p>
-          </div>
-        </div>
+          <Reveal delay={660}>
+            <figcaption className="border-t border-[var(--color-line)] px-5 py-3 font-mono text-xs text-[var(--fs-muted)] sm:px-6">
+              {t('promptNote')}
+            </figcaption>
+          </Reveal>
+        </figure>
       </div>
     </section>
   );

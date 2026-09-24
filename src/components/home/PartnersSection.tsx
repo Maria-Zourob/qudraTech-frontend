@@ -1,7 +1,7 @@
-import {getTranslations} from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
 
-import {Reveal} from '@/components/Reveal';
-import {SectionLabel} from '@/components/home/ui';
+import { Reveal } from '@/components/Reveal';
+import { SectionLabel } from '@/components/home/ui';
 
 const CONTAINER = 'mx-auto w-full max-w-6xl px-5 sm:px-8';
 
@@ -14,7 +14,7 @@ interface Partner {
 
 async function getPartners(): Promise<Partner[]> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/public/partners`, {cache: 'no-store'});
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/public/partners`, { cache: 'no-store' });
     if (!res.ok) return [];
     return res.json();
   } catch {
@@ -22,56 +22,47 @@ async function getPartners(): Promise<Partner[]> {
   }
 }
 
-export async function PartnersSection({locale}: {locale: string}) {
+export async function PartnersSection({ locale }: { locale: string }) {
   const t = await getTranslations('HomePage.partners');
   const partners = await getPartners();
   const isArabic = locale === 'ar';
 
   return (
-    <section className="border-y border-[var(--color-line)] bg-[var(--fs-paper-2)] py-20 md:py-28">
-      <div className={`${CONTAINER}`}>
-        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12">
-          
-          {/* قسم العنوان والنص (أخذ مساحة مريحة لكي لا يظهر النص بشكل طولي) */}
+    <section className="border-y border-[var(--color-line)] bg-[var(--color-bg)] py-20 md:py-24">
+      <div className={CONTAINER}>
+        <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-12 lg:gap-12">
           <div className="lg:col-span-5">
             <Reveal>
-              <div>
-                <SectionLabel index="05">
-                  {t('label')}
-                </SectionLabel>
+              <SectionLabel>{t('label')}</SectionLabel>
 
-                <p className="mt-6 text-base leading-relaxed text-[var(--color-ink)]/80 sm:text-lg">
-                  {t('description')}
-                </p>
-              </div>
+              <p className="mt-6 max-w-md text-base leading-relaxed text-[var(--color-ink)]/80 sm:text-lg">
+                {t('description')}
+              </p>
             </Reveal>
           </div>
 
-          {/* قسم بطاقات الشركاء */}
           <div className="lg:col-span-7">
             <Reveal delay={150}>
               {partners.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <ul className="grid grid-cols-1 border-t-2 border-[var(--color-navy)] sm:grid-cols-2">
                   {partners.map((partner) => (
-                    <div
+                    <li
                       key={partner.id}
-                      className="group relative flex flex-col justify-between border border-[var(--color-line)] bg-white p-6 transition-all hover:border-[var(--color-accent)] hover:shadow-sm"
+                      className="group flex min-h-28 flex-col justify-between gap-4 border-b border-[var(--color-line)] py-5 transition-colors hover:bg-white sm:px-5 sm:even:border-s"
                     >
-                      <span className="fs-label text-xs font-semibold tracking-wider text-[var(--color-accent)] mb-4 uppercase">
-                        {partner.type}
-                      </span>
-                      <span className="text-base font-bold text-[var(--color-navy)]">
+                      <span className="fs-label text-[var(--fs-sage-ink)]">{partner.type}</span>
+                      <span className="font-heading text-lg font-bold text-[var(--color-navy)]">
                         {isArabic ? partner.nameAr : partner.nameEn}
                       </span>
-                    </div>
+                    </li>
                   ))}
-                </div>
+                </ul>
               ) : (
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
                   {[1, 2, 3, 4].map((n) => (
                     <div
                       key={n}
-                      className="fs-label flex aspect-square flex-col items-center justify-center border border-dashed border-[var(--color-navy)]/30 bg-white/50 text-[var(--color-navy)]/40 transition-colors hover:border-[var(--color-navy)]/60"
+                      className="fs-label flex aspect-[4/3] flex-col items-center justify-center border border-dashed border-[var(--color-navy)]/30 text-[var(--color-navy)]/50 transition-colors hover:border-[var(--color-navy)]/60"
                     >
                       <span className="text-xs uppercase tracking-widest">Partner</span>
                       <span className="mt-1 font-mono text-sm font-bold">0{n}</span>
@@ -81,7 +72,6 @@ export async function PartnersSection({locale}: {locale: string}) {
               )}
             </Reveal>
           </div>
-
         </div>
       </div>
     </section>

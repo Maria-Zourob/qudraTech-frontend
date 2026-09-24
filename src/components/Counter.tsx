@@ -41,9 +41,9 @@ export function Counter({value, suffix = '+'}: {value: number; suffix?: string})
   }, [started, value]);
 
   return (
-    <span ref={ref}>
-      {display}
-      <span style={{color: 'var(--color-accent)'}}>{suffix}</span>
-    </span>
-  );
+  <span ref={ref}>
+    {display.toLocaleString('en-US')}
+    <span style={{color: 'var(--color-accent)'}}>{suffix}</span>
+  </span>
+);
 }

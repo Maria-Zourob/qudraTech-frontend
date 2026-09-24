@@ -69,11 +69,11 @@ export function Header({locale}: HeaderProps) {
   }
 
   const links = [
-    {href: `/${locale}`, label: t('navigation.home')},
-    {href: `/${locale}/initiatives`, label: t('navigation.initiatives')},
-    {href: `/${locale}/about`, label: t('navigation.about')},
-    {href: `/${locale}/contact`, label: t('navigation.contact')}
-  ];
+  {href: `/${locale}`, label: t('navigation.home')},
+  {href: `/${locale}#initiatives`, label: t('navigation.initiatives')},
+  {href: `/${locale}#about`, label: t('navigation.about')},
+  {href: `/${locale}#contact`, label: t('navigation.contact')},
+];
 
   const otherLocale = locale === 'ar' ? 'en' : 'ar';
   const otherLabel = t('language');

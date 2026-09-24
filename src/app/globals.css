@@ -163,3 +163,121 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .fs-rise, .fs-fade, .fs-pulse, .fs-caret { animation: none !important; }
 }
+
+/* =========================================================
+   Editorial redesign — photography, layout helpers, motion
+   ========================================================= */
+
+:root {
+  --fs-navy-deep: #10243A;
+  --fs-sage-ink: #4F6E5D;          /* sage dark enough for small text on cream (≈5:1) */
+  --fs-muted: #4A535B;             /* body grey that passes 4.5:1 on cream */
+  --fs-on-navy: #B9C5D0;
+
+  /* distance from the viewport edge to the content edge of the
+     `mx-auto max-w-6xl px-5 sm:px-8` container used across the homepage */
+  --fs-gutter: max(1.25rem, calc((100% - 72rem) / 2 + 1.25rem));
+}
+
+@media (min-width: 40rem) {
+  :root {
+    --fs-gutter: max(2rem, calc((100% - 72rem) / 2 + 2rem));
+  }
+}
+
+/* Component-level rules live in a layer so Tailwind utilities
+   (e.g. `absolute`, `aspect-*`) on the same element always win. */
+@layer components {
+  /* Pad a full-bleed row so its content starts on the container line
+     while it still runs off the opposite (end) edge. */
+  .fs-inset-start {
+    padding-inline-start: var(--fs-gutter);
+  }
+
+  .fs-inset-end {
+    padding-inline-end: var(--fs-gutter);
+  }
+
+  /* ---------- Photo slots ---------- */
+
+  .fs-photo {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    background-color: var(--fs-photo-tone, var(--color-navy));
+  }
+
+  /* Empty slot: a toned plate with a fine diagonal hatch and soft light, so the
+     composition reads as finished before real photography arrives. */
+  .fs-photo[data-empty]::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image: repeating-linear-gradient(
+      135deg,
+      rgb(255 255 255 / 0.05) 0 1px,
+      transparent 1px 12px
+    );
+  }
+
+  .fs-photo[data-empty]::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(120% 90% at 72% 18%, rgb(255 255 255 / 0.14), transparent 55%),
+      linear-gradient(to top, rgb(10 20 30 / 0.3), transparent 45%);
+  }
+
+  [dir='ltr'] .fs-photo[data-empty]::before {
+    background-image: repeating-linear-gradient(
+      45deg,
+      rgb(255 255 255 / 0.05) 0 1px,
+      transparent 1px 12px
+    );
+  }
+
+  .fs-photo--navy   { --fs-photo-tone: #19324A; }
+  .fs-photo--night  { --fs-photo-tone: #13283C; }
+  .fs-photo--slate  { --fs-photo-tone: #3E5E78; }
+  .fs-photo--growth { --fs-photo-tone: #789B87; }
+  .fs-photo--mist   { --fs-photo-tone: #A8B9A7; }
+  .fs-photo--forest { --fs-photo-tone: #3E5E55; }
+  .fs-photo--moss   { --fs-photo-tone: #4F6E5D; }
+  .fs-photo--pine   { --fs-photo-tone: #2E4A3F; }
+
+  /* ---------- Motion ---------- */
+
+  @keyframes fs-reveal-up {
+    from { clip-path: inset(100% 0 0 0); }
+    to   { clip-path: inset(0 0 0 0); }
+  }
+
+  .fs-reveal-up {
+    animation: fs-reveal-up 1.2s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fs-reveal-up { animation: none !important; }
+  }
+
+  /* FAQ disclosure: hide the native marker */
+  .fs-faq summary::-webkit-details-marker { display: none; }
+  .fs-faq summary { list-style: none; }
+
+  /* Horizontal photo strip: keep it scrollable without a visible scrollbar */
+  .fs-strip {
+    scrollbar-width: none;
+    /* snap the first frame to the container line, not the viewport edge */
+    scroll-padding-inline-start: var(--fs-gutter);
+  }
+
+  .fs-strip::-webkit-scrollbar {
+    display: none;
+  }
+}
+html {
+  scroll-behavior: smooth;
+}

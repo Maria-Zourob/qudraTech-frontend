@@ -2,28 +2,25 @@ import Link from 'next/link';
 import type {ReactNode} from 'react';
 
 /** Mono section label: "01 ── ABOUT". */
+/** Unified editorial section label. */
 export function SectionLabel({
-  index,
   children,
   onDark = false,
 }: {
-  index: string;
   children: ReactNode;
   onDark?: boolean;
 }) {
   return (
     <p
-      className={`fs-label flex items-center gap-3 ${
+      className={`fs-label flex items-center gap-2 ${
         onDark
           ? 'text-[var(--color-accent)]'
           : 'text-[var(--fs-accent-ink)]'
       }`}
     >
-      <span>{index}</span>
-
       <span
         aria-hidden
-        className="h-px w-10 bg-current opacity-50"
+        className="h-1.5 w-1.5 shrink-0 bg-current"
       />
 
       <span>{children}</span>

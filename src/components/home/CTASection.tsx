@@ -1,20 +1,28 @@
 'use client';
 
-import {useState} from 'react';
+import {useId, useState} from 'react';
 import {useTranslations} from 'next-intl';
 import {Reveal} from '@/components/Reveal';
 import {apiClient} from '@/lib/apiClient';
 import {useToast} from '@/components/Toast';
-
+import {PhotoSlot} from '@/components/home/PhotoSlot';
+import {SectionLabel} from '@/components/home/ui';
 interface CTASectionProps {
   locale: string;
 }
 
 const CONTAINER = 'mx-auto w-full max-w-6xl px-5 sm:px-8';
 
+const FIELD =
+  'w-full border border-white/15 bg-[#213E58] px-4 py-3 text-sm text-white placeholder-white/40 transition-colors focus:border-[var(--color-accent)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]/40';
+
+const LABEL = 'mb-1.5 block text-xs font-medium text-[#D5DCD6]';
+
 export function CTASection({locale}: CTASectionProps) {
   const t = useTranslations('HomePage.cta');
+  const tp = useTranslations('HomePage.photos');
   const isArabic = locale === 'ar';
+  const uid = useId();
 
   const [form, setForm] = useState({name: '', email: '', subject: '', message: ''});
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
@@ -34,126 +42,145 @@ export function CTASection({locale}: CTASectionProps) {
     }
   }
 
+  const id = (name: string) => `${uid}-${name}`;
+
   return (
-    <section className="relative overflow-hidden bg-[var(--color-accent)] text-[var(--color-navy)] py-24 md:py-32">
-      <div
-        aria-hidden
-        className={`pointer-events-none absolute bottom-0 flex items-end gap-2 sm:gap-3 opacity-20 ${
-          isArabic ? 'start-0 ps-6 sm:ps-12' : 'end-0 pe-6 sm:pe-12'
-        }`}
-      >
-        <span className="h-16 w-8 bg-[var(--color-navy)] sm:h-24 sm:w-12 rounded-t-sm" />
-        <span className="h-28 w-8 bg-[var(--color-navy)] sm:h-44 sm:w-12 rounded-t-sm" />
-        <span className="h-40 w-8 bg-[var(--color-navy)] sm:h-64 sm:w-12 rounded-t-sm" />
-        <span className="h-56 w-8 bg-[var(--color-navy)] sm:h-80 sm:w-12 rounded-t-sm shadow-xl" />
-      </div>
+    <section
+      id="contact"
+      className="relative overflow-hidden bg-[var(--color-accent)] text-[var(--color-navy)]"
+      aria-labelledby={id('title')}
+    >
+      <div className="relative lg:min-h-[55rem]">
+        {/* Photo: full width on mobile, end-side half on desktop */}
+        <PhotoSlot
+          id="ctaVolunteers"
+          tone="pine"
+          alt={tp('ctaVolunteers.alt')}
+          brief={tp('ctaVolunteers.brief')}
+          briefPlacement="top-end"
+          sizes="(min-width: 1024px) 46vw, 100vw"
+          className="aspect-[4/3] w-full sm:aspect-[16/9] lg:absolute lg:inset-y-0 lg:end-0 lg:aspect-auto lg:w-[46%]"
+        />
 
-      <div className={`${CONTAINER} relative z-10`}>
-        <Reveal>
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            <div className={`lg:col-span-6 flex flex-col ${isArabic ? 'items-start text-right' : 'items-start text-left'}`}>
-              <h2 className="font-heading text-4xl sm:text-5xl md:text-6xl font-extrabold leading-[1.15] text-[var(--color-navy)] text-balance">
-                {t('title')}
-              </h2>
-              <p className="mt-6 text-lg sm:text-xl leading-relaxed text-[var(--color-navy)]/90 font-medium">
-                {t('description')}
-              </p>
-              <div className="mt-8 text-xs font-mono text-[var(--color-navy)]/70 tracking-wider">
-                {t('tagline')}
+        <div className={`${CONTAINER} relative z-10 pb-20 lg:py-32`}>
+          <Reveal>
+            <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center lg:gap-12">
+              <div className={`flex flex-col pt-14 lg:col-span-5 lg:pt-0 ${isArabic ? 'items-start text-right' : 'items-start text-left'}`}>
+                <h2
+                  id={id('title')}
+                  className="font-heading text-balance text-4xl font-bold leading-[1.15] text-[var(--color-navy)] sm:text-5xl md:text-6xl lg:text-[4.2rem] rtl:leading-[1.25]"
+                >
+                  {t('title')}
+                </h2>
+                <p className="mt-6 text-lg font-medium leading-relaxed text-[var(--color-navy)]/90 sm:text-xl">
+                  {t('description')}
+                </p>
+                <div className="fs-label mt-8 flex items-center gap-2 text-[var(--color-navy)]/80">
+  <span
+    aria-hidden
+    className="h-1.5 w-1.5 shrink-0 bg-current"
+  />
+  <span>{t('tagline')}</span>
+</div>
               </div>
-            </div>
 
-            <div className="lg:col-span-6 bg-[#092b49] text-white p-6 sm:p-8 rounded-3xl shadow-2xl relative border border-white/10">
-              <div className="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
-                <span className="text-xs font-mono tracking-widest text-[var(--color-accent)] uppercase">
-                  {t('formLabel')}
-                </span>
-                <span className="w-2 h-2 rounded-full bg-[var(--color-accent)] animate-pulse" />
-              </div>
-
-              {status === 'sent' ? (
-                <div className="py-8 text-center">
-                  <p className="text-[var(--color-accent)] font-medium text-lg">
-                    {t('successTitle')}
-                  </p>
+              <div className="relative bg-[var(--color-navy)] p-6 text-white shadow-[0_40px_80px_rgba(12,26,40,0.35)] sm:p-9 lg:col-span-6 lg:col-start-7">
+                <div className="mb-6 flex items-center justify-between border-b border-white/10 pb-4">
+                  <span className="fs-label text-[var(--color-accent)]">{t('formLabel')}</span>
+                  <span aria-hidden className="h-2 w-2 animate-pulse bg-[var(--color-accent)] motion-reduce:animate-none" />
                 </div>
-              ) : (
-                <form className="space-y-5" onSubmit={handleSubmit}>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                {status === 'sent' ? (
+                  <div className="py-8 text-center" role="status">
+                    <p className="text-lg font-medium text-[var(--color-accent)]">{t('successTitle')}</p>
+                  </div>
+                ) : (
+                  <form className="space-y-5" onSubmit={handleSubmit}>
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                      <div>
+                        <label htmlFor={id('name')} className={LABEL}>
+                          {t('nameLabel')}
+                        </label>
+                        <input
+                          id={id('name')}
+                          type="text"
+                          required
+                          autoComplete="name"
+                          value={form.name}
+                          onChange={(e) => setForm({...form, name: e.target.value})}
+                          placeholder={t('namePlaceholder')}
+                          className={FIELD}
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor={id('email')} className={LABEL}>
+                          {t('emailLabel')}
+                        </label>
+                        <input
+                          id={id('email')}
+                          type="email"
+                          required
+                          dir="ltr"
+                          autoComplete="email"
+                          value={form.email}
+                          onChange={(e) => setForm({...form, email: e.target.value})}
+                          placeholder="name@example.com"
+                          className={`${FIELD} ${isArabic ? 'text-right placeholder:text-right' : ''}`}
+                        />
+                      </div>
+                    </div>
+
                     <div>
-                      <label className="block text-xs font-mono text-[#d8d3c8] mb-1.5 uppercase tracking-wider">
-                        {t('nameLabel')}
+                      <label htmlFor={id('subject')} className={LABEL}>
+                        {t('subjectLabel')}
                       </label>
                       <input
+                        id={id('subject')}
                         type="text"
                         required
-                        value={form.name}
-                        onChange={(e) => setForm({...form, name: e.target.value})}
-                        placeholder={t('namePlaceholder')}
-                        className="w-full bg-[#0c3860] border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-[var(--color-accent)] transition-all"
+                        value={form.subject}
+                        onChange={(e) => setForm({...form, subject: e.target.value})}
+                        placeholder={t('subjectPlaceholder')}
+                        className={FIELD}
                       />
                     </div>
+
                     <div>
-                      <label className="block text-xs font-mono text-[#d8d3c8] mb-1.5 uppercase tracking-wider">
-                        {t('emailLabel')}
+                      <label htmlFor={id('message')} className={LABEL}>
+                        {t('messageLabel')}
                       </label>
-                      <input
-                        type="email"
+                      <textarea
+                        id={id('message')}
+                        rows={4}
                         required
-                        value={form.email}
-                        onChange={(e) => setForm({...form, email: e.target.value})}
-                        placeholder="name@example.com"
-                        className="w-full bg-[#0c3860] border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-[var(--color-accent)] transition-all"
+                        value={form.message}
+                        onChange={(e) => setForm({...form, message: e.target.value})}
+                        placeholder={t('messagePlaceholder')}
+                        className={`${FIELD} resize-none`}
                       />
                     </div>
-                  </div>
 
-                  <div>
-                    <label className="block text-xs font-mono text-[#d8d3c8] mb-1.5 uppercase tracking-wider">
-                      {t('subjectLabel')}
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={form.subject}
-                      onChange={(e) => setForm({...form, subject: e.target.value})}
-                      placeholder={t('subjectPlaceholder')}
-                      className="w-full bg-[#0c3860] border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-[var(--color-accent)] transition-all"
-                    />
-                  </div>
+                    {status === 'error' && (
+                      <p className="text-sm text-red-300" role="alert">
+                        {t('errorMessage')}
+                      </p>
+                    )}
 
-                  <div>
-                    <label className="block text-xs font-mono text-[#d8d3c8] mb-1.5 uppercase tracking-wider">
-                      {t('messageLabel')}
-                    </label>
-                    <textarea
-                      rows={3}
-                      required
-                      value={form.message}
-                      onChange={(e) => setForm({...form, message: e.target.value})}
-                      placeholder={t('messagePlaceholder')}
-                      className="w-full bg-[#0c3860] border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-[var(--color-accent)] transition-all resize-none"
-                    />
-                  </div>
-
-                  {status === 'error' && (
-                    <p className="text-red-300 text-sm">{t('errorMessage')}</p>
-                  )}
-
-                  <div className="pt-2">
-                    <button
-                      type="submit"
-                      disabled={status === 'sending'}
-                      className="w-full flex items-center justify-center bg-[var(--color-accent)] hover:bg-[#d58228] text-[var(--color-navy)] font-bold py-4 rounded-xl shadow-lg transition-all text-base disabled:opacity-50"
-                    >
-                      {status === 'sending' ? t('sending') : t('button')}
-                    </button>
-                  </div>
-                </form>
-              )}
+                    <div className="pt-1">
+                      <button
+                        type="submit"
+                        disabled={status === 'sending'}
+                        className="flex w-full items-center justify-center bg-[var(--color-accent)] py-4 text-base font-bold text-[var(--color-navy)] transition-colors hover:bg-[var(--fs-paper)] disabled:opacity-50"
+                      >
+                        {status === 'sending' ? t('sending') : t('button')}
+                      </button>
+                    </div>
+                  </form>
+                )}
+              </div>
             </div>
-          </div>
-        </Reveal>
+          </Reveal>
+        </div>
       </div>
     </section>
   );

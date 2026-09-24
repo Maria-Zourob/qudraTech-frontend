@@ -31,7 +31,7 @@ export async function LifecycleSection({
     <section className="fs-grid-navy relative bg-[var(--color-navy)] text-white">
       <div className={`${CONTAINER} py-20 md:pb-0 md:pt-28`}>
         <Reveal>
-          <SectionLabel index="02" onDark>
+          <SectionLabel onDark>
             {t('label')}
           </SectionLabel>
 
@@ -46,22 +46,24 @@ export async function LifecycleSection({
               key={step.code}
               className={`relative border-s border-white/20 pb-12 ps-7 last:pb-0 md:border-s-0 md:border-t-2 md:border-t-[var(--color-accent)] md:bg-white/[0.04] md:px-6 md:pb-14 md:pt-6 ${stairOffsets[i]}`}
             >
-              <span
-                aria-hidden
-                className="absolute -start-[5.5px] top-1.5 h-2.5 w-2.5 bg-[var(--color-accent)] md:hidden"
-              />
+              <Reveal delay={i * 120}>
+                <span
+                  aria-hidden
+                  className="absolute -start-[5.5px] top-1.5 h-2.5 w-2.5 bg-[var(--color-accent)] md:hidden"
+                />
 
-              <p className="fs-outline-num font-heading text-5xl font-bold leading-none md:text-6xl">
-                {step.code}
-              </p>
+                <p className="fs-outline-num font-heading text-5xl font-bold leading-none md:text-6xl">
+                  {step.code}
+                </p>
 
-              <h3 className="font-heading mt-6 text-xl font-bold">
-                {step.title}
-              </h3>
+                <h3 className="font-heading mt-6 text-xl font-bold">
+                  {step.title}
+                </h3>
 
-              <p className="mt-3 text-sm leading-relaxed text-[#B9C5D0]">
-                {step.text}
-              </p>
+                <p className="mt-3 text-sm leading-relaxed text-[#B9C5D0]">
+                  {step.text}
+                </p>
+              </Reveal>
             </li>
           ))}
         </ol>

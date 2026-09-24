@@ -4,181 +4,176 @@
     "subtitle": "A community platform designing, executing, and documenting youth-led development initiatives — turning ideas into measurable impact.",
     "exploreInitiatives": "Explore Initiatives",
     "aboutUs": "About Us",
-      "about": {
-  "label": "About",
-  "title": "Not built for one initiative",
-  "description": "Future Steps is a digital platform bringing together multiple community initiatives, documenting each one's full lifecycle — from idea to impact — under one transparent standard. Every initiative gets an official documentation ID, measurable KPIs, and a full audit trail.",
-  "auditChips": [
-    "Official documentation ID",
-    "Measurable KPIs",
-    "Full audit trail"
-  ]
-},
-"ChildLearning": {
-  "eyebrow": {
-    "gaza": "GAZA",
-    "qudratech": "QUDRATECH",
-    "year": "2026"
-  },
-  "title": "Teaching Camp Children How to Prompt the Machine",
-  "description": "An educational initiative in Gaza displacement camps training children in tech basics, AI, and prompt engineering — with simple tools, short curricula, and instructors from within the camp.",
-  "buttons": {
-    "journey": "Explore Learning Journey",
-    "support": "Support Initiative"
-  },
-  "promptFlow": "PROMPT → MODEL → OUTPUT",
-  "prompt": {
-    "label": "01 - PROMPT",
-    "text": "\"Explain how a solar cell works in words a ten-year-old child can understand\""
-  },
-  "reasoning": "reasoning_",
-  "output": {
-    "label": "02 - OUTPUT",
-    "text": "An answer the child understands – learning how to frame the question to get it."
-  },
-  "promptNote": "The first lesson is not coding. The first lesson is asking the right question.",
-  "stats": {
-    "status": {
-      "label": "Status",
-      "value": "Batch Three is Open",
-      "description": "Registration via camp committees – Free"
+    "about": {
+      "label": "About",
+      "title": "Not built for one initiative",
+      "description": "Future Steps is a digital platform bringing together multiple community initiatives, documenting each one's full lifecycle — from idea to impact — under one transparent standard. Every initiative gets an official documentation ID, measurable KPIs, and a full audit trail.",
+      "auditChips": [
+        "Official documentation ID",
+        "Measurable KPIs",
+        "Full audit trail"
+      ]
     },
-    "session": {
-      "label": "Session",
-      "value": "45",
-      "unit": "mins",
-      "description": "One session, one device per three children"
+    "ChildLearning": {
+      "eyebrow": {
+        "gaza": "GAZA",
+        "qudratech": "QUDRATECH",
+        "year": "2026"
+      },
+      "title": "Teaching Camp Children How to Prompt the Machine",
+      "description": "An educational initiative in Gaza displacement camps training children in tech basics, AI, and prompt engineering — with simple tools, short curricula, and instructors from within the camp.",
+      "buttons": {
+        "journey": "Explore Learning Journey",
+        "support": "Support Initiative"
+      },
+      "promptFlow": "PROMPT → MODEL → OUTPUT",
+      "prompt": {
+        "label": "01 - PROMPT",
+        "text": "\"Explain how a solar cell works in words a ten-year-old child can understand\""
+      },
+      "reasoning": "reasoning_",
+      "output": {
+        "label": "02 - OUTPUT",
+        "text": "An answer the child understands – learning how to frame the question to get it."
+      },
+      "promptNote": "The first lesson is not coding. The first lesson is asking the right question.",
+      "stats": {
+        "status": {
+          "label": "Status",
+          "value": "Batch Three is Open",
+          "description": "Registration via camp committees – Free"
+        },
+        "session": {
+          "label": "Session",
+          "value": "45",
+          "unit": "mins",
+          "description": "One session, one device per three children"
+        },
+        "enrolled": {
+          "label": "Enrolled",
+          "value": "340",
+          "description": "children across four camps"
+        }
+      }
     },
-    "enrolled": {
-      "label": "Enrolled",
-      "value": "340",
-      "description": "children across four camps"
-    }
-  }
-},
-"cta": {
-  "title": "Have an initiative worth documenting?",
-  "description": "Future Steps is open to any serious community initiative — from registration to documented impact.",
-  "button": "Get in Touch"
-},
-"hero": {
-  "eyebrow": "FS — Community Initiative Platform",
-  "title": "Future Steps",
-  "subtitle": "A digital platform bringing community initiatives together and documenting their journey from idea to impact through a clear and transparent standard.",
-  "exploreInitiatives": "Explore Initiatives",
-  "aboutUs": "About Us",
-  "visualLabel": "Four steps rising from documentation to impact"
-},
-"initiatives": {
-  "label": "Initiatives",
-  "title": "Our Initiatives",
-  "viewAll": "View all",
-  "openInitiative": "Open initiative"
-},
-"lifecycle": {
-  "label": "Lifecycle",
-  "title": "How an initiative is documented"
-},
-"partners": {
-  "label": "Partners & local communities",
-  "description": "The platform is in its early stage, gradually building partnerships with local community committees and centers. Every partner will appear here transparently once their collaboration is documented."
-},
-"faq": {
-  "label": "06 — FAQ",
-  "title": "Frequently Asked Questions",
-  "items": [
-    {
-      "question": "Does the child need a private device?",
-      "answer": "No, available devices are shared in small groups under the supervision of a local teacher inside the camp."
+    "hero": {
+      "eyebrow": "FS — Community Initiative Platform",
+      "title": "Future Steps",
+      "subtitle": "A digital platform bringing community initiatives together and documenting their journey from idea to impact through a clear and transparent standard.",
+      "exploreInitiatives": "Explore Initiatives",
+      "aboutUs": "About Us",
+      "visualLabel": "Four steps rising from documentation to impact"
     },
-    {
-      "question": "What is the age group?",
-      "answer": "The track is designed for children aged 10 to 14 in displacement camps."
+    "initiatives": {
+      "label": "Initiatives",
+      "title": "Our Initiatives",
+      "viewAll": "View all",
+      "openInitiative": "Open initiative"
     },
-    {
-      "question": "How is financial support spent?",
-      "answer": "Support is dedicated to providing basic tools, training supplies, and incentives for local teachers."
+    "lifecycle": {
+      "label": "Lifecycle",
+      "title": "How an initiative is documented"
     },
-    {
-      "question": "Can I volunteer remotely?",
-      "answer": "Yes, through curriculum review, translation, and teacher training via recorded sessions. Direct teaching remains local."
-    }
-  ]
-},
-"impact": {
-  "label": "04 — IMPACT",
-  "title": "What we have achieved so far",
-  "note": "Figures for the first and second cohorts — updated March 2026.",
-  "stats": [
-    {
-      "number": "340",
-      "label": "Children completed the full track"
+    "partners": {
+      "label": "Partners & local communities",
+      "description": "The platform is in its early stage, gradually building partnerships with local community committees and centers. Every partner will appear here transparently once their collaboration is documented."
     },
-    {
-      "number": "4",
-      "label": "Camps: Nuseirat, Khan Yunis, Deir al-Balah, Al-Mawasi"
+    "faq": {
+      "label": "06 — FAQ",
+      "title": "Frequently Asked Questions",
+      "items": [
+        {
+          "question": "Does the child need a private device?",
+          "answer": "No, available devices are shared in small groups under the supervision of a local teacher inside the camp."
+        },
+        {
+          "question": "What is the age group?",
+          "answer": "The track is designed for children aged 10 to 14 in displacement camps."
+        },
+        {
+          "question": "How is financial support spent?",
+          "answer": "Support is dedicated to providing basic tools, training supplies, and incentives for local teachers."
+        },
+        {
+          "question": "Can I volunteer remotely?",
+          "answer": "Yes, through curriculum review, translation, and teacher training via recorded sessions. Direct teaching remains local."
+        }
+      ]
     },
-    {
-      "number": "19",
-      "label": "Male and female teachers graduated from the cohorts"
+    "impact": {
+      "label": "IMPACT",
+      "title": "What we have achieved so far",
+      "note": "Figures for the first and second cohorts — updated March 2026.",
+      "stats": [
+        {
+          "number": "340",
+          "label": "Children completed the full track"
+        },
+        {
+          "number": "4",
+          "label": "Camps: Nuseirat, Khan Yunis, Deir al-Balah, Al-Mawasi"
+        },
+        {
+          "number": "19",
+          "label": "Male and female teachers graduated from the cohorts"
+        },
+        {
+          "number": "287",
+          "label": "Final projects showcased in the camps"
+        }
+      ]
     },
-    {
-      "number": "287",
-      "label": "Final projects showcased in the camps"
-    }
-  ]
-},
-"journey": {
-  "intro": {
-    "label": "01 — WHAT IT IS",
-    "title": "Not a coding course. A way of thinking.",
-    "description": "In displacement camps, electricity is unreliable, internet access is limited, and devices are scarce. We built the curriculum around this reality, not against it: short sessions, offline-friendly content, and shared devices. We are not teaching one particular tool — we are teaching children how to frame a question, read an answer, and judge it."
-  },
-  "cards": [
-    {
-      "eyebrow": "TOOLS",
-      "title": "Available Tools",
-      "description": "One phone or laptop is enough for a whole group."
+    "journey": {
+      "intro": {
+        "label": "WHAT IT IS",
+        "title": "Not a coding course. A way of thinking.",
+        "description": "In displacement camps, electricity is unreliable, internet access is limited, and devices are scarce. We built the curriculum around this reality, not against it: short sessions, offline-friendly content, and shared devices. We are not teaching one particular tool — we are teaching children how to frame a question, read an answer, and judge it."
+      },
+      "cards": [
+        {
+          "eyebrow": "TOOLS",
+          "title": "Available Tools",
+          "description": "One phone or laptop is enough for a whole group."
+        },
+        {
+          "eyebrow": "MENTORS",
+          "title": "Local Mentors",
+          "description": "A young person from the camp trained on the curriculum."
+        },
+        {
+          "eyebrow": "OUTPUT",
+          "title": "Tangible Output",
+          "description": "Every child finishes the track with a small project to showcase."
+        }
+      ],
+      "journey": {
+        "label": "LEARNING JOURNEY",
+        "title": "Four phases. Six weeks."
+      },
+      "phases": [
+        {
+          "week": "WEEK 1",
+          "title": "Curiosity",
+          "description": "How does a computer think? Screenless logic games before the first device."
+        },
+        {
+          "week": "WEEK 2–3",
+          "title": "The Question",
+          "description": "Prompt engineering: formulation, refinement, and clarity. The difference between a vague question and a precise one."
+        },
+        {
+          "week": "WEEK 4",
+          "title": "Judgment",
+          "description": "When does the machine get things wrong? Exercises in verifying information before believing it."
+        },
+        {
+          "week": "WEEK 5–6",
+          "title": "The Project",
+          "description": "A story, simple game, or illustrated guide — created by the child and showcased to the camp."
+        }
+      ]
     },
-    {
-      "eyebrow": "MENTORS",
-      "title": "Local Mentors",
-      "description": "A young person from the camp trained on the curriculum."
-    },
-    {
-      "eyebrow": "OUTPUT",
-      "title": "Tangible Output",
-      "description": "Every child finishes the track with a small project to showcase."
-    }
-  ],
-  "journey": {
-    "label": "02 — LEARNING JOURNEY",
-    "title": "Four phases. Six weeks."
-  },
-  "phases": [
-    {
-      "week": "WEEK 1",
-      "title": "Curiosity",
-      "description": "How does a computer think? Screenless logic games before the first device."
-    },
-    {
-      "week": "WEEK 2–3",
-      "title": "The Question",
-      "description": "Prompt engineering: formulation, refinement, and clarity. The difference between a vague question and a precise one."
-    },
-    {
-      "week": "WEEK 4",
-      "title": "Judgment",
-      "description": "When does the machine get things wrong? Exercises in verifying information before believing it."
-    },
-    {
-      "week": "WEEK 5–6",
-      "title": "The Project",
-      "description": "A story, simple game, or illustrated guide — created by the child and showcased to the camp."
-    }
-  ]
-},
-     "cta": {
+    "cta": {
       "title": "Have an initiative worth documenting?",
       "description": "Future Steps is open to any serious community initiative — from registration to documented impact.",
       "tagline": "— The future steps for any serious initiative.",
@@ -195,36 +190,140 @@
       "successTitle": "Thank you! Your message has been received.",
       "errorMessage": "Something went wrong, please try again."
     },
-"promptTerminal": {
-  "promptLabel": "Prompt",
-  "illustrative": "Illustrative",
-  "promptSymbol": ">",
-  "prompt": "Describe a garden that grows on the roof of our school.",
-  "resultLabel": "Result",
-  "result": "Tomato vines climb the water tanks. Solar panels open like leaves. Every child waters one row."
-},
-"values": {
-  "label": "Our values",
-  "title": "What guides our work"
-}
+    "promptTerminal": {
+      "promptLabel": "Prompt",
+      "illustrative": "Illustrative",
+      "promptSymbol": ">",
+      "prompt": "Describe a garden that grows on the roof of our school.",
+      "resultLabel": "Result",
+      "result": "Tomato vines climb the water tanks. Solar panels open like leaves. Every child waters one row."
+    },
+    "values": {
+      "label": "Our values",
+      "title": "What guides our work"
+    },
+    "photos": {
+      "heroDocumentation": {
+        "alt": "A community initiative being documented on its first day",
+        "brief": "Documentation: a team registers a new initiative"
+      },
+      "heroExecution": {
+        "alt": "Volunteers running an activity with children",
+        "brief": "Execution: a field activity in progress"
+      },
+      "heroMeasurement": {
+        "alt": "A trainer reviewing children's work and logging results",
+        "brief": "Measurement: reviewing the children's work"
+      },
+      "heroImpact": {
+        "alt": "A girl presenting her project to families",
+        "brief": "Hero photo: a girl presents her project to families — vertical, daylight"
+      },
+      "manifestoHands": {
+        "alt": "A child's hands on a keyboard inside a learning tent",
+        "brief": "Close-up: a child's hands on a keyboard, side light from the tent door"
+      },
+      "manifestoTrainer": {
+        "alt": "A trainer from the camp explaining to children",
+        "brief": "Portrait: a trainer from the camp mid-explanation",
+        "caption": "Trainers come from the community itself"
+      },
+      "phase1": {
+        "alt": "A child raising a hand to ask a question",
+        "brief": "A child raises a hand with a first question"
+      },
+      "phase2": {
+        "alt": "A group of children around one screen",
+        "brief": "A small group around a single screen"
+      },
+      "phase3": {
+        "alt": "A girl comparing two answers on paper",
+        "brief": "A girl compares two answers on paper"
+      },
+      "phase4": {
+        "alt": "Children presenting their projects to families",
+        "brief": "Presentation day with the families"
+      },
+      "learningClass": {
+        "alt": "A class inside a learning tent watching one screen",
+        "brief": "Wide shot: a class inside a learning tent, screen light on the children's faces"
+      },
+      "impactGroup": {
+        "alt": "Group photo of children after completing the track",
+        "brief": "Group photo: the children after completing the track"
+      },
+      "impactTrainers": {
+        "alt": "The trainers team from inside the camps",
+        "brief": "The trainers team"
+      },
+      "field1": {
+        "alt": "A child testing their first project",
+        "brief": "The first project that works"
+      },
+      "field2": {
+        "alt": "Families watching the children present",
+        "brief": "Families on presentation day"
+      },
+      "field3": {
+        "alt": "A volunteer trainer from the neighbourhood",
+        "brief": "A volunteer trainer from the neighbourhood"
+      },
+      "field4": {
+        "alt": "Children taking a break between sessions",
+        "brief": "A break between sessions"
+      },
+      "initiativeFeatured": {
+        "alt": "A group workshop in a shelter centre",
+        "brief": "Initiative photo: a group workshop in a shelter centre"
+      },
+      "faqParents": {
+        "alt": "An introductory session with parents",
+        "brief": "An introductory session with parents",
+        "caption": "The questions start here — before the first session"
+      },
+      "ctaVolunteers": {
+        "alt": "Volunteers preparing the learning space",
+        "brief": "Volunteers preparing the learning space before a session"
+      }
+    },
+    "fieldJournal": {
+      "label": "Field journal",
+      "title": "Moments the numbers don't show.",
+      "description": "What happens between sessions is what really creates the impact.",
+      "stripLabel": "Photos from the field — scroll sideways",
+      "items": [
+        {
+          "caption": "The first project that works"
+        },
+        {
+          "caption": "Families on presentation day"
+        },
+        {
+          "caption": "A volunteer trainer from the neighbourhood"
+        },
+        {
+          "caption": "A break between sessions"
+        }
+      ]
+    }
   },
   "Header": {
-  "brand": "Future Steps",
-      "login": "Login",
+    "brand": "Future Steps",
+    "login": "Login",
     "logout": "Logout",
     "dashboard": "Dashboard",
-  "language": "العربية",
-  "mainNavigation": "Main navigation",
-  "navigation": {
-    "home": "Home",
-    "initiatives": "Initiatives",
-    "about": "About",
-    "contact": "Contact",
-        "login": "Login",
-    "logout": "Logout",
-    "dashboard": "Dashboard"
-  }
-},
+    "language": "العربية",
+    "mainNavigation": "Main navigation",
+    "navigation": {
+      "home": "Home",
+      "initiatives": "Initiatives",
+      "about": "About",
+      "contact": "Contact",
+      "login": "Login",
+      "logout": "Logout",
+      "dashboard": "Dashboard"
+    }
+  },
   "Navigation": {
     "home": "Home",
     "initiatives": "Initiatives",
@@ -232,25 +331,25 @@
     "contact": "Contact"
   },
   "footer": {
-  "description": "A digital platform bringing together community initiatives and documenting their journey, results, and impact.",
-  "links_title": "Links",
-  "links": {
-    "home": "Home",
-    "about": "About",
-    "initiatives": "Initiatives",
-    "contact": "Contact"
+    "description": "A digital platform bringing together community initiatives and documenting their journey, results, and impact.",
+    "links_title": "Links",
+    "links": {
+      "home": "Home",
+      "about": "About",
+      "initiatives": "Initiatives",
+      "contact": "Contact"
+    },
+    "platform_title": "Platform",
+    "platform": {
+      "howItWorks": "How It Works",
+      "impact": "Impact",
+      "programs": "Programs",
+      "faq": "FAQ"
+    },
+    "contact_title": "Contact",
+    "copyright": "© {year} Future Steps. All rights reserved.",
+    "tagline": "Future · Impact · Growth"
   },
-  "platform_title": "Platform",
-  "platform": {
-    "howItWorks": "How It Works",
-    "impact": "Impact",
-    "programs": "Programs",
-    "faq": "FAQ"
-  },
-  "contact_title": "Contact",
-  "copyright": "© {year} Future Steps. All rights reserved.",
-  "tagline": "Future · Impact · Growth"
-},
   "Toast": {
     "contactSuccess": "Thank you! Your message has been received.",
     "contactError": "Something went wrong, please try again.",

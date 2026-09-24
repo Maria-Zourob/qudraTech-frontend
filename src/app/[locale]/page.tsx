@@ -1,12 +1,13 @@
-import {HeroSection} from '@/components/home/HeroSection';
-import {LifecycleSection} from '@/components/home/LifecycleSection';
-import {InitiativesSection} from '@/components/home/InitiativesSection';
-import {CTASection} from '@/components/home/CTASection';
+import { HeroSection } from '@/components/home/HeroSection';
+import { LifecycleSection } from '@/components/home/LifecycleSection';
+import { InitiativesSection } from '@/components/home/InitiativesSection';
+import { CTASection } from '@/components/home/CTASection';
 import ChildLearning from '@/components/home/ChildLearning';
 import { JourneySection } from '@/components/home/JourneySection';
 import { FAQSection } from '@/components/home/FAQSection';
 import { ImpactSection } from '@/components/home/ImpactSection';
 import { PartnersSection } from '@/components/home/PartnersSection';
+import { FieldJournalSection } from '@/components/home/FieldJournalSection';
 
 interface Impact {
   initiatives: number;
@@ -23,6 +24,7 @@ interface InitiativeSummary {
   descriptionEn: string;
   status: string;
   location: string;
+  imageUrl?: string | null;
 }
 
 interface LifecycleStep {
@@ -41,7 +43,7 @@ async function getImpact(): Promise<Impact | null> {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/public/impact`,
-      {cache: 'no-store'},
+      { cache: 'no-store' },
     );
 
     if (!res.ok) return null;
@@ -56,7 +58,7 @@ async function getInitiatives(): Promise<InitiativeSummary[]> {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/public/initiatives`,
-      {cache: 'no-store'},
+      { cache: 'no-store' },
     );
 
     if (!res.ok) return [];
@@ -70,9 +72,9 @@ async function getInitiatives(): Promise<InitiativeSummary[]> {
 export default async function HomePage({
   params,
 }: {
-  params: Promise<{locale: string}>;
+  params: Promise<{ locale: string }>;
 }) {
-  const {locale} = await params;
+  const { locale } = await params;
 
   const impact = await getImpact();
   const initiatives = await getInitiatives();
@@ -83,23 +85,23 @@ export default async function HomePage({
 
   const stats = impact
     ? [
-        {
-          value: impact.initiatives,
-          label: locale === 'ar' ? 'مبادرة' : 'Initiatives',
-        },
-        {
-          value: impact.beneficiaries,
-          label: locale === 'ar' ? 'مستفيد' : 'Beneficiaries',
-        },
-        {
-          value: impact.volunteers,
-          label: locale === 'ar' ? 'متطوع' : 'Volunteers',
-        },
-        {
-          value: impact.activities,
-          label: locale === 'ar' ? 'نشاط' : 'Activities',
-        },
-      ]
+      {
+        value: impact.initiatives,
+        label: locale === 'ar' ? 'مبادرة' : 'Initiatives',
+      },
+      {
+        value: impact.beneficiaries,
+        label: locale === 'ar' ? 'مستفيد' : 'Beneficiaries',
+      },
+      {
+        value: impact.volunteers,
+        label: locale === 'ar' ? 'متطوع' : 'Volunteers',
+      },
+      {
+        value: impact.activities,
+        label: locale === 'ar' ? 'نشاط' : 'Activities',
+      },
+    ]
     : [];
 
   // =========================
@@ -109,49 +111,49 @@ export default async function HomePage({
   const lifecycle: LifecycleStep[] =
     locale === 'ar'
       ? [
-          {
-            code: '01',
-            title: 'التوثيق',
-            text: 'كل مبادرة تحصل على رقم رسمي وملف توثيق كامل منذ لحظة التسجيل.',
-          },
-          {
-            code: '02',
-            title: 'التنفيذ',
-            text: 'الأنشطة والمؤشرات تُسجَّل أولًا بأول، لا بأثر رجعي بعد الانتهاء.',
-          },
-          {
-            code: '03',
-            title: 'القياس',
-            text: 'كل مؤشر أداء له مصدر بيانات ودليل — لا رقم بدون إثبات.',
-          },
-          {
-            code: '04',
-            title: 'الأثر',
-            text: 'النتائج تُنشر بشفافية على المنصة العامة، لأي زائر أو شريك أو داعم.',
-          },
-        ]
+        {
+          code: '01',
+          title: 'التوثيق',
+          text: 'كل مبادرة تحصل على رقم رسمي وملف توثيق كامل منذ لحظة التسجيل.',
+        },
+        {
+          code: '02',
+          title: 'التنفيذ',
+          text: 'الأنشطة والمؤشرات تُسجَّل أولًا بأول، لا بأثر رجعي بعد الانتهاء.',
+        },
+        {
+          code: '03',
+          title: 'القياس',
+          text: 'كل مؤشر أداء له مصدر بيانات ودليل — لا رقم بدون إثبات.',
+        },
+        {
+          code: '04',
+          title: 'الأثر',
+          text: 'النتائج تُنشر بشفافية على المنصة العامة، لأي زائر أو شريك أو داعم.',
+        },
+      ]
       : [
-          {
-            code: '01',
-            title: 'Documentation',
-            text: 'Every initiative gets an official ID and a full profile from day one.',
-          },
-          {
-            code: '02',
-            title: 'Execution',
-            text: 'Activities and KPIs are logged as they happen, not reconstructed afterward.',
-          },
-          {
-            code: '03',
-            title: 'Measurement',
-            text: 'Every indicator has a data source and evidence — no number without proof.',
-          },
-          {
-            code: '04',
-            title: 'Impact',
-            text: 'Results are published transparently for any visitor, partner, or donor.',
-          },
-        ];
+        {
+          code: '01',
+          title: 'Documentation',
+          text: 'Every initiative gets an official ID and a full profile from day one.',
+        },
+        {
+          code: '02',
+          title: 'Execution',
+          text: 'Activities and KPIs are logged as they happen, not reconstructed afterward.',
+        },
+        {
+          code: '03',
+          title: 'Measurement',
+          text: 'Every indicator has a data source and evidence — no number without proof.',
+        },
+        {
+          code: '04',
+          title: 'Impact',
+          text: 'Results are published transparently for any visitor, partner, or donor.',
+        },
+      ];
 
   // =========================
   // INITIATIVES
@@ -176,62 +178,60 @@ export default async function HomePage({
   const values: Value[] =
     locale === 'ar'
       ? [
-          {
-            title: 'الشفافية',
-            text: 'كل رقم منشور مرتبط بمصدر بيانات ودليل — لا نشر بلا إثبات.',
-            icon: 'transparency',
-          },
-          {
-            title: 'قيادة مجتمعية',
-            text: 'المبادرات تُقاد من المجتمع نفسه، لا تُفرض عليه من الخارج.',
-            icon: 'community',
-          },
-          {
-            title: 'أثر قابل للقياس',
-            text: 'كل مبادرة لها مؤشرات أداء واضحة، لا نشاط بلا نتيجة موثَّقة.',
-            icon: 'impact',
-          },
-        ]
+        {
+          title: 'الشفافية',
+          text: 'كل رقم منشور مرتبط بمصدر بيانات ودليل — لا نشر بلا إثبات.',
+          icon: 'transparency',
+        },
+        {
+          title: 'قيادة مجتمعية',
+          text: 'المبادرات تُقاد من المجتمع نفسه، لا تُفرض عليه من الخارج.',
+          icon: 'community',
+        },
+        {
+          title: 'أثر قابل للقياس',
+          text: 'كل مبادرة لها مؤشرات أداء واضحة، لا نشاط بلا نتيجة موثَّقة.',
+          icon: 'impact',
+        },
+      ]
       : [
-          {
-            title: 'Transparency',
-            text: 'Every published number is tied to a data source and evidence — nothing without proof.',
-            icon: 'transparency',
-          },
-          {
-            title: 'Community-led',
-            text: 'Initiatives are led by the community itself, not imposed from outside.',
-            icon: 'community',
-          },
-          {
-            title: 'Measurable Impact',
-            text: 'Every initiative has clear KPIs — no activity without a documented result.',
-            icon: 'impact',
-          },
-        ];
+        {
+          title: 'Transparency',
+          text: 'Every published number is tied to a data source and evidence — nothing without proof.',
+          icon: 'transparency',
+        },
+        {
+          title: 'Community-led',
+          text: 'Initiatives are led by the community itself, not imposed from outside.',
+          icon: 'community',
+        },
+        {
+          title: 'Measurable Impact',
+          text: 'Every initiative has clear KPIs — no activity without a documented result.',
+          icon: 'impact',
+        },
+      ];
 
   return (
     <main className="overflow-x-clip">
-      {/* 1. HERO */}
       <HeroSection
         locale={locale}
         stats={stats}
+        lifecycle={lifecycle}
       />
+
       <JourneySection />
-      {/* 2. CHILD LEARNING */}
+
       <ChildLearning locale={locale} />
 
-      
-      
-      
       <ImpactSection />
-      <FAQSection />
-      {/* 4. LIFECYCLE */}
+
+      <FieldJournalSection />
+
       <LifecycleSection
         lifecycle={lifecycle}
       />
 
-      {/* 5. INITIATIVES */}
       {featured && (
         <InitiativesSection
           locale={locale}
@@ -241,14 +241,10 @@ export default async function HomePage({
         />
       )}
 
-      {/* 6. VALUES
-      <ValuesSection
-        values={values}
-      /> */}
-            <PartnersSection locale={locale} />
+      <PartnersSection locale={locale} />
 
+      <FAQSection locale={locale} />
 
-      {/* 7. CTA */}
       <CTASection
         locale={locale}
       />
