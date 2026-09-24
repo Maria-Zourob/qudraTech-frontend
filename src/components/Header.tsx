@@ -29,9 +29,9 @@ export function Logo({light = false}: {light?: boolean}) {
         <rect x="1" y="20" width="7" height="9" fill={bar} />
         <rect x="10" y="13" width="7" height="16" fill={bar} />
         <rect x="19" y="6" width="7" height="23" fill={bar} />
-        <circle cx="24" cy="3" r="2.6" fill="var(--color-growth)" />
+        <circle cx="22.5" cy="3" r="2.6" fill="var(--color-growth)" />
         <path
-          d="M24 5.5 Q20 8 22 12 M24 5.5 Q28 8 26 12"
+          d="M22.5 5.5 Q18.5 8 20.5 12 M22.5 5.5 Q26.5 8 24.5 12"
           stroke="var(--color-accent)"
           strokeWidth="1.4"
           fill="none"
