@@ -88,7 +88,51 @@ export default function VolunteerRecordsPage() {
     }
     setSubmitting(false);
   }
+  const [importing, setImporting] = useState(false);
+  const [importResult, setImportResult] = useState<{imported: number; errors: string[]} | null>(null);
 
+  function handleDownloadTemplate() {
+    const token = getToken();
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/volunteer-records/template`, {
+      headers: {Authorization: `Bearer ${token}`}
+    })
+      .then((res) => res.blob())
+      .then((blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'volunteer-template.xlsx';
+        a.click();
+        window.URL.revokeObjectURL(url);
+      });
+  }
+
+  async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setImporting(true);
+    setImportResult(null);
+    const token = getToken();
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/volunteer-records/import`, {
+        method: 'POST',
+        headers: {Authorization: `Bearer ${token}`},
+        body: formData
+      });
+      const data = await res.json();
+      setImportResult(data);
+      showToast(`تم استيراد ${data.imported} متطوّع بنجاح.`, 'success');
+      await loadRecords();
+    } catch {
+      showToast('صار خطأ أثناء رفع الملف.', 'error');
+    }
+    setImporting(false);
+    e.target.value = '';
+  }
   async function handleDelete(id: string, name: string) {
     const confirmed = await confirmDialog({
       title: 'حذف المتطوّع',
@@ -118,14 +162,51 @@ export default function VolunteerRecordsPage() {
         <h1 className="font-heading text-2xl font-bold" style={{ color: 'var(--color-navy)' }}>
           سجل المتطوعين
         </h1>
-        <button
-          onClick={() => (showForm ? setShowForm(false) : openAddForm())}
-          className="px-4 py-2 text-sm font-medium text-white"
-          style={{ background: 'var(--color-navy)' }}
-        >
-          {showForm ? 'إلغاء' : '+ إضافة متطوّع'}
-        </button>
+                <div className="flex gap-2">
+          <button
+            onClick={handleDownloadTemplate}
+            className="px-4 py-2 text-sm font-medium border"
+            style={{ borderColor: 'var(--color-navy)', color: 'var(--color-navy)' }}
+          >
+            تحميل قالب Excel
+          </button>
+
+          <label
+            className="px-4 py-2 text-sm font-medium border cursor-pointer"
+            style={{ borderColor: 'var(--color-navy)', color: 'var(--color-navy)' }}
+          >
+            {importing ? 'جاري الرفع...' : 'رفع ملف Excel'}
+            <input
+              type="file"
+              accept=".xlsx"
+              onChange={handleFileUpload}
+              disabled={importing}
+              className="hidden"
+            />
+          </label>
+
+          <button
+            onClick={() => (showForm ? setShowForm(false) : openAddForm())}
+            className="px-4 py-2 text-sm font-medium text-white"
+            style={{ background: 'var(--color-navy)' }}
+          >
+            {showForm ? 'إلغاء' : '+ إضافة متطوّع'}
+          </button>
+        </div>
       </div>
+
+      {importResult && importResult.errors.length > 0 && (
+        <div className="mb-6 border p-4 text-sm" style={{borderColor: '#C0392B', background: '#FDF2F2'}}>
+          <p className="font-medium mb-2" style={{color: '#C0392B'}}>
+            استوردنا {importResult.imported} متطوّع، وفيه {importResult.errors.length} صف فيه مشكلة:
+          </p>
+          <ul className="list-disc ps-5 space-y-1">
+            {importResult.errors.map((err, i) => (
+              <li key={i}>{err}</li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {showForm && (
         <form onSubmit={handleSubmit} className="mb-8 border p-5 space-y-3" style={{ borderColor: 'var(--color-line)' }}>
