@@ -3,10 +3,8 @@ import {NextIntlClientProvider} from 'next-intl';
 import {getMessages, setRequestLocale} from 'next-intl/server';
 
 import {locales} from '@/i18n';
-import {Header} from '@/components/Header';
-import Footer from '@/components/Footer';
 import {ToastProvider} from '@/components/Toast';
-
+import {ConfirmProvider} from '@/components/ConfirmDialog';
 import '../globals.css';
 
 export function generateStaticParams() {
@@ -20,7 +18,7 @@ export const metadata: Metadata = {
 
 export default async function LocaleLayout({
   children,
-  params,
+  params
 }: {
   children: React.ReactNode;
   params: Promise<{locale: string}>;
@@ -37,9 +35,7 @@ export default async function LocaleLayout({
       <body className="font-sans antialiased">
                 <NextIntlClientProvider messages={messages}>
           <ToastProvider>
-            <Header locale={locale} />
-            {children}
-            <Footer locale={locale} />
+            <ConfirmProvider>{children}</ConfirmProvider>
           </ToastProvider>
         </NextIntlClientProvider>
       </body>

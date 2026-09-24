@@ -1,5 +1,5 @@
 import {AuthGuard} from '@/lib/authGuard';
-import {AdminSidebar} from '@/components/admin/AdminSidebar';
+import {AdminShell} from '@/components/admin/AdminShell';
 
 export default async function AdminLayout({
   children,
@@ -12,10 +12,7 @@ export default async function AdminLayout({
 
   return (
     <AuthGuard>
-      <div className="flex" style={{background: 'var(--color-paper)'}}>
-        <AdminSidebar locale={locale} />
-        <div className="flex-1 min-h-screen">{children}</div>
-      </div>
+      <AdminShell locale={locale}>{children}</AdminShell>
     </AuthGuard>
   );
 }

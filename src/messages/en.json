@@ -158,7 +158,7 @@
         },
         {
           "week": "WEEK 2–3",
-          "title": "The Question",
+          "title": "Question",
           "description": "Prompt engineering: formulation, refinement, and clarity. The difference between a vague question and a precise one."
         },
         {
@@ -355,5 +355,14 @@
     "contactError": "Something went wrong, please try again.",
     "statusUpdated": "Status updated successfully.",
     "markedAsRead": "Message marked as read."
+  },
+    "Login": {
+    "eyebrow": "FS — Dashboard",
+    "title": "Login",
+    "emailLabel": "Email",
+    "passwordLabel": "Password",
+    "button": "Sign in",
+    "loading": "Signing in...",
+    "error": "Invalid email or password"
   }
 }
