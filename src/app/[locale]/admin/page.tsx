@@ -65,17 +65,20 @@ function StatusPieChart({data}: {data: {status: string; count: number}[]}) {
     );
   }
 
-  let cumulativeAngle = -90;
   const radius = 70;
   const center = 80;
+  const toRad = (deg: number) => (deg * Math.PI) / 180;
+
+  const angles = filtered.reduce<{start: number; end: number}[]>((acc, d) => {
+    const prevEnd = acc.length > 0 ? acc[acc.length - 1].end : -90;
+    const sweep = (d.count / total) * 360;
+    return [...acc, {start: prevEnd, end: prevEnd + sweep}];
+  }, []);
 
   const slices = filtered.map((d, i) => {
-    const angle = (d.count / total) * 360;
-    const startAngle = cumulativeAngle;
-    const endAngle = cumulativeAngle + angle;
-    cumulativeAngle = endAngle;
+    const {start: startAngle, end: endAngle} = angles[i];
+    const angle = endAngle - startAngle;
 
-    const toRad = (deg: number) => (deg * Math.PI) / 180;
     const x1 = center + radius * Math.cos(toRad(startAngle));
     const y1 = center + radius * Math.sin(toRad(startAngle));
     const x2 = center + radius * Math.cos(toRad(endAngle));

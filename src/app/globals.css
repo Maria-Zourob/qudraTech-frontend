@@ -2,21 +2,23 @@
 @import "tailwindcss";
 
 :root {
-  --color-navy: #0c3860;
-  --color-navy-deep: #082744;
-  --color-accent: #e8912f;
-  --color-growth: #6b8f47;
-  --color-paper: #f7f6f1;
-  --color-ink: #1c2b36;
-  --color-line: #d8d3c8;
+  /* Brand Colors */
+  --color-navy: #19324A;
+  --color-accent: #A8B9A7;
+  --color-growth: #789B87;
 
-  /* تعريف متغيرات الخطوط الجديدة */
+  /* Neutral Colors */
+  --color-ink: #1D2730;
+  --color-line: #DCE2DE;
+  --color-bg: #F7F7F2;
+
+  /* Typography */
   --font-body: 'Cairo', sans-serif;
   --font-heading: 'El Messiri', sans-serif;
 }
 
 body {
-  background: var(--color-paper);
+  background: var(--color-bg);
   color: var(--color-ink);
   font-family: var(--font-body);
 }
@@ -30,23 +32,20 @@ body {
   letter-spacing: 0.05em;
 }
 
-/* ------------------------------------------------------------------
-    Future Steps — redesign additions.
-   ------------------------------------------------------------------ */
-
 :root {
   --fs-accent-ink: color-mix(in srgb, var(--color-accent) 58%, var(--color-navy));
-  --fs-paper: #f7f6f1;
-  --fs-paper-2: #fbfaf6;
+  --fs-paper: var(--color-bg);
+  --fs-paper-2: color-mix(in srgb, var(--color-bg) 70%, white);
 }
 
 .fs-label {
-  font-family: var(--font-mono, ui-monospace, monospace);
+  font-family: ui-monospace, "Courier New", monospace;
   font-size: 0.75rem;
   line-height: 1;
   text-transform: uppercase;
   letter-spacing: 0.16em;
 }
+
 [dir='rtl'] .fs-label {
   letter-spacing: 0;
   text-transform: none;
@@ -61,6 +60,7 @@ body {
   -webkit-mask-image: radial-gradient(ellipse 75% 90% at 72% 45%, #000 20%, transparent 78%);
   mask-image: radial-gradient(ellipse 75% 90% at 72% 45%, #000 20%, transparent 78%);
 }
+
 [dir='rtl'] .fs-grid-bg {
   -webkit-mask-image: radial-gradient(ellipse 75% 90% at 28% 45%, #000 20%, transparent 78%);
   mask-image: radial-gradient(ellipse 75% 90% at 28% 45%, #000 20%, transparent 78%);
@@ -68,8 +68,8 @@ body {
 
 .fs-grid-navy {
   background-image:
-    linear-gradient(to right, rgb(255 255 255 / 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(255 255 255 / 0.05) 1px, transparent 1px);
+    linear-gradient(to right, color-mix(in srgb, white 5%, var(--color-navy)) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, white 5%, var(--color-navy)) 1px, transparent 1px);
   background-size: 64px 64px;
 }
 
@@ -80,9 +80,11 @@ body {
   background-size: 100% 2px;
   transition: background-size 0.3s ease;
 }
+
 [dir='rtl'] .fs-underline {
   background-position: right 100%;
 }
+
 .fs-underline:hover {
   background-size: 100% 100%;
   color: var(--color-navy);
@@ -92,6 +94,7 @@ body {
   position: relative;
   padding-block: 0.25rem;
 }
+
 .fs-navlink::before {
   content: '';
   position: absolute;
@@ -99,42 +102,50 @@ body {
   top: 50%;
   width: 5px;
   height: 5px;
-  background: var(--color-accent);
+  background: var(--color-growth);
   transform: translateY(-50%) scale(0);
   transition: transform 0.2s ease;
 }
+
 .fs-navlink:hover::before {
   transform: translateY(-50%) scale(1);
 }
 
 @keyframes fs-rise {
   from { transform: scaleY(0); }
-  to   { transform: scaleY(1); }
+  to { transform: scaleY(1); }
 }
+
 .fs-rise {
   transform-box: fill-box;
   transform-origin: 50% 100%;
   animation: fs-rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
+
 @keyframes fs-fade {
   from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: none; }
+  to { opacity: 1; transform: none; }
 }
+
 .fs-fade {
   animation: fs-fade 0.6s ease both;
 }
+
 @keyframes fs-pulse {
-  0%   { transform: scale(1);   opacity: 0.55; }
+  0% { transform: scale(1); opacity: 0.55; }
   100% { transform: scale(3.2); opacity: 0; }
 }
+
 .fs-pulse {
   transform-box: fill-box;
   transform-origin: center;
   animation: fs-pulse 2.4s ease-out infinite;
 }
+
 @keyframes fs-blink {
   50% { opacity: 0; }
 }
+
 .fs-caret {
   display: inline-block;
   width: 0.55em;

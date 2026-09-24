@@ -15,9 +15,31 @@ export default function Icon() {
           background: 'transparent'
         }}
       >
-        <div style={{width: 7, height: 18, background: '#0C3860', marginInlineEnd: 2}} />
-        <div style={{width: 7, height: 26, background: '#0C3860', marginInlineEnd: 2}} />
-        <div style={{width: 7, height: 32, background: '#E8912F'}} />
+        <div
+          style={{
+            width: 7,
+            height: 18,
+            background: '#19324A',
+            marginInlineEnd: 2
+          }}
+        />
+
+        <div
+          style={{
+            width: 7,
+            height: 26,
+            background: '#19324A',
+            marginInlineEnd: 2
+          }}
+        />
+
+        <div
+          style={{
+            width: 7,
+            height: 32,
+            background: '#789B87'
+          }}
+        />
       </div>
     ),
     {...size}
