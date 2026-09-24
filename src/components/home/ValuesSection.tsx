@@ -23,9 +23,9 @@ export async function ValuesSection({
   return (
     <section className={`${CONTAINER} py-24 md:py-36`}>
       <Reveal>
-        <SectionLabel index="04">
-          {t('label')}
-        </SectionLabel>
+       <SectionLabel>
+  {t('label')}
+</SectionLabel>
 
         <h2 className="font-heading mt-6 max-w-xl text-4xl font-bold leading-[1.05] text-[var(--color-navy)] md:text-6xl rtl:leading-[1.3]">
           {t('title')}
