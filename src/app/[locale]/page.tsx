@@ -1,7 +1,6 @@
 import {HeroSection} from '@/components/home/HeroSection';
 import {LifecycleSection} from '@/components/home/LifecycleSection';
 import {InitiativesSection} from '@/components/home/InitiativesSection';
-import {ValuesSection} from '@/components/home/ValuesSection';
 import {CTASection} from '@/components/home/CTASection';
 import ChildLearning from '@/components/home/ChildLearning';
 import { JourneySection } from '@/components/home/JourneySection';
