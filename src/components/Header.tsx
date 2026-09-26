@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import {useRouter, usePathname} from 'next/navigation';
 import {useEffect, useState} from 'react';
@@ -15,37 +16,21 @@ interface HeaderProps {
 
 export function Logo({light = false}: {light?: boolean}) {
   const t = useTranslations('Header');
-  const bar = light ? '#fff' : 'var(--color-navy)';
 
+  // The PNG already bakes the wordmark into the artwork, so it replaces both
+  // the old inline SVG mark and the separate text span. It's a fixed navy
+  // asset — `light` has nothing to switch to yet, so it just swaps to a
+  // `/logo-white.png` you'll need to add once this Logo is used on a dark
+  // background (e.g. a footer). Until that file exists, `light` is a no-op.
   return (
-    <span className="inline-flex items-baseline gap-3">
-      <svg
-        width="30"
-        height="30"
-        viewBox="0 0 30 30"
-        aria-hidden="true"
-        className="transition-transform group-hover:-translate-y-0.5 flex-shrink-0 translate-y-[2px]"
-      >
-        <rect x="1" y="20" width="7" height="9" fill={bar} />
-        <rect x="10" y="13" width="7" height="16" fill={bar} />
-        <rect x="19" y="6" width="7" height="23" fill={bar} />
-        <circle cx="22.5" cy="3" r="2.6" fill="var(--color-growth)" />
-        <path
-          d="M22.5 5.5 Q18.5 8 20.5 12 M22.5 5.5 Q26.5 8 24.5 12"
-          stroke="var(--color-accent)"
-          strokeWidth="1.4"
-          fill="none"
-          strokeLinecap="round"
-        />
-      </svg>
-      <span
-        className={`font-heading text-lg font-bold leading-none ${
-          light ? 'text-white' : 'text-[var(--color-navy)]'
-        }`}
-      >
-        {t('brand')}
-      </span>
-    </span>
+    <Image
+      src={light ? '/logo-white.png' : '/logo.png'}
+      alt={t('brand')}
+      width={608}
+      height={402}
+      priority
+      className="h-11 w-auto flex-shrink-0 transition-transform group-hover:-translate-y-0.5"
+    />
   );
 }
 

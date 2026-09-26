@@ -3,14 +3,14 @@
 
 :root {
   /* Brand Colors */
-  --color-navy: #19324A;
-  --color-accent: #A8B9A7;
-  --color-growth: #789B87;
+  --color-navy: #1E3A8A;
+  --color-accent: #F0D264;
+  --color-growth: #4CAF9F;
 
   /* Neutral Colors */
   --color-ink: #1D2730;
   --color-line: #DCE2DE;
-  --color-bg: #F7F7F2;
+  --color-bg: #F7F7F5;
 
   /* Typography */
   --font-body: 'Cairo', sans-serif;
@@ -169,8 +169,8 @@ body {
    ========================================================= */
 
 :root {
-  --fs-navy-deep: #10243A;
-  --fs-sage-ink: #4F6E5D;          /* sage dark enough for small text on cream (≈5:1) */
+  --fs-navy-deep: #122353;
+  --fs-sage-ink: #2F7A6E;          /* teal-derived ink dark enough for small text on cream (≈4.8:1) */
   --fs-muted: #4A535B;             /* body grey that passes 4.5:1 on cream */
   --fs-on-navy: #B9C5D0;
 
@@ -239,14 +239,14 @@ body {
     );
   }
 
-  .fs-photo--navy   { --fs-photo-tone: #19324A; }
-  .fs-photo--night  { --fs-photo-tone: #13283C; }
-  .fs-photo--slate  { --fs-photo-tone: #3E5E78; }
-  .fs-photo--growth { --fs-photo-tone: #789B87; }
-  .fs-photo--mist   { --fs-photo-tone: #A8B9A7; }
-  .fs-photo--forest { --fs-photo-tone: #3E5E55; }
-  .fs-photo--moss   { --fs-photo-tone: #4F6E5D; }
-  .fs-photo--pine   { --fs-photo-tone: #2E4A3F; }
+  .fs-photo--navy   { --fs-photo-tone: #1E3A8A; }
+  .fs-photo--night  { --fs-photo-tone: #16295E; }
+  .fs-photo--slate  { --fs-photo-tone: #4C5E8C; }
+  .fs-photo--growth { --fs-photo-tone: #4CAF9F; }
+  .fs-photo--mist   { --fs-photo-tone: #8FCBBD; }
+  .fs-photo--forest { --fs-photo-tone: #3A6E62; }
+  .fs-photo--moss   { --fs-photo-tone: #2F7A6E; }
+  .fs-photo--pine   { --fs-photo-tone: #1C4A40; }
 
   /* ---------- Motion ---------- */
 
