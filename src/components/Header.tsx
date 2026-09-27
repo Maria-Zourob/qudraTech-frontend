@@ -2,19 +2,19 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import {useRouter, usePathname} from 'next/navigation';
-import {useEffect, useState} from 'react';
-import {useTranslations} from 'next-intl';
+import { useRouter, usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 
-import {MountReveal} from '@/components/MountReveal';
-import {MobileNav} from '@/components/MobileNav';
-import {isAuthenticated, clearToken} from '@/lib/auth';
+import { MountReveal } from '@/components/MountReveal';
+import { MobileNav } from '@/components/MobileNav';
+import { isAuthenticated, clearToken } from '@/lib/auth';
 
 interface HeaderProps {
   locale: string;
 }
 
-export function Logo({light = false}: {light?: boolean}) {
+export function Logo({ light = false }: { light?: boolean }) {
   const t = useTranslations('Header');
 
   // The PNG already bakes the wordmark into the artwork, so it replaces both
@@ -29,12 +29,12 @@ export function Logo({light = false}: {light?: boolean}) {
       width={608}
       height={402}
       priority
-      className="h-11 w-auto flex-shrink-0 transition-transform group-hover:-translate-y-0.5"
+      className="h-16 w-auto flex-shrink-0 transition-transform group-hover:-translate-y-0.5"
     />
   );
 }
 
-export function Header({locale}: HeaderProps) {
+export function Header({ locale }: HeaderProps) {
   const t = useTranslations('Header');
   const router = useRouter();
   const pathname = usePathname();
@@ -54,18 +54,18 @@ export function Header({locale}: HeaderProps) {
   }
 
   const links = [
-  {href: `/${locale}`, label: t('navigation.home')},
-  {href: `/${locale}#initiatives`, label: t('navigation.initiatives')},
-  {href: `/${locale}#about`, label: t('navigation.about')},
-  {href: `/${locale}#contact`, label: t('navigation.contact')},
-];
+    { href: `/${locale}`, label: t('navigation.home') },
+    { href: `/${locale}#initiatives`, label: t('navigation.initiatives') },
+    { href: `/${locale}#about`, label: t('navigation.about') },
+    { href: `/${locale}#contact`, label: t('navigation.contact') },
+  ];
 
   const otherLocale = locale === 'ar' ? 'en' : 'ar';
   const otherLabel = t('language');
 
   return (
     <header className="sticky top-0 z-40 border-b border-[var(--color-line)] bg-[rgba(247,246,241,0.88)] backdrop-blur">
-      <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-5 sm:px-8">
+      <div className="mx-auto flex h-20 w-full max-w-6xl items-center justify-between px-5 sm:px-8">
         <MountReveal>
           <Link href={`/${locale}`} className="group" aria-label={t('brand')}>
             <Logo />
@@ -75,8 +75,15 @@ export function Header({locale}: HeaderProps) {
         <nav className="hidden items-center gap-10 md:flex" aria-label={t('mainNavigation')}>
           {links.map((link, i) => (
             <MountReveal key={link.href} delay={80 + i * 60}>
-              <Link href={link.href} className="fs-navlink text-sm font-medium text-[var(--color-ink)]">
+              <Link
+                href={link.href}
+                className="fs-navlink group relative text-sm font-medium text-[var(--color-ink)]"
+              >
                 {link.label}
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute -bottom-1 inset-x-0 h-0.5 w-0 bg-[var(--color-accent)] transition-all duration-300 group-hover:w-full"
+                />
               </Link>
             </MountReveal>
           ))}
