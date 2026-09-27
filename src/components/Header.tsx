@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { useTranslations } from 'next-intl';
+import {useTranslations, useLocale} from 'next-intl';
 
 import { MountReveal } from '@/components/MountReveal';
 import { MobileNav } from '@/components/MobileNav';
@@ -14,17 +14,14 @@ interface HeaderProps {
   locale: string;
 }
 
-export function Logo({ light = false }: { light?: boolean }) {
+export function Logo({light = false}: {light?: boolean}) {
   const t = useTranslations('Header');
+  const locale = useLocale();
+  const isArabic = locale === 'ar';
 
-  // The PNG already bakes the wordmark into the artwork, so it replaces both
-  // the old inline SVG mark and the separate text span. It's a fixed navy
-  // asset — `light` has nothing to switch to yet, so it just swaps to a
-  // `/logo-white.png` you'll need to add once this Logo is used on a dark
-  // background (e.g. a footer). Until that file exists, `light` is a no-op.
   return (
     <Image
-      src={light ? '/logo-white.png' : '/logo.png'}
+      src={isArabic ? '/logo-ar.png' : '/logo-en.png'}
       alt={t('brand')}
       width={608}
       height={402}

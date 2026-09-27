@@ -87,9 +87,9 @@ export default function Footer({ locale }: FooterProps) {
             </div>
           </Reveal>
 
-          {/* Navigation */}
+                    {/* Navigation */}
           <Reveal delay={120}>
-            <div className="flex flex-col items-center gap-4 lg:items-start">
+            <div className="flex flex-col items-center gap-4 lg:items-start lg:pt-[4.75rem]">
               <h3 className="fs-label text-[var(--color-navy)]">
                 {t("links_title")}
               </h3>
@@ -106,9 +106,9 @@ export default function Footer({ locale }: FooterProps) {
             </div>
           </Reveal>
 
-          {/* Platform */}
+                    {/* Platform */}
           <Reveal delay={240}>
-            <div className="flex flex-col items-center gap-4 lg:items-start">
+            <div className="flex flex-col items-center gap-4 lg:items-start lg:pt-[4.75rem]">
               <h3 className="fs-label text-[var(--color-navy)]">
                 {t("platform_title")}
               </h3>
@@ -126,8 +126,9 @@ export default function Footer({ locale }: FooterProps) {
           </Reveal>
 
           {/* Contact */}
+                    {/* Contact */}
           <Reveal delay={360}>
-            <div className="flex flex-col items-center gap-4 lg:items-start">
+            <div className="flex flex-col items-center gap-4 lg:items-start lg:pt-[4.75rem]">
               <h3 className="fs-label text-[var(--color-navy)]">
                 {t("contact_title")}
               </h3>
