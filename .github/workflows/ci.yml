@@ -28,7 +28,7 @@ jobs:
 
       - name: Build
         env:
-          NEXT_PUBLIC_API_URL: http://localhost:5274/api
+          NEXT_PUBLIC_API_URL: https://qudratech-backend-backend-74d82533.hosted.cumin.dev/api
         run: npm run build
 
   push-image:
@@ -59,12 +59,12 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
       - name: Build and push image
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ env.OWNER_LC }}/qudratech-frontend:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/qudratech-frontend:latest
-          
+            ghcr.io/${{ env.OWNER_LC }}/qudratech-frontend:v1.1
+            ${{ secrets.DOCKERHUB_USERNAME }}/qudratech-frontend:v1.1
