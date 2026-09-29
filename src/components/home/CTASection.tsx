@@ -84,7 +84,9 @@ export function CTASection({locale}: CTASectionProps) {
 </div>
               </div>
 
-              <div className="relative bg-[var(--color-navy)] p-6 text-white shadow-[0_40px_80px_rgba(12,26,40,0.35)] sm:p-9 lg:col-span-6 lg:col-start-7">
+              <div
+  className="fs-grid-navy relative bg-[var(--color-navy)] p-6 text-white shadow-[0_40px_80px_rgba(12,26,40,0.35)] sm:p-9 lg:col-span-6 lg:col-start-7"
+>
                 <div className="mb-6 flex items-center justify-between border-b border-white/10 pb-4">
                   <span className="fs-label text-[var(--color-accent)]">{t('formLabel')}</span>
                   <span aria-hidden className="h-2 w-2 animate-pulse bg-[var(--color-accent)] motion-reduce:animate-none" />

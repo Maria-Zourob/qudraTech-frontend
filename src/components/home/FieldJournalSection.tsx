@@ -36,7 +36,7 @@ export async function FieldJournalSection() {
   return (
     <section className="relative py-24 md:py-32" aria-labelledby="field-journal-title">
       <div className={CONTAINER}>
-        <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+        <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
           <div>
             <Reveal>
               <p className="fs-label flex items-center gap-2 text-[var(--fs-sage-ink)]">

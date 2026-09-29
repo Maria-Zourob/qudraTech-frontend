@@ -19,12 +19,12 @@ export async function ImpactSection() {
 
   return (
     <section
-      className="relative overflow-hidden bg-[var(--color-navy)] py-24 text-white md:py-32"
-      aria-labelledby="impact-title"
-    >
+  className="fs-grid-navy relative overflow-hidden bg-[var(--color-navy)] py-24 text-white md:py-32"
+  aria-labelledby="impact-title"
+>
       <div className={CONTAINER}>
         <Reveal>
-          <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+          <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
             <div>
               <p className="fs-label flex items-center gap-2 text-[var(--color-accent)]">
                 <span aria-hidden className="h-1.5 w-1.5 shrink-0 bg-current" />
