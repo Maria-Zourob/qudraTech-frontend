@@ -59,10 +59,10 @@ export function AdminTopbar({locale, onMenuClick}: {locale: string; onMenuClick:
 
   return (
     <header
-      className="flex items-center justify-between border-b px-6 h-16 sticky top-0 z-20"
-      style={{borderColor: 'var(--color-line)', background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(6px)'}}
+      className="flex items-center justify-between border-b px-5 md:px-8 h-16 sticky top-0 z-20"
+      style={{borderColor: 'var(--color-line)', background: 'rgba(255,255,255,0.92)', backdropFilter: 'blur(6px)'}}
     >
-            <div className="flex items-center gap-3">
+      <div className="flex items-center gap-4">
         <button
           onClick={onMenuClick}
           className="md:hidden flex h-9 w-9 items-center justify-center border"
@@ -76,16 +76,12 @@ export function AdminTopbar({locale, onMenuClick}: {locale: string; onMenuClick:
           </span>
         </button>
 
-        <div>
-         
-                  <h1 className="font-heading text-lg font-bold text-[var(--color-navy)]">
-            {pageTitle}
-          </h1>
-        </div>
+        <h1 className="font-heading text-xl font-bold" style={{color: 'var(--color-navy)'}}>
+          {pageTitle}
+        </h1>
       </div>
 
       <div className="flex items-center gap-3">
-        {/* Notifications */}
         <Link
           href={`/${locale}/admin/messages`}
           className="relative flex h-10 w-10 items-center justify-center border transition-colors hover:border-[var(--color-navy)]"
@@ -103,7 +99,7 @@ export function AdminTopbar({locale, onMenuClick}: {locale: string; onMenuClick:
           </svg>
           {unread > 0 && (
             <span
-              className="absolute -top-1 -end-1 flex h-4 min-w-4 items-center justify-center px-1 text-[10px] font-bold text-white"
+              className="absolute -top-1.5 -end-1.5 flex h-4 min-w-4 items-center justify-center px-1 text-[10px] font-bold"
               style={{background: 'var(--color-accent)', color: 'var(--color-navy)'}}
             >
               {unread}
@@ -111,20 +107,19 @@ export function AdminTopbar({locale, onMenuClick}: {locale: string; onMenuClick:
           )}
         </Link>
 
-        {/* User menu */}
         <div ref={menuRef} className="relative">
           <button
             onClick={() => setMenuOpen((v) => !v)}
-            className="flex items-center gap-2.5 border px-2.5 py-1.5 transition-colors hover:border-[var(--color-navy)]"
+            className="flex items-center gap-2.5 border ps-2 pe-3 py-1.5 transition-colors hover:border-[var(--color-navy)]"
             style={{borderColor: 'var(--color-line)'}}
           >
             <span
-              className="flex h-7 w-7 items-center justify-center text-xs font-bold text-white"
-              style={{background: 'var(--color-navy)'}}
+              className="flex h-7 w-7 items-center justify-center text-xs font-bold"
+              style={{background: 'var(--color-accent)', color: 'var(--color-navy)'}}
             >
               A
             </span>
-            <span className="hidden sm:block text-sm font-medium text-[var(--color-ink)]">
+            <span className="hidden sm:block text-sm font-medium" style={{color: 'var(--color-ink)'}}>
               admin@qudratech.org
             </span>
             <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
@@ -134,12 +129,12 @@ export function AdminTopbar({locale, onMenuClick}: {locale: string; onMenuClick:
 
           {menuOpen && (
             <div
-              className="absolute end-0 mt-1 w-48 border bg-white shadow-lg z-30"
+              className="absolute end-0 mt-2 w-48 border bg-white shadow-lg z-30"
               style={{borderColor: 'var(--color-line)'}}
             >
               <div className="px-4 py-3 border-b" style={{borderColor: 'var(--color-line)'}}>
-                <p className="text-xs text-[var(--fs-muted)]">{isArabic ? 'مسجَّل الدخول بصفة' : 'Signed in as'}</p>
-                <p className="text-sm font-medium text-[var(--color-navy)]">admin@qudratech.org</p>
+                <p className="text-xs" style={{color: 'var(--fs-muted)'}}>{isArabic ? 'مسجَّل الدخول بصفة' : 'Signed in as'}</p>
+                <p className="text-sm font-medium" style={{color: 'var(--color-navy)'}}>admin@qudratech.org</p>
               </div>
               <button
                 onClick={handleLogout}

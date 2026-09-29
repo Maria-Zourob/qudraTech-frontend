@@ -43,38 +43,57 @@ function MessagesAdmin() {
   const unreadCount = messages.filter((m) => !m.isRead).length;
 
   return (
-    <main className="max-w-3xl mx-auto p-8">
-      <h1 className="text-2xl font-bold mb-2">رسائل التواصل</h1>
-      {unreadCount > 0 && (
-        <p className="text-sm text-orange-600 mb-6">{unreadCount} رسالة غير مقروءة</p>
-      )}
+    <main className="max-w-3xl mx-auto p-6 md:p-8">
+      <div className="mb-8 pb-5 border-b-2" style={{borderColor: 'var(--color-navy)'}}>
+        <p className="fs-label" style={{color: 'var(--fs-muted)'}}>المجتمع</p>
+        <div className="flex items-center gap-3 mt-1">
+          <h1 className="font-heading text-2xl font-bold" style={{color: 'var(--color-navy)'}}>
+            رسائل التواصل
+          </h1>
+          {unreadCount > 0 && (
+            <span
+              className="fs-label px-2 py-0.5"
+              style={{background: 'var(--color-accent)', color: 'var(--color-navy)'}}
+            >
+              {unreadCount} غير مقروءة
+            </span>
+          )}
+        </div>
+      </div>
 
       {messages.length === 0 ? (
-        <p className="text-gray-500">لا توجد رسائل بعد.</p>
+        <p className="text-sm" style={{color: 'var(--fs-muted)'}}>لا توجد رسائل بعد.</p>
       ) : (
         <div className="space-y-3">
           {messages.map((m) => (
             <div
               key={m.id}
-              className="border rounded-lg p-4"
-              style={{borderColor: m.isRead ? '#e5e5e5' : 'var(--color-accent)'}}
+              className="border-s-4 border p-5"
+              style={{
+                borderInlineStartColor: m.isRead ? 'var(--color-line)' : 'var(--color-accent)',
+                borderColor: 'var(--color-line)',
+                background: 'white'
+              }}
             >
-              <div className="flex justify-between items-start mb-2">
+              <div className="flex justify-between items-start gap-4 mb-3">
                 <div>
-                  <p className="font-medium">{m.name} — {m.subject}</p>
-                  <p className="text-sm text-gray-500">{m.email}</p>
+                  <p className="font-medium" style={{color: 'var(--color-navy)'}}>
+                    {m.name} <span style={{color: 'var(--fs-muted)'}}>— {m.subject}</span>
+                  </p>
+                  <p className="text-sm mt-0.5" style={{color: 'var(--fs-muted)'}} dir="ltr">{m.email}</p>
                 </div>
                 {!m.isRead && (
                   <button
                     onClick={() => handleMarkAsRead(m.id)}
-                    className="text-xs px-2 py-1 border rounded"
+                    className="fs-label px-3 py-1.5 border shrink-0 transition-colors hover:bg-[var(--fs-paper-2)]"
+                    style={{borderColor: 'var(--color-navy)', color: 'var(--color-navy)'}}
                   >
                     تحديد كمقروءة
                   </button>
                 )}
               </div>
-              <p className="text-sm text-gray-700 mt-2">{m.message}</p>
-              <p className="text-xs text-gray-400 mt-2">
+              <p className="text-sm leading-relaxed" style={{color: 'var(--color-ink)'}}>{m.message}</p>
+              <p className="fs-label mt-3" style={{color: 'var(--fs-sage-ink)'}}>
                 {new Date(m.createdAt).toLocaleString('ar')}
               </p>
             </div>

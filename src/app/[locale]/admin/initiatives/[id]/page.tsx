@@ -35,8 +35,51 @@ interface Kpi {
   unit: string;
 }
 
+interface Partner {
+  id: string;
+  nameAr: string;
+  nameEn: string;
+  type: string;
+}
+
 const TABS = ['details', 'kpis', 'budget', 'risks', 'partners'] as const;
 type Tab = (typeof TABS)[number];
+
+const TAB_LABELS: Record<Tab, string> = {
+  details: 'البيانات الأساسية',
+  kpis: 'مؤشرات الأداء',
+  budget: 'الميزانية',
+  risks: 'المخاطر',
+  partners: 'الشركاء'
+};
+
+function Field({
+  label,
+  children
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div>
+      <label
+        className="fs-label mb-1.5 block"
+        style={{color: 'var(--fs-muted)'}}
+      >
+        {label}
+      </label>
+      {children}
+    </div>
+  );
+}
+
+const inputClass =
+  'w-full border px-3.5 py-2.5 text-sm transition-colors focus:border-[var(--color-navy)] focus:outline-none';
+
+const inputStyle = {
+  borderColor: 'var(--color-line)',
+  color: 'var(--color-ink)'
+};
 
 export default function InitiativeManagePage() {
   const params = useParams();
@@ -49,8 +92,14 @@ export default function InitiativeManagePage() {
 
   async function loadInitiative() {
     setLoading(true);
+
     const token = getToken() ?? undefined;
-    const data = await apiClient.get<InitiativeDetail>(`/initiatives/${id}`, token);
+
+    const data = await apiClient.get<InitiativeDetail>(
+      `/initiatives/${id}`,
+      token
+    );
+
     setInitiative(data);
     setLoading(false);
   }
@@ -60,175 +109,147 @@ export default function InitiativeManagePage() {
     loadInitiative();
   }, [id]);
 
-  if (loading || !initiative) return <p className="p-8">جاري التحميل...</p>;
+  if (loading || !initiative) {
+    return (
+      <main className="mx-auto max-w-4xl p-6 md:p-8">
+        <p
+          className="text-sm"
+          style={{color: 'var(--fs-muted)'}}
+        >
+          جاري التحميل...
+        </p>
+      </main>
+    );
+  }
 
-  
-      const TAB_LABELS: Record<Tab, string> = {
-    details: 'البيانات الأساسية',
-    kpis: 'مؤشرات الأداء',
-    budget: 'الميزانية',
-    risks: 'المخاطر',
-    partners: 'الشركاء'
-  };
   return (
-    <main className="max-w-3xl mx-auto p-8">
-      <h1 className="text-2xl font-bold mb-1">{initiative.titleAr}</h1>
-      <span className="text-sm text-gray-500 mb-6 inline-block">{initiative.status}</span>
+    <main className="mx-auto max-w-4xl p-6 md:p-8">
+      {/* Header */}
+      <div
+        className="mb-8 border-b-2 pb-5"
+        style={{borderColor: 'var(--color-navy)'}}
+      >
+        <p
+          className="fs-label"
+          style={{color: 'var(--fs-muted)'}}
+        >
+          المبادرات
+        </p>
 
-      <div className="flex gap-2 border-b mb-6">
-        {TABS.map((t) => (
-          <button
-            key={t}
-            onClick={() => setTab(t)}
-            className="px-4 py-2 text-sm font-medium"
+        <div className="mt-1 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h1
+              className="font-heading text-2xl font-bold"
+              style={{color: 'var(--color-navy)'}}
+            >
+              إدارة المبادرة
+            </h1>
+
+            <p
+              className="mt-1 text-sm"
+              style={{color: 'var(--fs-muted)'}}
+            >
+              {initiative.titleAr}
+            </p>
+          </div>
+
+          <span
+            className="w-fit px-3 py-1.5 text-xs font-medium"
             style={{
-              borderBottom: tab === t ? '2px solid var(--color-navy)' : '2px solid transparent',
-              color: tab === t ? 'var(--color-navy)' : '#888'
+              background: 'rgba(120, 155, 135, 0.12)',
+              color: 'var(--fs-sage-ink)'
             }}
           >
-            {TAB_LABELS[t]}
-          </button>
-        ))}
+            {initiative.status}
+          </span>
+        </div>
       </div>
-      {tab === 'details' && <DetailsTab initiative={initiative} onUpdated={loadInitiative} showToast={showToast} />}
-      {tab === 'kpis' && <KpiTab initiativeId={id} showToast={showToast} />}
-     {tab === 'budget' && <BudgetTab initiativeId={id} showToast={showToast} />}
-      {tab === 'risks' && <RisksTab initiativeId={id} showToast={showToast} />}
-      {tab === 'partners' && <PartnersTab initiativeId={id} showToast={showToast} />}
-      </main>
+
+      {/* Tabs */}
+      <nav
+        className="mb-6 flex overflow-x-auto border-b"
+        style={{borderColor: 'var(--color-line)'}}
+      >
+        {TABS.map((t) => {
+          const active = tab === t;
+
+          return (
+            <button
+              key={t}
+              type="button"
+              onClick={() => setTab(t)}
+              className="relative shrink-0 px-4 py-3 text-sm font-medium transition-colors"
+              style={{
+                color: active
+                  ? 'var(--color-navy)'
+                  : 'var(--fs-muted)'
+              }}
+            >
+              {TAB_LABELS[t]}
+
+              {active && (
+                <span
+                  className="absolute inset-x-0 bottom-0 h-0.5"
+                  style={{background: 'var(--color-navy)'}}
+                />
+              )}
+            </button>
+          );
+        })}
+      </nav>
+
+      {/* Tab Content */}
+      <div
+        className="border p-6 md:p-7"
+        style={{
+          borderColor: 'var(--color-line)',
+          background: 'white'
+        }}
+      >
+        {tab === 'details' && (
+          <DetailsTab
+            initiative={initiative}
+            onUpdated={loadInitiative}
+            showToast={showToast}
+          />
+        )}
+
+        {tab === 'kpis' && (
+          <KpiTab
+            initiativeId={id}
+            showToast={showToast}
+          />
+        )}
+
+        {tab === 'budget' && (
+          <BudgetTab
+            initiativeId={id}
+            showToast={showToast}
+          />
+        )}
+
+        {tab === 'risks' && (
+          <RisksTab
+            initiativeId={id}
+            showToast={showToast}
+          />
+        )}
+
+        {tab === 'partners' && (
+          <PartnersTab
+            initiativeId={id}
+            showToast={showToast}
+          />
+        )}
+      </div>
+    </main>
   );
 }
-function BudgetTab({initiativeId, showToast}: {initiativeId: string; showToast: (m: string, t?: 'success' | 'error') => void}) {
-  const [form, setForm] = useState({
-    category: '', itemNameAr: '', itemNameEn: '',
-    plannedAmount: 0, actualAmount: 0, fundingSource: ''
-  });
-  const [submitting, setSubmitting] = useState(false);
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setSubmitting(true);
-    const token = getToken() ?? undefined;
-    try {
-      await apiClient.post(`/initiatives/${initiativeId}/budget-items`, form, token);
-      showToast('تمت إضافة بند الميزانية بنجاح.', 'success');
-      setForm({category: '', itemNameAr: '', itemNameEn: '', plannedAmount: 0, actualAmount: 0, fundingSource: ''});
-    } catch {
-      showToast('صار خطأ، حاولي كمان مرة.', 'error');
-    }
-    setSubmitting(false);
-  }
+/* =========================================================
+   DETAILS
+========================================================= */
 
-  const inputClass = 'w-full border rounded-lg p-2';
-
-  return (
-    <form onSubmit={handleSubmit} className="space-y-3">
-      <div className="grid grid-cols-2 gap-3">
-        <input placeholder="الفئة (Internet/Printing...)" required value={form.category} onChange={(e) => setForm({...form, category: e.target.value})} className={inputClass} />
-        <input placeholder="مصدر التمويل" value={form.fundingSource} onChange={(e) => setForm({...form, fundingSource: e.target.value})} className={inputClass} />
-      </div>
-      <div className="grid grid-cols-2 gap-3">
-        <input placeholder="اسم البند بالعربي" required value={form.itemNameAr} onChange={(e) => setForm({...form, itemNameAr: e.target.value})} className={inputClass} />
-        <input placeholder="Item name in English" required value={form.itemNameEn} onChange={(e) => setForm({...form, itemNameEn: e.target.value})} className={inputClass} />
-      </div>
-      <div className="grid grid-cols-2 gap-3">
-        <input type="number" placeholder="المبلغ المخطَّط" required value={form.plannedAmount} onChange={(e) => setForm({...form, plannedAmount: Number(e.target.value)})} className={inputClass} />
-        <input type="number" placeholder="المبلغ الفعلي" value={form.actualAmount} onChange={(e) => setForm({...form, actualAmount: Number(e.target.value)})} className={inputClass} />
-      </div>
-      <button type="submit" disabled={submitting} className="px-5 py-2 rounded-lg text-white text-sm disabled:opacity-50" style={{background: 'var(--color-navy)'}}>
-        {submitting ? 'جاري الحفظ...' : 'إضافة بند'}
-      </button>
-    </form>
-  );
-}
-
-function RisksTab({initiativeId, showToast}: {initiativeId: string; showToast: (m: string, t?: 'success' | 'error') => void}) {
-  const [form, setForm] = useState({
-    descriptionAr: '', descriptionEn: '', probability: 'Medium',
-    impact: 'Medium', mitigation: '', contingencyPlan: ''
-  });
-  const [submitting, setSubmitting] = useState(false);
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setSubmitting(true);
-    const token = getToken() ?? undefined;
-    try {
-      await apiClient.post(`/initiatives/${initiativeId}/risks`, form, token);
-      showToast('تمت إضافة الخطر بنجاح.', 'success');
-      setForm({descriptionAr: '', descriptionEn: '', probability: 'Medium', impact: 'Medium', mitigation: '', contingencyPlan: ''});
-    } catch {
-      showToast('صار خطأ، حاولي كمان مرة.', 'error');
-    }
-    setSubmitting(false);
-  }
-
-  const inputClass = 'w-full border rounded-lg p-2';
-
-  return (
-    <form onSubmit={handleSubmit} className="space-y-3">
-      <div className="grid grid-cols-2 gap-3">
-        <textarea placeholder="وصف الخطر بالعربي" required rows={2} value={form.descriptionAr} onChange={(e) => setForm({...form, descriptionAr: e.target.value})} className={inputClass} />
-        <textarea placeholder="Risk description in English" required rows={2} value={form.descriptionEn} onChange={(e) => setForm({...form, descriptionEn: e.target.value})} className={inputClass} />
-      </div>
-      <div className="grid grid-cols-2 gap-3">
-        <select value={form.probability} onChange={(e) => setForm({...form, probability: e.target.value})} className={inputClass}>
-          <option value="Low">احتمالية: منخفضة</option>
-          <option value="Medium">احتمالية: متوسطة</option>
-          <option value="High">احتمالية: عالية</option>
-        </select>
-        <select value={form.impact} onChange={(e) => setForm({...form, impact: e.target.value})} className={inputClass}>
-          <option value="Low">تأثير: منخفض</option>
-          <option value="Medium">تأثير: متوسط</option>
-          <option value="High">تأثير: عالي</option>
-        </select>
-      </div>
-      <textarea placeholder="خطة التخفيف" required rows={2} value={form.mitigation} onChange={(e) => setForm({...form, mitigation: e.target.value})} className={inputClass} />
-      <textarea placeholder="خطة الطوارئ (اختياري)" rows={2} value={form.contingencyPlan} onChange={(e) => setForm({...form, contingencyPlan: e.target.value})} className={inputClass} />
-      <button type="submit" disabled={submitting} className="px-5 py-2 rounded-lg text-white text-sm disabled:opacity-50" style={{background: 'var(--color-navy)'}}>
-        {submitting ? 'جاري الحفظ...' : 'إضافة خطر'}
-      </button>
-    </form>
-  );
-}
-function KpiTab({initiativeId, showToast}: {initiativeId: string; showToast: (m: string, t?: 'success' | 'error') => void}) {
-  const [form, setForm] = useState({nameAr: '', nameEn: '', baseline: 0, target: 0, actual: 0, unit: ''});
-  const [submitting, setSubmitting] = useState(false);
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setSubmitting(true);
-    const token = getToken() ?? undefined;
-    try {
-      await apiClient.post(`/initiatives/${initiativeId}/kpis`, form, token);
-      showToast('تمت إضافة المؤشر بنجاح.', 'success');
-      setForm({nameAr: '', nameEn: '', baseline: 0, target: 0, actual: 0, unit: ''});
-    } catch {
-      showToast('صار خطأ، حاولي كمان مرة.', 'error');
-    }
-    setSubmitting(false);
-  }
-
-  const inputClass = 'w-full border rounded-lg p-2';
-
-  return (
-    <form onSubmit={handleSubmit} className="space-y-3">
-      <div className="grid grid-cols-2 gap-3">
-        <input placeholder="الاسم بالعربي" required value={form.nameAr} onChange={(e) => setForm({...form, nameAr: e.target.value})} className={inputClass} />
-        <input placeholder="Name in English" required value={form.nameEn} onChange={(e) => setForm({...form, nameEn: e.target.value})} className={inputClass} />
-      </div>
-      <div className="grid grid-cols-4 gap-3">
-        <input type="number" placeholder="الأساس" value={form.baseline} onChange={(e) => setForm({...form, baseline: Number(e.target.value)})} className={inputClass} />
-        <input type="number" placeholder="الهدف" required value={form.target} onChange={(e) => setForm({...form, target: Number(e.target.value)})} className={inputClass} />
-        <input type="number" placeholder="الفعلي" value={form.actual} onChange={(e) => setForm({...form, actual: Number(e.target.value)})} className={inputClass} />
-        <input placeholder="الوحدة" required value={form.unit} onChange={(e) => setForm({...form, unit: e.target.value})} className={inputClass} />
-      </div>
-      <button type="submit" disabled={submitting} className="px-5 py-2 rounded-lg text-white text-sm disabled:opacity-50" style={{background: 'var(--color-navy)'}}>
-        {submitting ? 'جاري الحفظ...' : 'إضافة مؤشر'}
-      </button>
-    </form>
-  );
-}
 function DetailsTab({
   initiative,
   onUpdated,
@@ -236,10 +257,14 @@ function DetailsTab({
 }: {
   initiative: InitiativeDetail;
   onUpdated: () => void;
-  showToast: (m: string, t?: 'success' | 'error') => void;
+  showToast: (
+    m: string,
+    t?: 'success' | 'error'
+  ) => void;
 }) {
   const [categories, setCategories] = useState<Category[]>([]);
   const [submitting, setSubmitting] = useState(false);
+
   const [form, setForm] = useState({
     titleAr: initiative.titleAr,
     titleEn: initiative.titleEn,
@@ -254,110 +279,830 @@ function DetailsTab({
   useEffect(() => {
     async function loadCategories() {
       const token = getToken() ?? undefined;
-      const data = await apiClient.get<Category[]>('/categories', token);
+
+      const data = await apiClient.get<Category[]>(
+        '/categories',
+        token
+      );
+
       setCategories(data);
     }
+
     // eslint-disable-next-line react-hooks/set-state-in-effect
     loadCategories();
   }, []);
 
   function updateField(field: string, value: string) {
-    setForm((prev) => ({...prev, [field]: value}));
+    setForm((prev) => ({
+      ...prev,
+      [field]: value
+    }));
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSubmitting(true);
+
     const token = getToken() ?? undefined;
+
     try {
-      await apiClient.put(`/initiatives/${initiative.id}`, form, token);
-      showToast('تم تحديث بيانات المبادرة بنجاح.', 'success');
+      await apiClient.put(
+        `/initiatives/${initiative.id}`,
+        form,
+        token
+      );
+
+      showToast(
+        'تم تحديث بيانات المبادرة بنجاح.',
+        'success'
+      );
+
       onUpdated();
     } catch {
-      showToast('صار خطأ، حاولي كمان مرة.', 'error');
+      showToast(
+        'صار خطأ، حاولي كمان مرة.',
+        'error'
+      );
     }
+
     setSubmitting(false);
   }
 
-  const inputClass = 'w-full border rounded-lg p-2.5';
-
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm mb-1">العنوان بالعربي</label>
-          <input required value={form.titleAr} onChange={(e) => updateField('titleAr', e.target.value)} className={inputClass} />
-        </div>
-        <div>
-          <label className="block text-sm mb-1">Title in English</label>
-          <input required value={form.titleEn} onChange={(e) => updateField('titleEn', e.target.value)} className={inputClass} />
-        </div>
+    <form onSubmit={handleSubmit} className="space-y-5">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <Field label="العنوان بالعربي">
+          <input
+            required
+            value={form.titleAr}
+            onChange={(e) =>
+              updateField('titleAr', e.target.value)
+            }
+            className={inputClass}
+            style={inputStyle}
+          />
+        </Field>
+
+        <Field label="Title in English">
+          <input
+            dir="ltr"
+            required
+            value={form.titleEn}
+            onChange={(e) =>
+              updateField('titleEn', e.target.value)
+            }
+            className={inputClass}
+            style={inputStyle}
+          />
+        </Field>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm mb-1">الوصف بالعربي</label>
-          <textarea required rows={3} value={form.descriptionAr} onChange={(e) => updateField('descriptionAr', e.target.value)} className={inputClass} />
-        </div>
-        <div>
-          <label className="block text-sm mb-1">Description in English</label>
-          <textarea required rows={3} value={form.descriptionEn} onChange={(e) => updateField('descriptionEn', e.target.value)} className={inputClass} />
-        </div>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <Field label="الوصف بالعربي">
+          <textarea
+            required
+            rows={4}
+            value={form.descriptionAr}
+            onChange={(e) =>
+              updateField(
+                'descriptionAr',
+                e.target.value
+              )
+            }
+            className={inputClass}
+            style={inputStyle}
+          />
+        </Field>
+
+        <Field label="Description in English">
+          <textarea
+            dir="ltr"
+            required
+            rows={4}
+            value={form.descriptionEn}
+            onChange={(e) =>
+              updateField(
+                'descriptionEn',
+                e.target.value
+              )
+            }
+            className={inputClass}
+            style={inputStyle}
+          />
+        </Field>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm mb-1">الفئة المستهدفة (عربي)</label>
-          <input value={form.targetGroupAr} onChange={(e) => updateField('targetGroupAr', e.target.value)} className={inputClass} />
-        </div>
-        <div>
-          <label className="block text-sm mb-1">Target Group (English)</label>
-          <input value={form.targetGroupEn} onChange={(e) => updateField('targetGroupEn', e.target.value)} className={inputClass} />
-        </div>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <Field label="الفئة المستهدفة (عربي)">
+          <input
+            value={form.targetGroupAr}
+            onChange={(e) =>
+              updateField(
+                'targetGroupAr',
+                e.target.value
+              )
+            }
+            className={inputClass}
+            style={inputStyle}
+          />
+        </Field>
+
+        <Field label="Target Group (English)">
+          <input
+            dir="ltr"
+            value={form.targetGroupEn}
+            onChange={(e) =>
+              updateField(
+                'targetGroupEn',
+                e.target.value
+              )
+            }
+            className={inputClass}
+            style={inputStyle}
+          />
+        </Field>
       </div>
 
-      <div>
-        <label className="block text-sm mb-1">الموقع</label>
-        <input required value={form.location} onChange={(e) => updateField('location', e.target.value)} className={inputClass} />
-      </div>
+      <Field label="الموقع">
+        <input
+          required
+          value={form.location}
+          onChange={(e) =>
+            updateField('location', e.target.value)
+          }
+          className={inputClass}
+          style={inputStyle}
+        />
+      </Field>
 
-      <div>
-        <label className="block text-sm mb-1">التصنيف</label>
-        <select required value={form.categoryId} onChange={(e) => updateField('categoryId', e.target.value)} className={inputClass}>          <option value="">اختاري تصنيف</option>
+      <Field label="التصنيف">
+        <select
+          required
+          value={form.categoryId}
+          onChange={(e) =>
+            updateField(
+              'categoryId',
+              e.target.value
+            )
+          }
+          className={inputClass}
+          style={inputStyle}
+        >
+          <option value="">
+            اختاري تصنيف
+          </option>
+
           {categories.map((c) => (
-            <option key={c.id} value={c.id}>{c.nameAr}</option>
+            <option key={c.id} value={c.id}>
+              {c.nameAr}
+            </option>
           ))}
         </select>
-      </div>
+      </Field>
 
-      <button
-        type="submit"
-        disabled={submitting}
-        className="px-5 py-2 rounded-lg text-white text-sm disabled:opacity-50"
-        style={{background: 'var(--color-navy)'}}
+      <div
+        className="border-t pt-5"
+        style={{borderColor: 'var(--color-line)'}}
       >
-        {submitting ? 'جاري الحفظ...' : 'حفظ التعديلات'}
-      </button>
+        <button
+          type="submit"
+          disabled={submitting}
+          className="px-7 py-3 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+          style={{background: 'var(--color-navy)'}}
+        >
+          {submitting
+            ? 'جاري الحفظ...'
+            : 'حفظ التعديلات'}
+        </button>
+      </div>
     </form>
   );
 }
-interface Partner {
-  id: string;
-  nameAr: string;
-  nameEn: string;
-  type: string;
+
+/* =========================================================
+   KPI
+========================================================= */
+
+function KpiTab({
+  initiativeId,
+  showToast
+}: {
+  initiativeId: string;
+  showToast: (
+    m: string,
+    t?: 'success' | 'error'
+  ) => void;
+}) {
+  const [form, setForm] = useState({
+    nameAr: '',
+    nameEn: '',
+    baseline: 0,
+    target: 0,
+    actual: 0,
+    unit: ''
+  });
+
+  const [submitting, setSubmitting] =
+    useState(false);
+
+  async function handleSubmit(
+    e: React.FormEvent
+  ) {
+    e.preventDefault();
+    setSubmitting(true);
+
+    const token = getToken() ?? undefined;
+
+    try {
+      await apiClient.post(
+        `/initiatives/${initiativeId}/kpis`,
+        form,
+        token
+      );
+
+      showToast(
+        'تمت إضافة المؤشر بنجاح.',
+        'success'
+      );
+
+      setForm({
+        nameAr: '',
+        nameEn: '',
+        baseline: 0,
+        target: 0,
+        actual: 0,
+        unit: ''
+      });
+    } catch {
+      showToast(
+        'صار خطأ، حاولي كمان مرة.',
+        'error'
+      );
+    }
+
+    setSubmitting(false);
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-5">
+      <div className="mb-2">
+        <p
+          className="font-heading text-lg font-bold"
+          style={{color: 'var(--color-navy)'}}
+        >
+          إضافة مؤشر أداء
+        </p>
+
+        <p
+          className="mt-1 text-sm"
+          style={{color: 'var(--fs-muted)'}}
+        >
+          أضيفي مؤشرًا جديدًا لقياس تقدم المبادرة.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <Field label="الاسم بالعربي">
+          <input
+            required
+            value={form.nameAr}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                nameAr: e.target.value
+              })
+            }
+            className={inputClass}
+            style={inputStyle}
+          />
+        </Field>
+
+        <Field label="Name in English">
+          <input
+            dir="ltr"
+            required
+            value={form.nameEn}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                nameEn: e.target.value
+              })
+            }
+            className={inputClass}
+            style={inputStyle}
+          />
+        </Field>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+        <Field label="خط الأساس">
+          <input
+            type="number"
+            value={form.baseline}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                baseline: Number(e.target.value)
+              })
+            }
+            className={inputClass}
+            style={inputStyle}
+          />
+        </Field>
+
+        <Field label="الهدف">
+          <input
+            type="number"
+            required
+            value={form.target}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                target: Number(e.target.value)
+              })
+            }
+            className={inputClass}
+            style={inputStyle}
+          />
+        </Field>
+
+        <Field label="الفعلي">
+          <input
+            type="number"
+            value={form.actual}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                actual: Number(e.target.value)
+              })
+            }
+            className={inputClass}
+            style={inputStyle}
+          />
+        </Field>
+
+        <Field label="الوحدة">
+          <input
+            required
+            value={form.unit}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                unit: e.target.value
+              })
+            }
+            className={inputClass}
+            style={inputStyle}
+          />
+        </Field>
+      </div>
+
+      <ActionButton
+        submitting={submitting}
+        text="إضافة مؤشر"
+        loadingText="جاري الحفظ..."
+      />
+    </form>
+  );
 }
 
-function PartnersTab({initiativeId, showToast}: {initiativeId: string; showToast: (m: string, t?: 'success' | 'error') => void}) {
-  const [allPartners, setAllPartners] = useState<Partner[]>([]);
-  const [linkedPartners, setLinkedPartners] = useState<Partner[]>([]);
-  const [selectedId, setSelectedId] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [linking, setLinking] = useState(false);
+/* =========================================================
+   BUDGET
+========================================================= */
+
+function BudgetTab({
+  initiativeId,
+  showToast
+}: {
+  initiativeId: string;
+  showToast: (
+    m: string,
+    t?: 'success' | 'error'
+  ) => void;
+}) {
+  const [form, setForm] = useState({
+    category: '',
+    itemNameAr: '',
+    itemNameEn: '',
+    plannedAmount: 0,
+    actualAmount: 0,
+    fundingSource: ''
+  });
+
+  const [submitting, setSubmitting] =
+    useState(false);
+
+  async function handleSubmit(
+    e: React.FormEvent
+  ) {
+    e.preventDefault();
+    setSubmitting(true);
+
+    const token = getToken() ?? undefined;
+
+    try {
+      await apiClient.post(
+        `/initiatives/${initiativeId}/budget-items`,
+        form,
+        token
+      );
+
+      showToast(
+        'تمت إضافة بند الميزانية بنجاح.',
+        'success'
+      );
+
+      setForm({
+        category: '',
+        itemNameAr: '',
+        itemNameEn: '',
+        plannedAmount: 0,
+        actualAmount: 0,
+        fundingSource: ''
+      });
+    } catch {
+      showToast(
+        'صار خطأ، حاولي كمان مرة.',
+        'error'
+      );
+    }
+
+    setSubmitting(false);
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-5">
+      <div className="mb-2">
+        <p
+          className="font-heading text-lg font-bold"
+          style={{color: 'var(--color-navy)'}}
+        >
+          إضافة بند للميزانية
+        </p>
+
+        <p
+          className="mt-1 text-sm"
+          style={{color: 'var(--fs-muted)'}}
+        >
+          سجلي التكاليف المخططة والفعلية ومصدر التمويل.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <Field label="الفئة">
+          <input
+            required
+            placeholder="Internet / Printing..."
+            value={form.category}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                category: e.target.value
+              })
+            }
+            className={inputClass}
+            style={inputStyle}
+          />
+        </Field>
+
+        <Field label="مصدر التمويل">
+          <input
+            value={form.fundingSource}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                fundingSource: e.target.value
+              })
+            }
+            className={inputClass}
+            style={inputStyle}
+          />
+        </Field>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <Field label="اسم البند بالعربي">
+          <input
+            required
+            value={form.itemNameAr}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                itemNameAr: e.target.value
+              })
+            }
+            className={inputClass}
+            style={inputStyle}
+          />
+        </Field>
+
+        <Field label="Item name in English">
+          <input
+            dir="ltr"
+            required
+            value={form.itemNameEn}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                itemNameEn: e.target.value
+              })
+            }
+            className={inputClass}
+            style={inputStyle}
+          />
+        </Field>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <Field label="المبلغ المخطَّط">
+          <input
+            type="number"
+            required
+            value={form.plannedAmount}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                plannedAmount: Number(
+                  e.target.value
+                )
+              })
+            }
+            className={inputClass}
+            style={inputStyle}
+          />
+        </Field>
+
+        <Field label="المبلغ الفعلي">
+          <input
+            type="number"
+            value={form.actualAmount}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                actualAmount: Number(
+                  e.target.value
+                )
+              })
+            }
+            className={inputClass}
+            style={inputStyle}
+          />
+        </Field>
+      </div>
+
+      <ActionButton
+        submitting={submitting}
+        text="إضافة بند"
+        loadingText="جاري الحفظ..."
+      />
+    </form>
+  );
+}
+
+/* =========================================================
+   RISKS
+========================================================= */
+
+function RisksTab({
+  initiativeId,
+  showToast
+}: {
+  initiativeId: string;
+  showToast: (
+    m: string,
+    t?: 'success' | 'error'
+  ) => void;
+}) {
+  const [form, setForm] = useState({
+    descriptionAr: '',
+    descriptionEn: '',
+    probability: 'Medium',
+    impact: 'Medium',
+    mitigation: '',
+    contingencyPlan: ''
+  });
+
+  const [submitting, setSubmitting] =
+    useState(false);
+
+  async function handleSubmit(
+    e: React.FormEvent
+  ) {
+    e.preventDefault();
+    setSubmitting(true);
+
+    const token = getToken() ?? undefined;
+
+    try {
+      await apiClient.post(
+        `/initiatives/${initiativeId}/risks`,
+        form,
+        token
+      );
+
+      showToast(
+        'تمت إضافة الخطر بنجاح.',
+        'success'
+      );
+
+      setForm({
+        descriptionAr: '',
+        descriptionEn: '',
+        probability: 'Medium',
+        impact: 'Medium',
+        mitigation: '',
+        contingencyPlan: ''
+      });
+    } catch {
+      showToast(
+        'صار خطأ، حاولي كمان مرة.',
+        'error'
+      );
+    }
+
+    setSubmitting(false);
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-5">
+      <div className="mb-2">
+        <p
+          className="font-heading text-lg font-bold"
+          style={{color: 'var(--color-navy)'}}
+        >
+          إضافة خطر
+        </p>
+
+        <p
+          className="mt-1 text-sm"
+          style={{color: 'var(--fs-muted)'}}
+        >
+          حددي الخطر واحتماليته وتأثيره وخطة التعامل معه.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <Field label="وصف الخطر بالعربي">
+          <textarea
+            required
+            rows={4}
+            value={form.descriptionAr}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                descriptionAr: e.target.value
+              })
+            }
+            className={inputClass}
+            style={inputStyle}
+          />
+        </Field>
+
+        <Field label="Risk description in English">
+          <textarea
+            dir="ltr"
+            required
+            rows={4}
+            value={form.descriptionEn}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                descriptionEn: e.target.value
+              })
+            }
+            className={inputClass}
+            style={inputStyle}
+          />
+        </Field>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <Field label="الاحتمالية">
+          <select
+            value={form.probability}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                probability: e.target.value
+              })
+            }
+            className={inputClass}
+            style={inputStyle}
+          >
+            <option value="Low">
+              منخفضة
+            </option>
+            <option value="Medium">
+              متوسطة
+            </option>
+            <option value="High">
+              عالية
+            </option>
+          </select>
+        </Field>
+
+        <Field label="التأثير">
+          <select
+            value={form.impact}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                impact: e.target.value
+              })
+            }
+            className={inputClass}
+            style={inputStyle}
+          >
+            <option value="Low">
+              منخفض
+            </option>
+            <option value="Medium">
+              متوسط
+            </option>
+            <option value="High">
+              عالي
+            </option>
+          </select>
+        </Field>
+      </div>
+
+      <Field label="خطة التخفيف">
+        <textarea
+          required
+          rows={4}
+          value={form.mitigation}
+          onChange={(e) =>
+            setForm({
+              ...form,
+              mitigation: e.target.value
+            })
+          }
+          className={inputClass}
+          style={inputStyle}
+        />
+      </Field>
+
+      <Field label="خطة الطوارئ (اختياري)">
+        <textarea
+          rows={4}
+          value={form.contingencyPlan}
+          onChange={(e) =>
+            setForm({
+              ...form,
+              contingencyPlan: e.target.value
+            })
+          }
+          className={inputClass}
+          style={inputStyle}
+        />
+      </Field>
+
+      <ActionButton
+        submitting={submitting}
+        text="إضافة خطر"
+        loadingText="جاري الحفظ..."
+      />
+    </form>
+  );
+}
+
+/* =========================================================
+   PARTNERS
+========================================================= */
+
+function PartnersTab({
+  initiativeId,
+  showToast
+}: {
+  initiativeId: string;
+  showToast: (
+    m: string,
+    t?: 'success' | 'error'
+  ) => void;
+}) {
+  const [allPartners, setAllPartners] =
+    useState<Partner[]>([]);
+
+  const [linkedPartners, setLinkedPartners] =
+    useState<Partner[]>([]);
+
+  const [selectedId, setSelectedId] =
+    useState('');
+
+  const [loading, setLoading] =
+    useState(true);
+
+  const [linking, setLinking] =
+    useState(false);
 
   async function loadData() {
     setLoading(true);
-    const partners = await apiClient.get<Partner[]>('/public/partners');
+
+    const partners =
+      await apiClient.get<Partner[]>(
+        '/public/partners'
+      );
+
     setAllPartners(partners);
     setLoading(false);
   }
@@ -367,63 +1112,210 @@ function PartnersTab({initiativeId, showToast}: {initiativeId: string; showToast
     loadData();
   }, []);
 
-  async function handleLink(e: React.FormEvent) {
+  async function handleLink(
+    e: React.FormEvent
+  ) {
     e.preventDefault();
+
     if (!selectedId) return;
+
     setLinking(true);
+
     const token = getToken() ?? undefined;
+
     try {
-      await apiClient.post(`/initiatives/${initiativeId}/partners/${selectedId}`, {}, token);
-      const partner = allPartners.find((p) => p.id === selectedId);
-      if (partner) setLinkedPartners((prev) => [...prev, partner]);
-      showToast('تم ربط الشريك بالمبادرة بنجاح.', 'success');
+      await apiClient.post(
+        `/initiatives/${initiativeId}/partners/${selectedId}`,
+        {},
+        token
+      );
+
+      const partner = allPartners.find(
+        (p) => p.id === selectedId
+      );
+
+      if (partner) {
+        setLinkedPartners((prev) => [
+          ...prev,
+          partner
+        ]);
+      }
+
+      showToast(
+        'تم ربط الشريك بالمبادرة بنجاح.',
+        'success'
+      );
+
       setSelectedId('');
     } catch {
-      showToast('صار خطأ، حاولي كمان مرة.', 'error');
+      showToast(
+        'صار خطأ، حاولي كمان مرة.',
+        'error'
+      );
     }
+
     setLinking(false);
   }
 
-  if (loading) return <p>جاري التحميل...</p>;
+  if (loading) {
+    return (
+      <p
+        className="text-sm"
+        style={{color: 'var(--fs-muted)'}}
+      >
+        جاري التحميل...
+      </p>
+    );
+  }
 
   return (
-    <div>
-      {allPartners.length === 0 ? (
-        <p className="text-gray-500 mb-4">
-          لا يوجد شركاء بالنظام بعد — أضيفي شريك أولًا (حاليًا عبر API، لسا ما بنينا فورم عام للشركاء).
+    <div className="space-y-5">
+      <div>
+        <p
+          className="font-heading text-lg font-bold"
+          style={{color: 'var(--color-navy)'}}
+        >
+          شركاء المبادرة
         </p>
+
+        <p
+          className="mt-1 text-sm"
+          style={{color: 'var(--fs-muted)'}}
+        >
+          اربطي الشركاء الموجودين في النظام بهذه المبادرة.
+        </p>
+      </div>
+
+      {allPartners.length === 0 ? (
+        <div
+          className="border p-5 text-sm"
+          style={{
+            borderColor: 'var(--color-line)',
+            color: 'var(--fs-muted)'
+          }}
+        >
+          لا يوجد شركاء بالنظام بعد — أضيفي شريك أولًا.
+        </div>
       ) : (
-        <form onSubmit={handleLink} className="flex gap-3 mb-6">
-          <select
-            required
-            value={selectedId}
-            onChange={(e) => setSelectedId(e.target.value)}
-            className="flex-1 border rounded-lg p-2"
-          >
-            <option value="">اختاري شريكًا لربطه بهاي المبادرة</option>
-            {allPartners.map((p) => (
-              <option key={p.id} value={p.id}>{p.nameAr} ({p.type})</option>
-            ))}
-          </select>
+        <form
+          onSubmit={handleLink}
+          className="space-y-4"
+        >
+          <Field label="اختيار شريك">
+            <select
+              required
+              value={selectedId}
+              onChange={(e) =>
+                setSelectedId(e.target.value)
+              }
+              className={inputClass}
+              style={inputStyle}
+            >
+              <option value="">
+                اختاري شريكًا لربطه بالمبادرة
+              </option>
+
+              {allPartners.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.nameAr} ({p.type})
+                </option>
+              ))}
+            </select>
+          </Field>
+
           <button
             type="submit"
             disabled={linking}
-            className="px-5 py-2 rounded-lg text-white text-sm disabled:opacity-50"
-            style={{background: 'var(--color-navy)'}}
+            className="px-7 py-3 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+            style={{
+              background: 'var(--color-navy)'
+            }}
           >
-            {linking ? 'جاري الربط...' : 'ربط'}
+            {linking
+              ? 'جاري الربط...'
+              : 'ربط الشريك'}
           </button>
         </form>
       )}
 
       {linkedPartners.length > 0 && (
-        <div className="space-y-2">
-          <p className="text-sm font-medium mb-2">شركاء تم ربطهم بهاي الجلسة:</p>
-          {linkedPartners.map((p) => (
-            <div key={p.id} className="border rounded-lg p-3 text-sm">{p.nameAr}</div>
-          ))}
+        <div
+          className="border-t pt-5"
+          style={{
+            borderColor: 'var(--color-line)'
+          }}
+        >
+          <p
+            className="fs-label mb-3"
+            style={{
+              color: 'var(--fs-muted)'
+            }}
+          >
+            الشركاء المرتبطون
+          </p>
+
+          <div className="space-y-2">
+            {linkedPartners.map((p) => (
+              <div
+                key={p.id}
+                className="border px-4 py-3 text-sm"
+                style={{
+                  borderColor:
+                    'var(--color-line)',
+                  color: 'var(--color-ink)'
+                }}
+              >
+                <span className="font-medium">
+                  {p.nameAr}
+                </span>
+
+                <span
+                  className="ms-2 text-xs"
+                  style={{
+                    color: 'var(--fs-muted)'
+                  }}
+                >
+                  {p.type}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       )}
+    </div>
+  );
+}
+
+/* =========================================================
+   BUTTON
+========================================================= */
+
+function ActionButton({
+  submitting,
+  text,
+  loadingText
+}: {
+  submitting: boolean;
+  text: string;
+  loadingText: string;
+}) {
+  return (
+    <div
+      className="border-t pt-5"
+      style={{
+        borderColor: 'var(--color-line)'
+      }}
+    >
+      <button
+        type="submit"
+        disabled={submitting}
+        className="px-7 py-3 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+        style={{
+          background: 'var(--color-navy)'
+        }}
+      >
+        {submitting ? loadingText : text}
+      </button>
     </div>
   );
 }

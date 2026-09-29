@@ -8,10 +8,12 @@ import {
   MdDashboard, MdVolunteerActivism, MdMail,
   MdCategory, MdAddCircle, MdHandshake, MdGroups
 } from 'react-icons/md';
+
 interface NavGroup {
   title: string;
   links: {href: string; label: string; icon: string}[];
 }
+
 const ICONS: Record<string, React.ComponentType<{size?: number}>> = {
   dashboard: MdDashboard,
   newInitiative: MdAddCircle,
@@ -21,10 +23,11 @@ const ICONS: Record<string, React.ComponentType<{size?: number}>> = {
   volunteerRecords: MdGroups,
   messages: MdMail
 };
+
 function useNavGroups(locale: string): NavGroup[] {
   const isArabic = locale === 'ar';
   return [
-   {
+    {
       title: isArabic ? 'عام' : 'General',
       links: [
         {href: `/${locale}/admin`, label: isArabic ? 'لوحة التحكم' : 'Dashboard', icon: 'dashboard'}
@@ -45,11 +48,45 @@ function useNavGroups(locale: string): NavGroup[] {
         {href: `/${locale}/admin/volunteer-records`, label: isArabic ? 'سجل المتطوعين' : 'Volunteer Records', icon: 'volunteerRecords'},
         {href: `/${locale}/admin/messages`, label: isArabic ? 'رسائل التواصل' : 'Messages', icon: 'messages'}
       ]
-    },
+    }
   ];
 }
 
-/* ---------- سايد بار الديسكتوب: ثابت وقابل للطي، بلا تعقيد الموبايل ---------- */
+function NavLink({
+  href,
+  label,
+  icon,
+  active,
+  collapsed
+}: {
+  href: string;
+  label: string;
+  icon: string;
+  active: boolean;
+  collapsed: boolean;
+}) {
+  const Icon = ICONS[icon];
+  return (
+    <Link
+      href={href}
+      title={collapsed ? label : undefined}
+      className={`group relative flex items-center gap-3 py-2.5 text-sm transition-colors ${
+        collapsed ? 'justify-center px-2' : 'px-4'
+      }`}
+      style={{color: active ? 'white' : 'rgba(255,255,255,0.62)'}}
+    >
+      <span
+        aria-hidden
+        className="absolute inset-y-1 start-0 w-[3px] transition-all"
+        style={{background: active ? 'var(--color-accent)' : 'transparent'}}
+      />
+      <Icon size={18} />
+      {!collapsed && <span className="font-medium">{label}</span>}
+    </Link>
+  );
+}
+
+/* ---------- سايد بار الديسكتوب ---------- */
 export function AdminSidebar({locale}: {locale: string}) {
   const pathname = usePathname();
   const isArabic = locale === 'ar';
@@ -58,57 +95,38 @@ export function AdminSidebar({locale}: {locale: string}) {
 
   return (
     <aside
-      className={`hidden md:block shrink-0 border-e sticky top-0 h-screen overflow-y-auto transition-[width] duration-200 ${
-        collapsed ? 'w-16' : 'w-60'
+      className={`hidden md:flex md:flex-col shrink-0 sticky top-0 h-screen overflow-y-auto transition-[width] duration-200 ${
+        collapsed ? 'w-16' : 'w-64'
       }`}
-      style={{borderColor: 'var(--color-line)', background: 'var(--fs-paper-2)'}}
+      style={{background: 'var(--color-navy)'}}
     >
-      <div className="p-4">
-        <div className="flex items-center justify-between mb-8">
-          <Link href={`/${locale}`} className={`group inline-flex items-center ${collapsed ? 'justify-center w-full' : ''}`}>
-            {collapsed ? (
-              <span
-                className="flex h-8 w-8 items-center justify-center text-xs font-bold text-white"
-                style={{background: 'var(--color-navy)'}}
-              >
-                FS
-              </span>
-            ) : (
-              <Logo />
-            )}
-          </Link>
-
-          {!collapsed && (
-            <button
-              onClick={() => setCollapsed(true)}
-              className="flex h-7 w-7 items-center justify-center border transition-colors hover:border-[var(--color-navy)]"
-              style={{borderColor: 'var(--color-line)'}}
-              aria-label={isArabic ? 'طي القائمة' : 'Collapse sidebar'}
+            <div className={`flex items-center h-20 border-b ${collapsed ? 'justify-center px-2' : 'justify-between px-5'}`} style={{borderColor: 'rgba(255,255,255,0.1)'}}>
+                <Link href={`/${locale}`} className="group inline-flex items-center">
+          {collapsed ? (
+            <span
+              className="flex h-8 w-8 items-center justify-center text-xs font-bold"
+              style={{background: 'var(--color-accent)', color: 'var(--color-navy)'}}
             >
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                <path
-                  d={isArabic ? 'M4 2.5 8 6l-4 3.5' : 'M8 2.5 4 6l4 3.5'}
-                  stroke="var(--color-navy)"
-                  strokeWidth="1.4"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
+              FS
+            </span>
+          ) : (
+                        <span style={{filter: 'brightness(0) invert(1)'}}>
+              <Logo />
+            </span>
           )}
-        </div>
+        </Link>
 
-        {collapsed && (
+        {!collapsed && (
           <button
-            onClick={() => setCollapsed(false)}
-            className="mb-6 flex h-7 w-7 items-center justify-center border mx-auto transition-colors hover:border-[var(--color-navy)]"
-            style={{borderColor: 'var(--color-line)'}}
-            aria-label={isArabic ? 'فتح القائمة' : 'Expand sidebar'}
+            onClick={() => setCollapsed(true)}
+            className="flex h-7 w-7 items-center justify-center border transition-colors"
+            style={{borderColor: 'rgba(255,255,255,0.2)'}}
+            aria-label={isArabic ? 'طي القائمة' : 'Collapse sidebar'}
           >
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
               <path
-                d={isArabic ? 'M8 2.5 4 6l-4 3.5' : 'M4 2.5 8 6l-4 3.5'}
-                stroke="var(--color-navy)"
+                d={isArabic ? 'M4 2.5 8 6l-4 3.5' : 'M8 2.5 4 6l4 3.5'}
+                stroke="white"
                 strokeWidth="1.4"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -116,32 +134,46 @@ export function AdminSidebar({locale}: {locale: string}) {
             </svg>
           </button>
         )}
+      </div>
 
+      {collapsed && (
+        <button
+          onClick={() => setCollapsed(false)}
+          className="my-3 flex h-7 w-7 items-center justify-center border mx-auto transition-colors"
+          style={{borderColor: 'rgba(255,255,255,0.2)'}}
+          aria-label={isArabic ? 'فتح القائمة' : 'Expand sidebar'}
+        >
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+            <path
+              d={isArabic ? 'M8 2.5 4 6l-4 3.5' : 'M4 2.5 8 6l-4 3.5'}
+              stroke="white"
+              strokeWidth="1.4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+      )}
+
+      <div className="flex-1 py-5">
         {groups.map((group) => (
-          <div key={group.title} className="mb-6 last:mb-0">
+          <div key={group.title} className="mb-7 last:mb-0">
             {!collapsed && (
-              <p className="fs-label mb-2 text-[var(--fs-muted)]">{group.title}</p>
+              <p className="fs-label px-5 mb-2 tracking-wider" style={{color: 'rgba(255,255,255,0.4)'}}>
+                {group.title}
+              </p>
             )}
-            <nav className="space-y-1">
-              {group.links.map((link) => {
-                const active = pathname === link.href;
-                                const Icon = ICONS[link.icon];
-                return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    title={collapsed ? link.label : undefined}
-                    className={`flex items-center gap-2.5 py-2 text-sm transition-colors ${collapsed ? 'justify-center px-1' : 'px-3'}`}
-                    style={{
-                      background: active ? 'var(--color-navy)' : 'transparent',
-                      color: active ? 'white' : 'var(--color-ink)'
-                    }}
-                  >
-                    <Icon size={18} />
-                    {!collapsed && <span>{link.label}</span>}
-                  </Link>
-                );
-              })}
+            <nav>
+              {group.links.map((link) => (
+                <NavLink
+                  key={link.href}
+                  href={link.href}
+                  label={link.label}
+                  icon={link.icon}
+                  active={pathname === link.href}
+                  collapsed={collapsed}
+                />
+              ))}
             </nav>
           </div>
         ))}
@@ -150,7 +182,7 @@ export function AdminSidebar({locale}: {locale: string}) {
   );
 }
 
-/* ---------- درج الموبايل: عنصر منفصل تمامًا، بيظهر بس فوق الشاشة لما يُفتح ---------- */
+/* ---------- درج الموبايل ---------- */
 export function AdminMobileDrawer({
   locale,
   open,
@@ -168,47 +200,45 @@ export function AdminMobileDrawer({
 
   return (
     <>
-      <div onClick={onClose} className="fixed inset-0 z-40 bg-black/40 md:hidden" />
+      <div onClick={onClose} className="fixed inset-0 z-40 bg-black/50 md:hidden" />
       <aside
         className="fixed inset-y-0 start-0 z-50 h-screen w-72 overflow-y-auto md:hidden"
-        style={{borderColor: 'var(--color-line)', background: 'var(--fs-paper-2)'}}
+        style={{background: 'var(--color-navy)'}}
       >
-        <div className="p-4">
-          <div className="flex items-center justify-between mb-8">
-            <Link href={`/${locale}`} className="group inline-flex items-center">
+        <div className="flex items-center justify-between h-20 px-5 border-b" style={{borderColor: 'rgba(255,255,255,0.1)'}}>
+                    <Link href={`/${locale}`} className="group inline-flex items-center">
+                        <span style={{filter: 'brightness(0) invert(1)'}}>
               <Logo />
-            </Link>
-            <button
-              onClick={onClose}
-              className="flex h-8 w-8 items-center justify-center border"
-              style={{borderColor: 'var(--color-line)'}}
-              aria-label={isArabic ? 'إغلاق القائمة' : 'Close menu'}
-            >
-              ✕
-            </button>
-          </div>
+            </span>
+          </Link>
+          <button
+            onClick={onClose}
+            className="flex h-8 w-8 items-center justify-center border text-white"
+            style={{borderColor: 'rgba(255,255,255,0.2)'}}
+            aria-label={isArabic ? 'إغلاق القائمة' : 'Close menu'}
+          >
+            ✕
+          </button>
+        </div>
 
+        <div className="py-5">
           {groups.map((group) => (
-            <div key={group.title} className="mb-6 last:mb-0">
-              <p className="fs-label mb-2 text-[var(--fs-muted)]">{group.title}</p>
-              <nav className="space-y-1">
-                {group.links.map((link) => {
-                  const active = pathname === link.href;
-                  return (
-                    <Link
-                      key={link.href}
+            <div key={group.title} className="mb-7 last:mb-0">
+              <p className="fs-label px-5 mb-2 tracking-wider" style={{color: 'rgba(255,255,255,0.4)'}}>
+                {group.title}
+              </p>
+              <nav>
+                {group.links.map((link) => (
+                  <div key={link.href} onClick={onClose}>
+                    <NavLink
                       href={link.href}
-                      onClick={onClose}
-                      className="block px-3 py-2 text-sm transition-colors"
-                      style={{
-                        background: active ? 'var(--color-navy)' : 'transparent',
-                        color: active ? 'white' : 'var(--color-ink)'
-                      }}
-                    >
-                      {link.label}
-                    </Link>
-                  );
-                })}
+                      label={link.label}
+                      icon={link.icon}
+                      active={pathname === link.href}
+                      collapsed={false}
+                    />
+                  </div>
+                ))}
               </nav>
             </div>
           ))}

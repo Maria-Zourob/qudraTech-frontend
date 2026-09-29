@@ -69,21 +69,21 @@ export default async function ChildLearning({locale}: ChildLearningProps) {
             </Reveal>
 
             <Reveal delay={300}>
-              <div className="mt-8 flex flex-wrap items-center gap-4">
-                <Link
-                  href={`/${locale}/journey`}
-                  className="bg-[var(--color-accent)] px-6 py-3.5 font-bold text-[var(--color-navy)] transition-colors hover:bg-[var(--fs-paper)]"
-                >
-                  {t('buttons.journey')}
-                </Link>
+             <div className="mt-8 flex flex-wrap items-center gap-4">
+  <a
+    href="#lifecycle"
+    className="bg-[var(--color-accent)] px-6 py-3.5 font-bold text-[var(--color-navy)] transition-colors hover:bg-[var(--fs-paper)]"
+  >
+    {t('buttons.journey')}
+  </a>
 
-                <Link
-                  href={`/${locale}/support`}
-                  className="border border-[var(--fs-paper)]/50 px-6 py-3.5 font-semibold text-[var(--fs-paper)] transition-colors hover:border-[var(--fs-paper)] hover:bg-[var(--fs-paper)]/10"
-                >
-                  {t('buttons.support')}
-                </Link>
-              </div>
+  <a
+    href="#contact"
+    className="border border-[var(--fs-paper)]/50 px-6 py-3.5 font-semibold text-[var(--fs-paper)] transition-colors hover:border-[var(--fs-paper)] hover:bg-[var(--fs-paper)]/10"
+  >
+    {t('buttons.support')}
+  </a>
+</div>
             </Reveal>
           </div>
         </div>

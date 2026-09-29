@@ -12,7 +12,11 @@ interface AdminInitiative {
   titleEn: string;
   status: string;
 }
-
+interface ActivityItem {
+  type: string;
+  text: string;
+  date: string;
+}
 interface DashboardSummary {
   totalInitiatives: number;
   activeInitiatives: number;
@@ -34,20 +38,27 @@ const CHART_COLORS = [
   'var(--color-navy)',
   'var(--color-accent)',
   'var(--color-growth)',
-  '#7A8FA6',
+  '#6190A2',
   '#C9A66B',
   '#5B8C7E',
   '#A65B5B',
   '#8A6BC9'
 ];
 
-function StatCard({label, value, accent}: {label: string; value: number; accent?: boolean}) {
+function StatCard({label, value, max, accent}: {label: string; value: number; max: number; accent?: boolean}) {
+  const pct = max > 0 ? Math.min(100, Math.round((value / max) * 100)) : 0;
   return (
-    <div className="border rounded-lg p-4" style={{borderColor: 'var(--color-line)'}}>
-      <p className="text-3xl font-bold" style={{color: accent ? 'var(--color-accent)' : 'var(--color-navy)'}}>
+    <div className="border p-5" style={{borderColor: 'var(--color-line)', background: 'white'}}>
+      <p className="font-heading text-4xl font-bold leading-none" style={{color: accent ? 'var(--color-accent)' : 'var(--color-navy)'}}>
         {value}
       </p>
-      <p className="text-sm text-gray-500 mt-1">{label}</p>
+      <p className="fs-label mt-2.5" style={{color: 'var(--fs-muted)'}}>{label}</p>
+      <div className="mt-4 h-1 w-full" style={{background: 'var(--color-line)'}}>
+        <div
+          className="h-1 transition-all"
+          style={{width: `${pct}%`, background: accent ? 'var(--color-accent)' : 'var(--color-navy)'}}
+        />
+      </div>
     </div>
   );
 }
@@ -58,9 +69,9 @@ function StatusPieChart({data}: {data: {status: string; count: number}[]}) {
 
   if (total === 0) {
     return (
-      <div className="border rounded-lg p-5" style={{borderColor: 'var(--color-line)'}}>
-        <p className="text-sm font-medium mb-2">توزيع المبادرات حسب الحالة</p>
-        <p className="text-sm text-gray-500">لا توجد بيانات بعد.</p>
+      <div className="border p-6" style={{borderColor: 'var(--color-line)', background: 'white'}}>
+        <p className="fs-label mb-3" style={{color: 'var(--fs-muted)'}}>توزيع المبادرات حسب الحالة</p>
+        <p className="text-sm" style={{color: 'var(--fs-muted)'}}>لا توجد بيانات بعد.</p>
       </div>
     );
   }
@@ -91,20 +102,20 @@ function StatusPieChart({data}: {data: {status: string; count: number}[]}) {
   });
 
   return (
-    <div className="border rounded-lg p-5" style={{borderColor: 'var(--color-line)'}}>
-      <p className="text-sm font-medium mb-4">توزيع المبادرات حسب الحالة</p>
-      <div className="flex items-center gap-8">
-        <svg width="160" height="160" viewBox="0 0 160 160">
+    <div className="border p-6" style={{borderColor: 'var(--color-line)', background: 'white'}}>
+      <p className="fs-label mb-5" style={{color: 'var(--fs-muted)'}}>توزيع المبادرات حسب الحالة</p>
+      <div className="flex flex-col sm:flex-row items-center gap-8">
+        <svg width="170" height="170" viewBox="0 0 160 160">
           {slices.map((s) => (
-            <path key={s.status} d={s.path} fill={s.color} stroke="white" strokeWidth="1" />
+            <path key={s.status} d={s.path} fill={s.color} stroke="white" strokeWidth="1.5" />
           ))}
         </svg>
-        <div className="space-y-2">
+        <div className="space-y-2.5 w-full">
           {slices.map((s) => (
-            <div key={s.status} className="flex items-center gap-2 text-sm">
-              <span className="w-3 h-3 rounded-full inline-block" style={{background: s.color}} />
-              <span>{s.status}</span>
-              <span className="text-gray-500">({s.count})</span>
+            <div key={s.status} className="flex items-center gap-2.5 text-sm">
+              <span className="w-2.5 h-2.5 shrink-0" style={{background: s.color}} />
+              <span className="font-medium" style={{color: 'var(--color-ink)'}}>{s.status}</span>
+              <span className="ms-auto" style={{color: 'var(--fs-muted)'}}>{s.count}</span>
             </div>
           ))}
         </div>
@@ -116,18 +127,21 @@ function StatusPieChart({data}: {data: {status: string; count: number}[]}) {
 function AdminDashboard() {
   const [summary, setSummary] = useState<DashboardSummary | null>(null);
   const [initiatives, setInitiatives] = useState<AdminInitiative[]>([]);
+  const [activity, setActivity] = useState<ActivityItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
 
   async function loadData() {
     setLoading(true);
     const token = getToken() ?? undefined;
-    const [summaryData, initiativesData] = await Promise.all([
+    const [summaryData, initiativesData, activityData] = await Promise.all([
       apiClient.get<DashboardSummary>('/admin/dashboard-summary', token),
-      apiClient.get<AdminInitiative[]>('/initiatives', token)
+      apiClient.get<AdminInitiative[]>('/initiatives', token),
+      apiClient.get<ActivityItem[]>('/admin/recent-activity', token)
     ]);
     setSummary(summaryData);
     setInitiatives(initiativesData);
+    setActivity(activityData);
     setLoading(false);
   }
 
@@ -145,58 +159,106 @@ function AdminDashboard() {
   }
 
   if (loading || !summary) return <p className="p-8">جاري التحميل...</p>;
+  const attentionItems = [
+    summary.unreadMessages > 0
+      ? {label: `${summary.unreadMessages} رسالة تواصل غير مقروءة`, href: '/ar/admin/messages'}
+      : null,
+    summary.pendingVolunteers > 0
+      ? {label: `${summary.pendingVolunteers} متطوّع بانتظار الموافقة`, href: '/ar/admin/volunteers'}
+      : null
+  ].filter((item): item is {label: string; href: string} => item !== null);
+  const cards = [
+    {label: 'إجمالي المبادرات', value: summary.totalInitiatives},
+    {label: 'مبادرات نشطة', value: summary.activeInitiatives, accent: true},
+    {label: 'المستفيدون', value: summary.beneficiaries},
+    {label: 'الشركاء', value: summary.partners},
+    {label: 'المستخدمون', value: summary.volunteers},
+    {label: 'رسائل غير مقروءة', value: summary.unreadMessages, accent: summary.unreadMessages > 0},
+    {label: 'متطوعون بانتظار الموافقة', value: summary.pendingVolunteers, accent: summary.pendingVolunteers > 0},
+    {label: 'مبادرات مكتملة', value: summary.completedInitiatives}
+  ];
+  const maxValue = Math.max(...cards.map((c) => c.value), 1);
 
   return (
-    <main className="max-w-4xl mx-auto p-8">
-      <h1 className="text-2xl font-bold mb-6">لوحة التحكم</h1>
+    <main className="max-w-5xl mx-auto p-6 md:p-8">
+            {attentionItems.length > 0 && (
+        <div className="mb-8 border-s-4 p-5" style={{borderColor: 'var(--color-accent)', background: 'white'}}>
+          <p className="fs-label mb-3" style={{color: 'var(--fs-muted)'}}>يحتاج متابعة</p>
+          <ul className="space-y-2">
+            {attentionItems.map((item) => (
+              <li key={item.label}>
+                <Link href={item.href} className="text-sm font-medium hover:underline" style={{color: 'var(--color-navy)'}}>
+                  {item.label} ←
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        <StatCard label="إجمالي المبادرات" value={summary.totalInitiatives} />
-        <StatCard label="مبادرات نشطة" value={summary.activeInitiatives} accent />
-        <StatCard label="المستفيدون" value={summary.beneficiaries} />
-        <StatCard label="الشركاء" value={summary.partners} />
-        <StatCard label="المستخدمون" value={summary.volunteers} />
-        <StatCard label="رسائل غير مقروءة" value={summary.unreadMessages} accent={summary.unreadMessages > 0} />
-        <StatCard label="متطوعون بانتظار الموافقة" value={summary.pendingVolunteers} accent={summary.pendingVolunteers > 0} />
-        <StatCard label="مبادرات مكتملة" value={summary.completedInitiatives} />
+        {cards.map((c) => (
+          <StatCard key={c.label} label={c.label} value={c.value} max={maxValue} accent={c.accent} />
+        ))}
       </div>
 
       <div className="mb-8">
         <StatusPieChart data={summary.byStatus} />
       </div>
 
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-bold">المبادرات</h2>
+      <div className="flex justify-between items-center mb-4 pb-4 border-b-2" style={{borderColor: 'var(--color-navy)'}}>
+        <h2 className="font-heading text-xl font-bold" style={{color: 'var(--color-navy)'}}>المبادرات</h2>
         <Link
           href="/ar/admin/initiatives/new"
-          className="text-sm px-4 py-2 rounded-lg text-white"
+          className="text-sm font-medium px-4 py-2 text-white transition-opacity hover:opacity-90"
           style={{background: 'var(--color-navy)'}}
         >
           + مبادرة جديدة
         </Link>
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-2">
         {initiatives.map((initiative) => (
-          <div key={initiative.id} className="flex justify-between items-center p-4 border rounded-lg">
-            <Link
-              href={`/ar/admin/initiatives/${initiative.id}`}
-              className="font-medium hover:underline"
-              style={{color: 'var(--color-navy)'}}
-            >
-              {initiative.titleAr}
-            </Link>
-            <select
-              value={initiative.status}
-              disabled={updatingId === initiative.id}
-              onChange={(e) => handleStatusChange(initiative.id, e.target.value)}
-              className="border rounded-lg p-2"
-            >
-              {STATUSES.map((s) => (
-                <option key={s} value={s}>{s}</option>
-              ))}
-            </select>
-          </div>
+          <div
+  key={initiative.id}
+  className="flex items-center justify-between gap-4 rounded-xl border border-slate-200 bg-white p-4"
+>
+  <div className="min-w-0">
+    <Link
+      href={`/ar/admin/initiatives/${initiative.id}`}
+      className="font-semibold text-[#19324A] hover:underline"
+    >
+      {initiative.titleAr}
+    </Link>
+
+    <p className="mt-1 text-sm text-slate-500">
+      {initiative.titleEn}
+    </p>
+  </div>
+
+  <div className="flex items-center gap-3">
+    <select
+      value={initiative.status}
+      onChange={(e) =>
+        handleStatusChange(initiative.id, e.target.value)
+      }
+      className="rounded-lg border border-slate-200 px-3 py-2 text-sm"
+    >
+      {STATUSES.map((status) => (
+        <option key={status} value={status}>
+          {status}
+        </option>
+      ))}
+    </select>
+
+    <Link
+      href={`/ar/admin/initiatives/${initiative.id}`}
+      className="inline-flex items-center rounded-lg bg-[#19324A] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#082744]"
+    >
+      إدارة
+    </Link>
+  </div>
+</div>
         ))}
       </div>
     </main>

@@ -28,7 +28,7 @@ export async function LifecycleSection({
   ];
 
   return (
-    <section className="fs-grid-navy relative bg-[var(--color-navy)] text-white">
+    <section id="lifecycle" className="fs-grid-navy relative bg-[var(--color-navy)] text-white">
       <div className={`${CONTAINER} py-20 md:pb-0 md:pt-28`}>
         <Reveal>
           <SectionLabel onDark>

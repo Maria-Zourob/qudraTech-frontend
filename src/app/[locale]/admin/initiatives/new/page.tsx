@@ -12,6 +12,18 @@ interface Category {
   nameEn: string;
 }
 
+function Field({label, children}: {label: string; children: React.ReactNode}) {
+  return (
+    <div>
+      <label className="fs-label mb-1.5 block" style={{color: 'var(--fs-muted)'}}>{label}</label>
+      {children}
+    </div>
+  );
+}
+
+const inputClass = 'w-full border px-3.5 py-2.5 text-sm transition-colors focus:border-[var(--color-navy)] focus:outline-none';
+const inputStyle = {borderColor: 'var(--color-line)', color: 'var(--color-ink)'};
+
 export default function NewInitiativePage() {
   const router = useRouter();
   const showToast = useToast();
@@ -61,121 +73,73 @@ export default function NewInitiativePage() {
     setSubmitting(false);
   }
 
-  const inputClass = 'w-full border rounded-lg p-2.5';
-
   return (
-    <main className="max-w-2xl mx-auto p-8">
-      <h1 className="text-2xl font-bold mb-6">مبادرة جديدة</h1>
+    <main className="max-w-2xl mx-auto p-6 md:p-8">
+      <div className="mb-8 pb-5 border-b-2" style={{borderColor: 'var(--color-navy)'}}>
+        <p className="fs-label" style={{color: 'var(--fs-muted)'}}>المبادرات</p>
+        <h1 className="font-heading text-2xl font-bold mt-1" style={{color: 'var(--color-navy)'}}>
+          مبادرة جديدة
+        </h1>
+      </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-sm mb-1">الرابط (Slug) — بالإنجليزي، بلا مسافات</label>
+      <form onSubmit={handleSubmit} className="space-y-5 border p-6" style={{borderColor: 'var(--color-line)', background: 'white'}}>
+        <Field label="الرابط (Slug) — بالإنجليزي، بلا مسافات">
           <input
             type="text"
+            dir="ltr"
             required
             placeholder="my-initiative-name"
             value={form.slug}
             onChange={(e) => updateField('slug', e.target.value)}
             className={inputClass}
+            style={inputStyle}
           />
+        </Field>
+
+        <div className="grid grid-cols-2 gap-4">
+          <Field label="العنوان بالعربي">
+            <input required value={form.titleAr} onChange={(e) => updateField('titleAr', e.target.value)} className={inputClass} style={inputStyle} />
+          </Field>
+          <Field label="Title in English">
+            <input dir="ltr" required value={form.titleEn} onChange={(e) => updateField('titleEn', e.target.value)} className={inputClass} style={inputStyle} />
+          </Field>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm mb-1">العنوان بالعربي</label>
-            <input
-              type="text"
-              required
-              value={form.titleAr}
-              onChange={(e) => updateField('titleAr', e.target.value)}
-              className={inputClass}
-            />
-          </div>
-          <div>
-            <label className="block text-sm mb-1">Title in English</label>
-            <input
-              type="text"
-              required
-              value={form.titleEn}
-              onChange={(e) => updateField('titleEn', e.target.value)}
-              className={inputClass}
-            />
-          </div>
+          <Field label="الوصف بالعربي">
+            <textarea required rows={3} value={form.descriptionAr} onChange={(e) => updateField('descriptionAr', e.target.value)} className={inputClass} style={inputStyle} />
+          </Field>
+          <Field label="Description in English">
+            <textarea dir="ltr" required rows={3} value={form.descriptionEn} onChange={(e) => updateField('descriptionEn', e.target.value)} className={inputClass} style={inputStyle} />
+          </Field>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm mb-1">الوصف بالعربي</label>
-            <textarea
-              required
-              rows={3}
-              value={form.descriptionAr}
-              onChange={(e) => updateField('descriptionAr', e.target.value)}
-              className={inputClass}
-            />
-          </div>
-          <div>
-            <label className="block text-sm mb-1">Description in English</label>
-            <textarea
-              required
-              rows={3}
-              value={form.descriptionEn}
-              onChange={(e) => updateField('descriptionEn', e.target.value)}
-              className={inputClass}
-            />
-          </div>
+          <Field label="الفئة المستهدفة (عربي)">
+            <input value={form.targetGroupAr} onChange={(e) => updateField('targetGroupAr', e.target.value)} className={inputClass} style={inputStyle} />
+          </Field>
+          <Field label="Target Group (English)">
+            <input dir="ltr" value={form.targetGroupEn} onChange={(e) => updateField('targetGroupEn', e.target.value)} className={inputClass} style={inputStyle} />
+          </Field>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm mb-1">الفئة المستهدفة (عربي)</label>
-            <input
-              type="text"
-              value={form.targetGroupAr}
-              onChange={(e) => updateField('targetGroupAr', e.target.value)}
-              className={inputClass}
-            />
-          </div>
-          <div>
-            <label className="block text-sm mb-1">Target Group (English)</label>
-            <input
-              type="text"
-              value={form.targetGroupEn}
-              onChange={(e) => updateField('targetGroupEn', e.target.value)}
-              className={inputClass}
-            />
-          </div>
-        </div>
+        <Field label="الموقع">
+          <input required value={form.location} onChange={(e) => updateField('location', e.target.value)} className={inputClass} style={inputStyle} />
+        </Field>
 
-        <div>
-          <label className="block text-sm mb-1">الموقع</label>
-          <input
-            type="text"
-            required
-            value={form.location}
-            onChange={(e) => updateField('location', e.target.value)}
-            className={inputClass}
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm mb-1">التصنيف</label>
-          <select
-            value={form.categoryId}
-            onChange={(e) => updateField('categoryId', e.target.value)}
-            className={inputClass}
-          >
+        <Field label="التصنيف">
+          <select value={form.categoryId} onChange={(e) => updateField('categoryId', e.target.value)} className={inputClass} style={inputStyle}>
             {categories.length === 0 && <option value="">لا توجد تصنيفات — أضيفي واحد أولًا</option>}
             {categories.map((c) => (
               <option key={c.id} value={c.id}>{c.nameAr}</option>
             ))}
           </select>
-        </div>
+        </Field>
 
         <button
           type="submit"
           disabled={submitting || categories.length === 0}
-          className="px-7 py-3 rounded-lg text-white font-medium disabled:opacity-50"
+          className="px-7 py-3 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50"
           style={{background: 'var(--color-navy)'}}
         >
           {submitting ? 'جاري الحفظ...' : 'حفظ المبادرة'}

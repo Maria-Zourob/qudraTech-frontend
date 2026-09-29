@@ -78,10 +78,10 @@ export async function HeroSection({locale, stats, lifecycle}: HeroSectionProps) 
 
             <MountReveal delay={270}>
               <div className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-5">
-                <PrimaryButton href={`/${locale}/initiatives`}>
+                  <PrimaryButton href={`/${locale}#initiatives`}>
                   {t('exploreInitiatives')}
                 </PrimaryButton>
-                <TextLink href={`/${locale}/about`}>{t('aboutUs')}</TextLink>
+                <TextLink href={`/${locale}#about`}>{t('aboutUs')}</TextLink>
               </div>
             </MountReveal>
           </div>

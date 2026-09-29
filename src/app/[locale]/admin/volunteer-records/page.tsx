@@ -23,6 +23,15 @@ const emptyForm = {
   email: '', skills: '', experience: '', joinDate: ''
 };
 
+function Field({label, children}: {label: string; children: React.ReactNode}) {
+  return (
+    <div>
+      <label className="fs-label mb-1.5 block" style={{color: 'var(--fs-muted)'}}>{label}</label>
+      {children}
+    </div>
+  );
+}
+
 export default function VolunteerRecordsPage() {
   const [records, setRecords] = useState<VolunteerRecord[]>([]);
   const [loading, setLoading] = useState(true);
@@ -30,6 +39,8 @@ export default function VolunteerRecordsPage() {
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState(emptyForm);
+  const [importing, setImporting] = useState(false);
+  const [importResult, setImportResult] = useState<{imported: number; errors: string[]} | null>(null);
   const showToast = useToast();
   const confirmDialog = useConfirm();
 
@@ -88,8 +99,6 @@ export default function VolunteerRecordsPage() {
     }
     setSubmitting(false);
   }
-  const [importing, setImporting] = useState(false);
-  const [importResult, setImportResult] = useState<{imported: number; errors: string[]} | null>(null);
 
   function handleDownloadTemplate() {
     const token = getToken();
@@ -133,6 +142,7 @@ export default function VolunteerRecordsPage() {
     setImporting(false);
     e.target.value = '';
   }
+
   async function handleDelete(id: string, name: string) {
     const confirmed = await confirmDialog({
       title: 'حذف المتطوّع',
@@ -154,41 +164,40 @@ export default function VolunteerRecordsPage() {
 
   if (loading) return <p className="p-8">جاري التحميل...</p>;
 
-  const inputClass = 'w-full border px-3 py-2 text-sm';
+  const inputClass = 'w-full border px-3.5 py-2.5 text-sm transition-colors focus:border-[var(--color-navy)] focus:outline-none';
+  const inputStyle = {borderColor: 'var(--color-line)', color: 'var(--color-ink)'};
 
   return (
-    <main className="max-w-5xl mx-auto p-8">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="font-heading text-2xl font-bold" style={{ color: 'var(--color-navy)' }}>
-          سجل المتطوعين
-        </h1>
-                <div className="flex gap-2">
+    <main className="max-w-5xl mx-auto p-6 md:p-8">
+      <div className="flex flex-wrap justify-between items-center gap-3 mb-6 pb-5 border-b-2" style={{borderColor: 'var(--color-navy)'}}>
+        <div>
+          <p className="fs-label" style={{color: 'var(--fs-muted)'}}>المجتمع</p>
+          <h1 className="font-heading text-2xl font-bold mt-1" style={{color: 'var(--color-navy)'}}>
+            سجل المتطوعين
+          </h1>
+        </div>
+
+        <div className="flex gap-2">
           <button
             onClick={handleDownloadTemplate}
-            className="px-4 py-2 text-sm font-medium border"
-            style={{ borderColor: 'var(--color-navy)', color: 'var(--color-navy)' }}
+            className="px-4 py-2 text-sm font-medium border transition-colors hover:bg-[var(--fs-paper-2)]"
+            style={{borderColor: 'var(--color-navy)', color: 'var(--color-navy)'}}
           >
             تحميل قالب Excel
           </button>
 
           <label
-            className="px-4 py-2 text-sm font-medium border cursor-pointer"
-            style={{ borderColor: 'var(--color-navy)', color: 'var(--color-navy)' }}
+            className="px-4 py-2 text-sm font-medium border cursor-pointer transition-colors hover:bg-[var(--fs-paper-2)]"
+            style={{borderColor: 'var(--color-navy)', color: 'var(--color-navy)'}}
           >
             {importing ? 'جاري الرفع...' : 'رفع ملف Excel'}
-            <input
-              type="file"
-              accept=".xlsx"
-              onChange={handleFileUpload}
-              disabled={importing}
-              className="hidden"
-            />
+            <input type="file" accept=".xlsx" onChange={handleFileUpload} disabled={importing} className="hidden" />
           </label>
 
           <button
             onClick={() => (showForm ? setShowForm(false) : openAddForm())}
-            className="px-4 py-2 text-sm font-medium text-white"
-            style={{ background: 'var(--color-navy)' }}
+            className="px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90"
+            style={{background: 'var(--color-navy)'}}
           >
             {showForm ? 'إلغاء' : '+ إضافة متطوّع'}
           </button>
@@ -196,11 +205,11 @@ export default function VolunteerRecordsPage() {
       </div>
 
       {importResult && importResult.errors.length > 0 && (
-        <div className="mb-6 border p-4 text-sm" style={{borderColor: '#C0392B', background: '#FDF2F2'}}>
-          <p className="font-medium mb-2" style={{color: '#C0392B'}}>
-            استوردنا {importResult.imported} متطوّع، وفيه {importResult.errors.length} صف فيه مشكلة:
+        <div className="mb-6 border-s-4 p-5" style={{borderColor: '#C0392B', background: 'white'}}>
+          <p className="fs-label mb-3" style={{color: '#C0392B'}}>
+            استوردنا {importResult.imported} متطوّع، وفيه {importResult.errors.length} صف فيه مشكلة
           </p>
-          <ul className="list-disc ps-5 space-y-1">
+          <ul className="list-disc ps-5 space-y-1 text-sm" style={{color: 'var(--color-ink)'}}>
             {importResult.errors.map((err, i) => (
               <li key={i}>{err}</li>
             ))}
@@ -209,30 +218,51 @@ export default function VolunteerRecordsPage() {
       )}
 
       {showForm && (
-        <form onSubmit={handleSubmit} className="mb-8 border p-5 space-y-3" style={{ borderColor: 'var(--color-line)' }}>
-          <p className="text-sm font-medium mb-2" style={{ color: 'var(--color-navy)' }}>
+        <form onSubmit={handleSubmit} className="mb-8 border p-6 space-y-4" style={{borderColor: 'var(--color-line)', background: 'white'}}>
+          <p className="fs-label pb-3 border-b" style={{color: 'var(--fs-sage-ink)', borderColor: 'var(--color-line)'}}>
             {editingId ? 'تعديل بيانات متطوّع' : 'إضافة متطوّع جديد'}
           </p>
-          <div className="grid grid-cols-2 gap-3">
-            <input placeholder="الاسم الكامل" required value={form.fullName} onChange={(e) => setForm({ ...form, fullName: e.target.value })} className={inputClass} />
-            <input placeholder="الفريق" required value={form.team} onChange={(e) => setForm({ ...form, team: e.target.value })} className={inputClass} />
+
+          <div className="grid grid-cols-2 gap-4">
+            <Field label="الاسم الكامل">
+              <input required value={form.fullName} onChange={(e) => setForm({...form, fullName: e.target.value})} className={inputClass} style={inputStyle} />
+            </Field>
+            <Field label="الفريق">
+              <input required value={form.team} onChange={(e) => setForm({...form, team: e.target.value})} className={inputClass} style={inputStyle} />
+            </Field>
           </div>
-          <div className="grid grid-cols-2 gap-3">
-            <input placeholder="الدور داخل الفريق" required value={form.roleInTeam} onChange={(e) => setForm({ ...form, roleInTeam: e.target.value })} className={inputClass} />
-            <input placeholder="رقم الهاتف" required value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className={inputClass} />
+
+          <div className="grid grid-cols-2 gap-4">
+            <Field label="الدور داخل الفريق">
+              <input required value={form.roleInTeam} onChange={(e) => setForm({...form, roleInTeam: e.target.value})} className={inputClass} style={inputStyle} />
+            </Field>
+            <Field label="رقم الهاتف">
+              <input dir="ltr" required value={form.phone} onChange={(e) => setForm({...form, phone: e.target.value})} className={inputClass} style={inputStyle} />
+            </Field>
           </div>
-          <div className="grid grid-cols-2 gap-3">
-            <input type="email" placeholder="البريد الإلكتروني" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className={inputClass} />
-            <input type="date" required value={form.joinDate} onChange={(e) => setForm({ ...form, joinDate: e.target.value })} className={inputClass} />
+
+          <div className="grid grid-cols-2 gap-4">
+            <Field label="البريد الإلكتروني">
+              <input type="email" dir="ltr" required value={form.email} onChange={(e) => setForm({...form, email: e.target.value})} className={inputClass} style={inputStyle} />
+            </Field>
+            <Field label="تاريخ الانضمام">
+              <input type="date" required value={form.joinDate} onChange={(e) => setForm({...form, joinDate: e.target.value})} className={inputClass} style={inputStyle} />
+            </Field>
           </div>
-          <textarea placeholder="المهارات" required rows={2} value={form.skills} onChange={(e) => setForm({ ...form, skills: e.target.value })} className={inputClass} />
-          <textarea placeholder="الخبرة" required rows={2} value={form.experience} onChange={(e) => setForm({ ...form, experience: e.target.value })} className={inputClass} />
+
+          <Field label="المهارات">
+            <textarea required rows={2} value={form.skills} onChange={(e) => setForm({...form, skills: e.target.value})} className={inputClass} style={inputStyle} />
+          </Field>
+
+          <Field label="الخبرة">
+            <textarea required rows={2} value={form.experience} onChange={(e) => setForm({...form, experience: e.target.value})} className={inputClass} style={inputStyle} />
+          </Field>
 
           <button
             type="submit"
             disabled={submitting}
-            className="px-5 py-2 text-sm font-medium text-white disabled:opacity-50"
-            style={{ background: 'var(--color-navy)' }}
+            className="px-6 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+            style={{background: 'var(--color-navy)'}}
           >
             {submitting ? 'جاري الحفظ...' : editingId ? 'حفظ التعديلات' : 'حفظ'}
           </button>
@@ -240,42 +270,35 @@ export default function VolunteerRecordsPage() {
       )}
 
       {records.length === 0 ? (
-        <p className="text-gray-500">لا يوجد متطوعون مسجَّلون بعد.</p>
+        <p className="text-sm" style={{color: 'var(--fs-muted)'}}>لا يوجد متطوعون مسجَّلون بعد.</p>
       ) : (
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto border" style={{borderColor: 'var(--color-line)', background: 'white'}}>
           <table className="w-full text-sm border-collapse">
             <thead>
-              <tr className="border-b-2" style={{ borderColor: 'var(--color-navy)' }}>
-                <th className="text-start py-2 px-2">الاسم</th>
-                <th className="text-start py-2 px-2">الفريق</th>
-                <th className="text-start py-2 px-2">الدور</th>
-                <th className="text-start py-2 px-2">الهاتف</th>
-                <th className="text-start py-2 px-2">البريد</th>
-                <th className="text-start py-2 px-2">تاريخ الانضمام</th>
+              <tr className="border-b-2" style={{borderColor: 'var(--color-navy)'}}>
+                <th className="fs-label text-start py-3 px-4" style={{color: 'var(--fs-muted)'}}>الاسم</th>
+                <th className="fs-label text-start py-3 px-4" style={{color: 'var(--fs-muted)'}}>الفريق</th>
+                <th className="fs-label text-start py-3 px-4" style={{color: 'var(--fs-muted)'}}>الدور</th>
+                <th className="fs-label text-start py-3 px-4" style={{color: 'var(--fs-muted)'}}>الهاتف</th>
+                <th className="fs-label text-start py-3 px-4" style={{color: 'var(--fs-muted)'}}>البريد</th>
+                <th className="fs-label text-start py-3 px-4" style={{color: 'var(--fs-muted)'}}>تاريخ الانضمام</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
               {records.map((r) => (
-                <tr key={r.id} className="border-b" style={{ borderColor: 'var(--color-line)' }}>
-                  <td className="py-2 px-2 font-medium">{r.fullName}</td>
-                  <td className="py-2 px-2">{r.team}</td>
-                  <td className="py-2 px-2">{r.roleInTeam}</td>
-                  <td className="py-2 px-2" dir="ltr">{r.phone}</td>
-                  <td className="py-2 px-2" dir="ltr">{r.email}</td>
-                  <td className="py-2 px-2">{new Date(r.joinDate).toLocaleDateString('ar')}</td>
-                  <td className="py-2 px-2 whitespace-nowrap">
-                    <button
-                      onClick={() => openEditForm(r)}
-                      className="text-xs mr-3"
-                      style={{ color: 'var(--color-navy)' }}
-                    >
+                <tr key={r.id} className="border-b transition-colors hover:bg-[var(--fs-paper-2)]" style={{borderColor: 'var(--color-line)'}}>
+                  <td className="py-3 px-4 font-medium" style={{color: 'var(--color-navy)'}}>{r.fullName}</td>
+                  <td className="py-3 px-4" style={{color: 'var(--color-ink)'}}>{r.team}</td>
+                  <td className="py-3 px-4" style={{color: 'var(--color-ink)'}}>{r.roleInTeam}</td>
+                  <td className="py-3 px-4" dir="ltr" style={{color: 'var(--color-ink)'}}>{r.phone}</td>
+                  <td className="py-3 px-4" dir="ltr" style={{color: 'var(--color-ink)'}}>{r.email}</td>
+                  <td className="py-3 px-4" style={{color: 'var(--color-ink)'}}>{new Date(r.joinDate).toLocaleDateString('ar')}</td>
+                  <td className="py-3 px-4 whitespace-nowrap">
+                    <button onClick={() => openEditForm(r)} className="text-xs font-medium me-3 hover:underline" style={{color: 'var(--color-navy)'}}>
                       تعديل
                     </button>
-                    <button
-                      onClick={() => handleDelete(r.id, r.fullName)}
-                      className="text-xs text-red-600 hover:underline"
-                    >
+                    <button onClick={() => handleDelete(r.id, r.fullName)} className="text-xs font-medium hover:underline" style={{color: '#C0392B'}}>
                       حذف
                     </button>
                   </td>
