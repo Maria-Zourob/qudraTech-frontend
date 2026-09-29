@@ -9,7 +9,7 @@ FROM node:20-alpine AS build
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-ENV NEXT_PUBLIC_API_URL=http://localhost:5274/api
+ENV NEXT_PUBLIC_API_URL=https://qudratech-backend-backend-74d82533.hosted.cumin.dev/api
 RUN npm run build
 
 # ---------- Stage 3: Runtime ----------
