@@ -69,6 +69,23 @@ async function getInitiatives(): Promise<InitiativeSummary[]> {
   }
 }
 
+async function getCovers(): Promise<Record<string, string>> {
+  try {
+    const api = process.env.NEXT_PUBLIC_API_URL;
+    const res = await fetch(`${api}/public/initiative-covers`, { cache: 'no-store' });
+
+    if (!res.ok) return {};
+
+    const covers = (await res.json()) as { slug: string; imageId: string }[];
+
+    return Object.fromEntries(
+      covers.map((c) => [c.slug, `${api}/public/images/${c.imageId}`]),
+    );
+  } catch {
+    return {};
+  }
+}
+
 export default async function HomePage({
   params,
 }: {
@@ -76,8 +93,16 @@ export default async function HomePage({
 }) {
   const { locale } = await params;
 
-  const impact = await getImpact();
-  const initiatives = await getInitiatives();
+  const [impact, initiativeList, covers] = await Promise.all([
+    getImpact(),
+    getInitiatives(),
+    getCovers(),
+  ]);
+
+  const initiatives = initiativeList.map((initiative) => ({
+    ...initiative,
+    imageUrl: covers[initiative.slug] ?? initiative.imageUrl ?? null,
+  }));
 
   // =========================
   // HERO

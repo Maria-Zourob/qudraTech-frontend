@@ -1,58 +1,42 @@
-interface Initiative {
-  slug: string;
-  titleAr: string;
-  titleEn: string;
-  descriptionAr: string;
-  descriptionEn: string;
-  status: string;
-  location: string;
-}
+import {InitiativesExplorer, type Initiative} from '@/components/initiatives/InitiativesExplorer';
+
+const API = process.env.NEXT_PUBLIC_API_URL;
 
 async function getInitiatives(): Promise<Initiative[]> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/public/initiatives`, {
-    cache: 'no-store'
-  });
+  const res = await fetch(`${API}/public/initiatives`, {cache: 'no-store'});
   if (!res.ok) return [];
   return res.json();
 }
 
-import Link from 'next/link';
+async function getCovers(): Promise<Record<string, string>> {
+  try {
+    const res = await fetch(`${API}/public/initiative-covers`, {cache: 'no-store'});
+    if (!res.ok) return {};
+    const covers = (await res.json()) as {slug: string; imageId: string}[];
+    return Object.fromEntries(
+      covers.map((c) => [c.slug, `${API}/public/images/${c.imageId}`])
+    );
+  } catch {
+    return {};
+  }
+}
 
 export default async function InitiativesListPage({
-  params
+  searchParams
 }: {
   params: Promise<{locale: string}>;
+  searchParams: Promise<{initiative?: string}>;
 }) {
-  const {locale} = await params;
-  const isArabic = locale === 'ar';
-  const initiatives = await getInitiatives();
+  const {initiative} = await searchParams;
+  const [list, covers] = await Promise.all([getInitiatives(), getCovers()]);
 
-  return (
-    <main className="max-w-4xl mx-auto p-8">
-      <h1 className="text-3xl font-bold mb-8">
-        {isArabic ? 'المبادرات' : 'Initiatives'}
-      </h1>
-      <div className="grid gap-4">
-        {initiatives.map((initiative) => (
-          <Link
-            key={initiative.slug}
-            href={`/${locale}/initiatives/${initiative.slug}`}
-            className="block p-6 border rounded-lg hover:shadow-md transition"
-          >
-            <div className="flex justify-between items-start mb-2">
-              <h2 className="text-xl font-semibold">
-                {isArabic ? initiative.titleAr : initiative.titleEn}
-              </h2>
-              <span className="text-sm px-3 py-1 bg-green-100 text-green-800 rounded-full">
-                {initiative.status}
-              </span>
-            </div>
-            <p className="text-gray-600">
-              {isArabic ? initiative.descriptionAr : initiative.descriptionEn}
-            </p>
-          </Link>
-        ))}
-      </div>
-    </main>
-  );
+  const initiatives = list.map((i) => ({
+    ...i,
+    imageUrl: covers[i.slug] ?? i.imageUrl ?? null
+  }));
+
+  const initialSlug =
+    initiatives.find((i) => i.slug === initiative)?.slug ?? initiatives[0]?.slug ?? null;
+
+  return <InitiativesExplorer initiatives={initiatives} initialSlug={initialSlug} />;
 }

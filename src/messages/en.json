@@ -364,5 +364,79 @@
     "button": "Sign in",
     "loading": "Signing in...",
     "error": "Invalid email or password"
+  },
+  "InitiativesPage": {
+    "eyebrow": "Initiatives",
+    "title": "All our initiatives in one place",
+    "subtitle": "Select any initiative to see its details, photos, impact and partners.",
+    "selector": "Choose an initiative",
+    "count": "{count, plural, =0 {No initiatives} one {# initiative} other {# initiatives}}",
+    "prev": "Previous",
+    "next": "Next",
+    "empty": "No published initiatives yet.",
+    "nav": {
+      "label": "Initiative sections",
+      "overview": "Overview",
+      "impact": "Impact",
+      "gallery": "Gallery",
+      "partners": "Partners",
+      "risks": "Risks"
+    },
+    "overview": {
+      "label": "About the initiative",
+      "status": "Status",
+      "location": "Location",
+      "targetGroup": "Target group",
+      "fullPage": "Full initiative page"
+    },
+    "kpis": {
+      "label": "Impact in numbers",
+      "title": "Performance indicators",
+      "baseline": "Baseline",
+      "target": "Target"
+    },
+    "gallery": {
+      "label": "From the field",
+      "title": "Initiative photos",
+      "open": "Enlarge image",
+      "close": "Close"
+    },
+    "partners": {
+      "label": "Partnerships",
+      "title": "Who supports this initiative",
+      "visit": "Visit website"
+    },
+    "risks": {
+      "label": "Transparency",
+      "title": "Risks and mitigation plans",
+      "probability": "Probability",
+      "impact": "Impact",
+      "mitigation": "Mitigation plan"
+    },
+    "cta": {
+      "title": "Have an idea or want to get involved?",
+      "text": "Get in touch and let's build new impact together.",
+      "button": "Contact us"
+    },
+    "status": {
+      "Draft": "Draft",
+      "UnderReview": "Under review",
+      "Approved": "Approved",
+      "Planned": "Planned",
+      "Active": "Active",
+      "OnHold": "On hold",
+      "Completed": "Completed",
+      "Archived": "Archived"
+    },
+    "level": {
+      "Low": "Low",
+      "Medium": "Medium",
+      "High": "High"
+    },
+    "partnerType": {
+      "Partner": "Partner",
+      "Donor": "Donor",
+      "CommunityPartner": "Community partner"
+    }
   }
 }
